@@ -98,7 +98,7 @@
       inset: 0;
       z-index: 9500;
       background:
-        radial-gradient(circle at 50% 25%, rgba(250, 204, 21, 0.14) 0%, rgba(15, 12, 9, 0.96) 60%, #050507 100%),
+        radial-gradient(circle at 50% 25%, rgba(250, 204, 21, 0.16) 0%, rgba(15, 12, 9, 0.96) 60%, #050507 100%),
         repeating-linear-gradient(90deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 2px, transparent 2px, transparent 42px);
       display: flex;
       flex-direction: column;
@@ -195,7 +195,7 @@
       inset: 0;
       z-index: 2;
       pointer-events: none;
-      background: radial-gradient(circle at center, transparent 48%, rgba(0, 0, 0, 0.78) 100%);
+      background: radial-gradient(circle at center, transparent 54%, rgba(0, 0, 0, 0.65) 100%);
     }
 
     /* RED PANIC AURA & SCREEN DISTORTION BILA FADHLINA KEJAR */
@@ -207,13 +207,13 @@
       opacity: 0;
       transition: opacity 0.22s ease;
       background:
-        radial-gradient(circle at center, rgba(220, 38, 38, 0.06) 35%, rgba(185, 28, 28, 0.52) 78%, rgba(127, 29, 29, 0.92) 100%);
+        radial-gradient(circle at center, rgba(220, 38, 38, 0.05) 36%, rgba(185, 28, 28, 0.54) 78%, rgba(127, 29, 29, 0.94) 100%);
       box-shadow: inset 0 0 95px rgba(239, 68, 68, 0.95);
     }
 
     #chase-red-aura.active {
       opacity: 1;
-      animation: panicPulse 0.55s ease-in-out infinite alternate;
+      animation: panicPulse 0.52s ease-in-out infinite alternate;
     }
 
     @keyframes panicPulse {
@@ -222,8 +222,8 @@
         filter: contrast(1.06) saturate(1.2);
       }
       100% {
-        box-shadow: inset 0 0 135px rgba(239, 68, 68, 1);
-        filter: contrast(1.18) saturate(1.45);
+        box-shadow: inset 0 0 138px rgba(239, 68, 68, 1);
+        filter: contrast(1.2) saturate(1.48);
       }
     }
 
@@ -235,8 +235,8 @@
       opacity: 0;
       background: repeating-linear-gradient(
         0deg,
-        rgba(255, 0, 0, 0.05) 0px,
-        rgba(255, 0, 0, 0.05) 2px,
+        rgba(255, 0, 0, 0.055) 0px,
+        rgba(255, 0, 0, 0.055) 2px,
         transparent 2px,
         transparent 6px
       );
@@ -244,7 +244,7 @@
     }
 
     #chase-static-lines.active {
-      opacity: 0.75;
+      opacity: 0.78;
       animation: staticJitter 0.12s steps(2) infinite;
     }
 
@@ -255,19 +255,19 @@
 
     #chase-alert-banner {
       position: fixed;
-      top: clamp(54px, 11vh, 78px);
+      top: clamp(54px, 11vh, 76px);
       left: 50%;
       transform: translateX(-50%);
       z-index: 25;
       pointer-events: none;
       display: none;
-      background: rgba(127, 29, 29, 0.9);
+      background: rgba(127, 29, 29, 0.92);
       border: 2.5px solid #f87171;
       color: #ffffff;
       font-family: 'Special Elite', 'Courier Prime', monospace;
-      font-size: clamp(0.85rem, 2.2vh, 1.15rem);
+      font-size: clamp(0.82rem, 2.1vh, 1.1rem);
       letter-spacing: 1.5px;
-      padding: 7px 18px;
+      padding: 6px 16px;
       border-radius: 10px;
       box-shadow: 0 0 24px rgba(239, 68, 68, 0.85);
       white-space: nowrap;
@@ -284,12 +284,100 @@
       75% { transform: translateX(calc(-50% + 2px)) rotate(0.6deg); }
     }
 
+    /* ================= INTRO CUTSCENE CINEMATIC OVERLAY ================= */
+    #cutscene-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 55;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    #cutscene-overlay.active {
+      display: flex;
+    }
+
+    .letterbox-bar {
+      width: 100%;
+      height: clamp(38px, 11vh, 76px);
+      background: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      pointer-events: auto;
+    }
+
+    .cutscene-chapter-tag {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 2px;
+      color: #fde047;
+      opacity: 0.85;
+    }
+
+    #btn-skip-cutscene {
+      background: rgba(30, 41, 59, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      color: #f8fafc;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #btn-skip-cutscene:hover {
+      border-color: #fde047;
+      color: #fde047;
+    }
+
+    .cutscene-subtitle-wrap {
+      margin: auto auto 14px;
+      max-width: min(760px, 90vw);
+      background: rgba(5, 7, 11, 0.84);
+      border: 1.5px solid rgba(250, 204, 21, 0.38);
+      border-radius: 12px;
+      padding: 12px 20px;
+      text-align: center;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.9);
+    }
+
+    #cutscene-speaker {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.78rem;
+      color: #facc15;
+      letter-spacing: 1.5px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    #cutscene-text {
+      font-family: 'Segoe UI', sans-serif;
+      font-size: clamp(0.9rem, 2.3vh, 1.12rem);
+      color: #f8fafc;
+      line-height: 1.45;
+    }
+
+    #cutscene-flash {
+      position: fixed;
+      inset: 0;
+      z-index: 56;
+      background: #000000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.45s ease;
+    }
+
     /* ================= OVERLAY SCREENS (START / PAUSE / END) ================= */
     .overlay-screen {
       position: fixed;
       inset: 0;
       z-index: 60;
-      background: rgba(6, 8, 12, 0.86);
+      background: rgba(6, 8, 12, 0.84);
       backdrop-filter: blur(6px);
       display: none;
       align-items: center;
@@ -344,13 +432,13 @@
       font-family: 'Segoe UI', sans-serif;
       font-size: clamp(0.84rem, 2vh, 0.98rem);
       color: #cbd5e1;
-      line-height: 1.52;
+      line-height: 1.56;
       margin-bottom: 14px;
       text-align: left;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 12px;
-      padding: 12px 14px;
+      padding: 13px 15px;
     }
 
     .mission-checklist {
@@ -436,10 +524,10 @@
       flex-direction: column;
       justify-content: space-between;
       padding:
-        max(10px, env(safe-area-inset-top))
-        max(14px, env(safe-area-inset-right))
-        max(10px, env(safe-area-inset-bottom))
-        max(14px, env(safe-area-inset-left));
+        max(8px, env(safe-area-inset-top))
+        max(12px, env(safe-area-inset-right))
+        max(8px, env(safe-area-inset-bottom))
+        max(12px, env(safe-area-inset-left));
     }
 
     #game-hud.active {
@@ -450,7 +538,7 @@
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
       width: 100%;
     }
 
@@ -459,7 +547,7 @@
       background: rgba(10, 12, 18, 0.84);
       border: 2px solid rgba(255, 255, 255, 0.25);
       border-radius: 12px;
-      padding: 7px 12px;
+      padding: 6px 11px;
       backdrop-filter: blur(4px);
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
     }
@@ -467,11 +555,11 @@
     .timer-card {
       text-align: center;
       border-color: #eab308;
-      min-width: 132px;
+      min-width: 122px;
     }
 
     .timer-label {
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       letter-spacing: 1.5px;
       color: #fde047;
       text-transform: uppercase;
@@ -480,7 +568,7 @@
 
     #hud-timer {
       font-family: 'Courier Prime', monospace;
-      font-size: clamp(1.2rem, 3.2vh, 1.65rem);
+      font-size: clamp(1.25rem, 3.4vh, 1.75rem);
       font-weight: 700;
       color: #ffffff;
       line-height: 1.1;
@@ -497,31 +585,34 @@
     }
 
     #hud-spawn-status {
-      font-size: 0.66rem;
-      color: #86efac;
+      display: none;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #fca5a5;
       font-family: 'Courier Prime', monospace;
+      margin-top: 2px;
     }
 
-    #hud-spawn-status.active-threat {
-      color: #fca5a5;
+    #hud-spawn-status.visible {
+      display: block;
     }
 
     .hud-objectives-card {
-      max-width: 310px;
+      max-width: min(300px, 42vw);
     }
 
     .hud-room-name {
-      font-size: 0.78rem;
+      font-size: clamp(0.72rem, 1.8vh, 0.82rem);
       color: #fde047;
       font-weight: 700;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
 
     .hud-obj-list {
-      font-size: 0.72rem;
+      font-size: clamp(0.66rem, 1.6vh, 0.74rem);
       color: #e2e8f0;
       font-family: 'Segoe UI', sans-serif;
-      line-height: 1.38;
+      line-height: 1.35;
     }
 
     .hud-obj-done {
@@ -532,7 +623,7 @@
 
     .hud-top-buttons {
       display: flex;
-      gap: 7px;
+      gap: 6px;
       pointer-events: auto;
     }
 
@@ -542,8 +633,8 @@
       color: #f8fafc;
       font-family: 'Courier Prime', monospace;
       font-weight: 700;
-      font-size: 0.78rem;
-      padding: 8px 11px;
+      font-size: 0.76rem;
+      padding: 7px 10px;
       border-radius: 10px;
       cursor: pointer;
     }
@@ -571,7 +662,7 @@
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.88);
       box-shadow: 0 0 6px #000;
     }
 
@@ -581,7 +672,7 @@
       border: 2px solid #facc15;
       color: #fef08a;
       font-family: 'Courier Prime', monospace;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
       padding: 6px 14px;
       border-radius: 999px;
@@ -601,11 +692,11 @@
       transform: translateX(-50%);
       z-index: 28;
       pointer-events: none;
-      background: rgba(15, 23, 42, 0.94);
+      background: rgba(15, 23, 42, 0.95);
       border: 2px solid #38bdf8;
       color: #f8fafc;
       font-family: 'Courier Prime', monospace;
-      font-size: 0.86rem;
+      font-size: 0.84rem;
       padding: 8px 16px;
       border-radius: 10px;
       opacity: 0;
@@ -618,7 +709,7 @@
       opacity: 1;
     }
 
-    /* Bottom Stamina & Inventory Hotbar */
+    /* Bottom Stamina & Single-Hand Inventory Slot (Piggy Style) */
     .hud-bottom-bar {
       display: flex;
       flex-direction: column;
@@ -628,7 +719,7 @@
     }
 
     .stamina-wrap {
-      width: min(260px, 52vw);
+      width: min(240px, 48vw);
       background: rgba(10, 12, 18, 0.82);
       border: 1.5px solid rgba(255, 255, 255, 0.25);
       border-radius: 999px;
@@ -640,7 +731,7 @@
 
     .stamina-bar-bg {
       flex: 1;
-      height: 7px;
+      height: 6px;
       background: #1e293b;
       border-radius: 999px;
       overflow: hidden;
@@ -653,50 +744,85 @@
       transition: width 0.08s linear;
     }
 
-    .inventory-bar {
+    .single-hand-dock {
       pointer-events: auto;
       display: flex;
       align-items: center;
-      gap: 6px;
-      background: rgba(10, 12, 18, 0.88);
-      border: 2px solid rgba(255, 255, 255, 0.24);
+      gap: 8px;
+      background: rgba(10, 12, 18, 0.9);
+      border: 2.5px solid #facc15;
       border-radius: 14px;
-      padding: 5px 8px;
-      max-width: 94vw;
-      overflow-x: auto;
+      padding: 5px 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85);
     }
 
-    .inv-slot {
-      min-width: 64px;
-      height: 52px;
-      border-radius: 10px;
-      background: rgba(30, 41, 59, 0.72);
-      border: 2px solid rgba(148, 163, 184, 0.3);
+    .hand-slot-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 155px;
+    }
+
+    .hand-icon {
+      font-size: 1.45rem;
+      line-height: 1;
+    }
+
+    .hand-meta {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 3px 6px;
-      cursor: pointer;
-      font-size: 0.65rem;
-      color: #cbd5e1;
-      text-align: center;
-      flex-shrink: 0;
+      text-align: left;
     }
 
-    .inv-slot.active-slot {
-      border-color: #facc15;
-      background: rgba(234, 179, 8, 0.22);
+    .hand-tag {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.62rem;
+      color: #fde047;
+      letter-spacing: 1px;
+    }
+
+    #hand-item-name {
+      font-size: 0.84rem;
+      font-weight: 700;
       color: #ffffff;
-      box-shadow: 0 0 12px rgba(250, 204, 21, 0.35);
     }
 
-    .inv-slot-icon {
-      font-size: 1.2rem;
-      line-height: 1.1;
+    .ammo-pill-hud {
+      display: none;
+      align-items: center;
+      gap: 5px;
+      background: rgba(220, 38, 38, 0.25);
+      border: 1.5px solid #f87171;
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #fecaca;
     }
 
-    /* ================= INTERACTIVE PUZZLE MODALS (GEAR & CODE SAFE & CLUE) ================= */
+    .ammo-pill-hud.visible {
+      display: inline-flex;
+    }
+
+    .btn-drop-item {
+      background: #1e293b;
+      border: 1.5px solid #64748b;
+      color: #e2e8f0;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 6px 9px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .btn-drop-item:hover {
+      border-color: #f87171;
+      color: #fca5a5;
+    }
+
+    /* ================= INTERACTIVE PUZZLE MODALS ================= */
     .puzzle-modal-backdrop {
       position: fixed;
       inset: 0;
@@ -735,9 +861,9 @@
       color: #cbd5e1;
       margin-bottom: 14px;
       line-height: 1.45;
+      white-space: pre-line;
     }
 
-    /* Code Safe Keypad */
     .safe-display {
       font-family: 'Courier Prime', monospace;
       font-size: 1.85rem;
@@ -784,7 +910,6 @@
       border-color: #f87171;
     }
 
-    /* Gear Puzzle Slots */
     .gear-slots-row {
       display: flex;
       justify-content: center;
@@ -840,10 +965,10 @@
 
     #joystick-zone {
       position: absolute;
-      left: 18px;
-      bottom: 66px;
-      width: 124px;
-      height: 124px;
+      left: 16px;
+      bottom: 62px;
+      width: 118px;
+      height: 118px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.08);
       border: 2px solid rgba(255, 255, 255, 0.25);
@@ -855,36 +980,36 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 48px;
-      height: 48px;
-      margin-top: -24px;
-      margin-left: -24px;
+      width: 46px;
+      height: 46px;
+      margin-top: -23px;
+      margin-left: -23px;
       border-radius: 50%;
-      background: rgba(250, 204, 21, 0.78);
+      background: rgba(250, 204, 21, 0.8);
       border: 2px solid #ffffff;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
     }
 
     .mobile-action-cluster {
       position: absolute;
-      right: 18px;
-      bottom: 66px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      right: 16px;
+      bottom: 62px;
+      display: grid;
+      grid-template-columns: repeat(2, 60px);
+      gap: 9px;
       pointer-events: auto;
     }
 
     .mob-btn {
-      width: 64px;
-      height: 64px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
-      background: rgba(15, 23, 42, 0.85);
+      background: rgba(15, 23, 42, 0.88);
       border: 2.5px solid #facc15;
       color: #fef08a;
       font-family: 'Courier Prime', monospace;
       font-weight: 700;
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -895,6 +1020,12 @@
     .mob-btn:active {
       transform: scale(0.92);
       background: rgba(234, 179, 8, 0.35);
+    }
+
+    .mob-btn.shoot-btn {
+      border-color: #ef4444;
+      color: #fca5a5;
+      background: rgba(127, 29, 29, 0.88);
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
@@ -917,13 +1048,13 @@
         <div class="loading-bar-fill" id="loading-bar-fill"></div>
       </div>
       <div class="loading-meta">
-        <span id="loading-status-text">Membina bilik darjah &amp; koridor tadika...</span>
+        <span id="loading-status-text">Menyediakan perabot kelas &amp; koridor tadika...</span>
         <span id="loading-percent">0%</span>
       </div>
     </div>
   </div>
 
-  <!-- AUDIO MUZIK KEJARAN / SUASANA FADHLINA -->
+  <!-- AUDIO SUASANA & KEJARAN FADHLINA -->
   <audio id="fadhlina-audio" src="fadhlina.mp3" loop preload="auto"></audio>
 
   <!-- 3D CANVAS & PANIC AURA LAYERS -->
@@ -933,25 +1064,42 @@
   <div id="chase-static-lines"></div>
   <div id="chase-alert-banner">⚠️ FADHLINA SEDANG MENGEJAR ANDA! LARI! ⚠️</div>
 
-  <!-- ================= SKRIN MULA / BRIEFING ================= -->
-  <div id="start-screen" class="overlay-screen active">
+  <!-- ================= INTRO CUTSCENE CINEMATIC OVERLAY ================= -->
+  <div id="cutscene-overlay">
+    <div class="letterbox-bar">
+      <span class="cutscene-chapter-tag">BAB 3 • SELEPAS MELARIKAN DIRI DARIPADA ZAHID</span>
+      <button type="button" id="btn-skip-cutscene">LANGKAU CUTSCENE &raquo;</button>
+    </div>
+    <div class="cutscene-subtitle-wrap">
+      <div id="cutscene-speaker">PEMAIN</div>
+      <div id="cutscene-text">Nafas masih tercungap-cungap... Akhirnya aku berjaya melepaskan diri daripada genggaman Zahid.</div>
+    </div>
+    <div class="letterbox-bar" style="justify-content:center;">
+      <span style="font-family:'Courier Prime',monospace;font-size:0.75rem;color:#94a3b8;">MENONTON BABAK PENGENALAN...</span>
+    </div>
+  </div>
+  <div id="cutscene-flash"></div>
+
+  <!-- ================= SKRIN MULA / DESKRIPSI PERMAINAN ================= -->
+  <div id="start-screen" class="overlay-screen">
     <div class="story-panel">
       <div class="chapter-kicker">MALAM SAMA MADANI • BAB 3</div>
       <h1 class="story-title">MISTERI TADIKA FADHLINA</h1>
       <div class="story-brief">
-        Jam menunjukkan pukul <strong>10:00 malam</strong>. Anda terperangkap di dalam <strong>Tadika Seri Fadhlina</strong> selepas semua pintu utama dikunci secara automatik. Bunyi tapak kaki dari bilik guru akan mula kedengaran apabila jam mencecah <strong>09:30</strong>... Selesaikan teka-teki di setiap bilik sebelum terlambat!
+        Selepas berjaya meloloskan diri daripada mimpi ngeri bersama Zahid di bab sebelumnya, langkah kaki membawa anda ke sebuah bangunan tadika lama yang sunyi di hujung jalan. Pintu pagarnya terbuka seolah-olah mengundang masuk—namun sebaik sahaja anda melangkah ke dalam, jeriji besi terkunci rapat dari luar. Di sebalik dinding berwarna-warni dan lukisan kanak-kanak <strong>Tadika Seri Fadhlina</strong>, ada sesuatu yang sedang memerhati dan menunggu masa untuk memburu anda.
       </div>
 
       <ul class="mission-checklist">
-        <li>🔑 Cari Kunci Biru, Hijau, Ungu &amp; Emas</li>
-        <li>🪪 Imbas Kad Akses pada Pintu Utama</li>
-        <li>⚙️ Kumpul 3 Gear &amp; pasang pada Kotak Gear</li>
-        <li>🔢 Buka Peti Besi dengan kod rahsia kelas</li>
+        <li>🎒 Hanya 1 item boleh dipegang pada satu masa</li>
+        <li>🔑 Buka bilik berkunci &amp; selesaikan teka-teki</li>
+        <li>🔫 Cari Pistol Pelali &amp; peluru untuk melumpuhkan ancaman</li>
+        <li>🚪 Buka 3 sistem kunci Pintu Utama untuk melarikan diri</li>
       </ul>
 
       <div class="btn-row-actions">
         <button type="button" id="btn-start-game" class="btn-main-play">MULA BERMAIN &raquo;</button>
-        <a href="https://syxhstr.github.io/Malam-Sama-MADANI/" class="btn-lobby-link">&larr; KEMBALI KE LOBI</a>
+        <button type="button" id="btn-replay-intro" class="btn-lobby-link" style="border-color:#eab308;color:#fde047;">🎬 TONTON INTRO</button>
+        <a href="https://syxhstr.github.io/Malam-Sama-MADANI/" class="btn-lobby-link">&larr; KE LOBI</a>
       </div>
     </div>
   </div>
@@ -961,8 +1109,9 @@
     <div class="story-panel">
       <div class="chapter-kicker">PERMAINAN DIJEDA</div>
       <h2 class="story-title">TADIKA SERI FADHLINA</h2>
-      <p style="color:#cbd5e1;margin-bottom:18px;font-size:0.92rem;">
-        Kawalan PC: <strong>WASD</strong> Gerak • <strong>Tetikus</strong> Pusing Kamera • <strong>Shift</strong> Lari Pantas • <strong>E / Klik</strong> Interaksi • <strong>1-8</strong> Pilih Item
+      <p style="color:#cbd5e1;margin-bottom:18px;font-size:0.9rem;line-height:1.5;">
+        <strong>PC:</strong> WASD Gerak • Tetikus Pusing Kamera • Shift Lari • <strong>E</strong> Ambil/Interaksi • <strong>G</strong> Letak Item • <strong>Klik Kiri</strong> Tembak Pistol<br/>
+        <strong>Mobile:</strong> Kayu Ria Kiri Gerak • Seret Kanan Pusing • Butang Aksi / Tembak / Letak
       </p>
       <div class="btn-row-actions">
         <button type="button" id="btn-resume-game" class="btn-main-play">SAMBUNG MAIN</button>
@@ -991,7 +1140,7 @@
     <div class="hud-top-bar">
       <!-- Kiri: Lokasi & Senarai Objektif Pintu Utama -->
       <div class="hud-box hud-objectives-card">
-        <div class="hud-room-name" id="hud-room-label">📍 Koridor Utama Tadika</div>
+        <div class="hud-room-name" id="hud-room-label">📍 Lobi Pendaftaran Tadika</div>
         <div class="hud-obj-list">
           <div id="obj-keycard">⬜ Imbas Kad Akses pada Pintu Keluar</div>
           <div id="obj-gears">⬜ Pasang 3 Gear Mekanikal (0/3)</div>
@@ -999,11 +1148,11 @@
         </div>
       </div>
 
-      <!-- Tengah: Timer 10:00 -> 9:30 Spawn Fadhlina -->
+      <!-- Tengah: Timer Sahaja -> Bila 09:30 muncul teks "Fadhlina has spawned." -->
       <div class="hud-box timer-card">
-        <div class="timer-label">MASA BERBAKI</div>
+        <div class="timer-label">MASA</div>
         <div id="hud-timer">10:00</div>
-        <div id="hud-spawn-status">Fadhlina muncul pada 09:30</div>
+        <div id="hud-spawn-status">Fadhlina has spawned.</div>
       </div>
 
       <!-- Kanan: Butang Fullscreen, Audio & Jeda -->
@@ -1023,15 +1172,29 @@
     <!-- Notifikasi Toast -->
     <div id="game-toast"></div>
 
-    <!-- Bawah: Stamina & Slot Inventori -->
+    <!-- Bawah: Stamina & Slot 1 Item Di Tangan (Gaya Piggy) -->
     <div class="hud-bottom-bar">
       <div class="stamina-wrap">
-        <span style="font-size:0.66rem;padding-left:6px;color:#7dd3fc;font-family:'Courier Prime',monospace;">STAMINA</span>
+        <span style="font-size:0.64rem;padding-left:6px;color:#7dd3fc;font-family:'Courier Prime',monospace;">STAMINA</span>
         <div class="stamina-bar-bg">
           <div id="stamina-fill"></div>
         </div>
       </div>
-      <div class="inventory-bar" id="inventory-bar"></div>
+
+      <div class="single-hand-dock">
+        <div class="hand-slot-box">
+          <span class="hand-icon" id="hand-item-icon">✋</span>
+          <div class="hand-meta">
+            <span class="hand-tag">ITEM DI TANGAN (1/1)</span>
+            <span id="hand-item-name">Tangan Kosong</span>
+          </div>
+        </div>
+        <div class="ammo-pill-hud" id="ammo-pill-hud">
+          <span>🔸 PELURU:</span>
+          <span id="ammo-count-text">0</span>
+        </div>
+        <button type="button" id="btn-drop-item" class="btn-drop-item" title="Letak Item [G]">[G] LETAK</button>
+      </div>
     </div>
   </div>
 
@@ -1042,16 +1205,17 @@
     </div>
     <div class="mobile-action-cluster">
       <button type="button" id="mob-btn-interact" class="mob-btn">AKSI</button>
+      <button type="button" id="mob-btn-shoot" class="mob-btn shoot-btn" style="display:none;">TEMBAK</button>
+      <button type="button" id="mob-btn-drop" class="mob-btn" style="border-color:#94a3b8;color:#e2e8f0;">LETAK</button>
       <button type="button" id="mob-btn-sprint" class="mob-btn" style="border-color:#38bdf8;color:#7dd3fc;">LARI</button>
-      <button type="button" id="mob-btn-turn" class="mob-btn" style="border-color:#f87171;color:#fca5a5;">180°</button>
     </div>
   </div>
 
-  <!-- ================= MODAL 1: PETI BESI KOD (CODE PUZZLE) ================= -->
+  <!-- ================= MODAL 1: PETI BESI KOD ================= -->
   <div id="safe-modal" class="puzzle-modal-backdrop">
     <div class="puzzle-box">
       <h3>🔐 PETI BESI PEJABAT GURU BESAR</h3>
-      <p>Masukkan 4 digit kod rahsia yang tertulis pada papan tulis kelas &amp; papan menu kantin.</p>
+      <p>Masukkan 4 digit kod rahsia yang tertulis pada papan putih kelas &amp; papan menu kantin.</p>
       <div class="safe-display" id="safe-display">----</div>
       <div class="keypad-grid" id="safe-keypad">
         <button type="button" class="key-btn" data-num="1">1</button>
@@ -1071,28 +1235,28 @@
     </div>
   </div>
 
-  <!-- ================= MODAL 2: KOTAK GEAR MEKANIKAL (GEAR PUZZLE) ================= -->
+  <!-- ================= MODAL 2: KOTAK GEAR MEKANIKAL ================= -->
   <div id="gear-modal" class="puzzle-modal-backdrop">
     <div class="puzzle-box">
       <h3>⚙️ PANEL GEAR PINTU UTAMA</h3>
-      <p>Pasang kesemua <strong>3 Gear Tembaga</strong> untuk menggerakkan rantai pintu besi utama tadika.</p>
+      <p>Pegang Gear di tangan anda dan pasang kesemua <strong>3 Gear Tembaga</strong> untuk membuka kunci rantai pintu utama.</p>
       <div class="gear-slots-row">
         <div class="gear-socket" id="gear-slot-0"><span>GEAR 1</span></div>
         <div class="gear-socket" id="gear-slot-1"><span>GEAR 2</span></div>
         <div class="gear-socket" id="gear-slot-2"><span>GEAR 3</span></div>
       </div>
       <div class="btn-row-actions">
-        <button type="button" class="btn-main-play" id="btn-insert-gear" style="padding:10px 14px;font-size:0.92rem;">PASANG GEAR DARI BEG</button>
-        <button type="button" class="btn-lobby-link" id="gear-close" style="padding:10px 14px;font-size:0.92rem;">TUTUP</button>
+        <button type="button" class="btn-main-play" id="btn-insert-gear" style="padding:10px 14px;font-size:0.9rem;">PASANG GEAR DI TANGAN</button>
+        <button type="button" class="btn-lobby-link" id="gear-close" style="padding:10px 14px;font-size:0.9rem;">TUTUP</button>
       </div>
     </div>
   </div>
 
-  <!-- ================= MODAL 3: NOTA / PETUNJUK INTERAKTIF ================= -->
+  <!-- ================= MODAL 3: NOTA / PETUNJUK ================= -->
   <div id="note-modal" class="puzzle-modal-backdrop">
     <div class="puzzle-box">
       <h3 id="note-title">📜 PETUNJUK TADIKA</h3>
-      <p id="note-body" style="font-size:0.98rem;color:#f8fafc;background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;"></p>
+      <p id="note-body" style="font-size:0.95rem;color:#f8fafc;background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;"></p>
       <button type="button" class="btn-main-play" id="note-close" style="width:100%;padding:10px;">FAHAM</button>
     </div>
   </div>
@@ -1102,25 +1266,26 @@
       /* ================= KONFIGURASI UTAMA & KEADAAN PERMAINAN ================= */
       const LOBBY_URL = 'https://syxhstr.github.io/Malam-Sama-MADANI/';
       const INITIAL_TIME_SEC = 600; // 10:00
-      const SPAWN_TIME_SEC = 570;   // 09:30 -> Fadhlina akan spawn!
+      const SPAWN_TIME_SEC = 570;   // 09:30 -> "Fadhlina has spawned."
 
-      // Kod 4 digit rawak setiap kali main (2 digit di Taman Permainan, 2 digit di Kantin)
+      // Kod 4 digit rawak setiap pusingan (2 digit di Kelas Melur, 2 digit di Kantin)
       const codePartA = String(Math.floor(10 + Math.random() * 89));
       const codePartB = String(Math.floor(10 + Math.random() * 89));
       const SECRET_SAFE_CODE = codePartA + codePartB;
 
       const STATE = {
-        phase: 'loading', // 'loading' | 'start' | 'playing' | 'paused' | 'ended'
+        phase: 'loading', // 'loading' | 'cutscene' | 'start' | 'playing' | 'paused' | 'ended'
         timeLeft: INITIAL_TIME_SEC,
         fadhlinaSpawned: false,
+        fadhlinaStunTimer: 0,
         isChasing: false,
         panicIntensity: 0,
         muted: false,
         stamina: 100,
         isSprinting: false,
-        selectedSlot: 0,
-        inventory: [], // { id, name, icon }
-        gearsFound: 0,
+        heldItem: null, // Hanya 1 item boleh dipegang pada satu masa: { id, name, icon, colorHex, modelType }
+        pistolAmmo: 0,
+        shootCooldown: 0,
         gearsInstalled: 0,
         exitKeycardDone: false,
         exitGoldKeyDone: false,
@@ -1128,7 +1293,7 @@
         safeInput: '',
         valveTurned: false,
         planksBroken: false,
-        currentRoomName: 'Koridor Utama Tadika',
+        currentRoomName: 'Lobi Pendaftaran Tadika',
         heartbeatTimer: 0,
         stepTimer: 0
       };
@@ -1218,6 +1383,10 @@
         playTone(580, 'triangle', 0.09, 0.14, 880);
       }
 
+      function playDropSfx() {
+        playTone(340, 'triangle', 0.09, 0.12, 190);
+      }
+
       function playUnlockSfx() {
         playTone(420, 'square', 0.1, 0.12, 660);
         setTimeout(() => playTone(660, 'square', 0.14, 0.12, 920), 90);
@@ -1227,6 +1396,11 @@
         playTone(120, 'sawtooth', 0.24, 0.25, 36);
       }
 
+      function playPistolShotSfx() {
+        playTone(760, 'sawtooth', 0.14, 0.24, 110);
+        setTimeout(() => playTone(240, 'square', 0.12, 0.16, 70), 40);
+      }
+
       function playSpawnScreamSfx() {
         playTone(210, 'sawtooth', 0.75, 0.25, 72);
         setTimeout(() => playTone(165, 'square', 0.65, 0.2, 55), 140);
@@ -1234,16 +1408,15 @@
 
       function updateFadhlinaAudio(distToFadhlina) {
         if (!fadhlinaAudio) return;
-        if (STATE.muted || STATE.phase !== 'playing' || !STATE.fadhlinaSpawned) {
+        if (STATE.muted || STATE.phase !== 'playing' || !STATE.fadhlinaSpawned || STATE.fadhlinaStunTimer > 0) {
           if (!fadhlinaAudio.paused) fadhlinaAudio.pause();
           return;
         }
         if (fadhlinaAudio.paused) {
           fadhlinaAudio.play().catch(() => {});
         }
-        // Kelantangan & kelajuan fadhlina.mp3 meningkat bila Fadhlina dekat atau mengejar!
         const proximity = Math.max(0, Math.min(1, 1 - distToFadhlina / 32));
-        const targetVol = STATE.isChasing ? Math.min(1, 0.55 + proximity * 0.45) : Math.max(0.12, proximity * 0.65);
+        const targetVol = STATE.isChasing ? Math.min(1, 0.55 + proximity * 0.45) : Math.max(0.14, proximity * 0.65);
         fadhlinaAudio.volume = targetVol;
         fadhlinaAudio.playbackRate = STATE.isChasing ? 1.18 : 1.0;
       }
@@ -1253,8 +1426,7 @@
         document.getElementById('btn-hud-mute').textContent = STATE.muted ? '🔇' : '🔊';
         if (STATE.muted && fadhlinaAudio) fadhlinaAudio.pause();
       });
-
-      /* ================= TOAST, INVENTORI & OBJEKTIF HUD ================= */
+      /* ================= TOAST, OBJEKTIF & SISTEM PEGANG 1 ITEM (GAYA PIGGY) ================= */
       let toastTimeout = null;
       function showToast(msg, duration = 2600) {
         const el = document.getElementById('game-toast');
@@ -1265,63 +1437,90 @@
         toastTimeout = setTimeout(() => el.classList.remove('show'), duration);
       }
 
-      function addInventoryItem(item) {
-        if (item.id === 'gear') {
-          STATE.gearsFound += 1;
-          const existing = STATE.inventory.find((i) => i.id === 'gear');
-          if (existing) {
-            existing.name = 'Gear (' + STATE.gearsFound + '/3)';
-          } else {
-            STATE.inventory.push({ id: 'gear', name: 'Gear (' + STATE.gearsFound + '/3)', icon: '⚙️' });
-          }
+      function updateHandHud() {
+        const iconEl = document.getElementById('hand-item-icon');
+        const nameEl = document.getElementById('hand-item-name');
+        const ammoPill = document.getElementById('ammo-pill-hud');
+        const ammoText = document.getElementById('ammo-count-text');
+        const mobShootBtn = document.getElementById('mob-btn-shoot');
+
+        if (STATE.heldItem) {
+          iconEl.textContent = STATE.heldItem.icon;
+          nameEl.textContent = STATE.heldItem.name;
         } else {
-          if (!STATE.inventory.some((i) => i.id === item.id)) {
-            STATE.inventory.push(item);
-          }
+          iconEl.textContent = '✋';
+          nameEl.textContent = 'Tangan Kosong';
         }
-        STATE.selectedSlot = Math.max(0, STATE.inventory.length - 1);
-        playPickupSfx();
-        renderInventory();
-      }
 
-      function removeInventoryItem(id) {
-        const idx = STATE.inventory.findIndex((i) => i.id === id);
-        if (idx !== -1) {
-          STATE.inventory.splice(idx, 1);
-          if (STATE.selectedSlot >= STATE.inventory.length) {
-            STATE.selectedSlot = Math.max(0, STATE.inventory.length - 1);
-          }
-          renderInventory();
+        const holdingPistol = STATE.heldItem && STATE.heldItem.id === 'pistol';
+        if (holdingPistol || STATE.pistolAmmo > 0) {
+          ammoPill.classList.add('visible');
+          ammoText.textContent = String(STATE.pistolAmmo);
+        } else {
+          ammoPill.classList.remove('visible');
+        }
+
+        if (mobShootBtn) {
+          mobShootBtn.style.display = holdingPistol ? 'flex' : 'none';
+        }
+
+        if (typeof rebuildFirstPersonHandModel === 'function') {
+          rebuildFirstPersonHandModel();
         }
       }
 
-      function hasItem(id) {
-        return STATE.inventory.some((i) => i.id === id);
+      function hasHeldItem(id) {
+        return !!(STATE.heldItem && STATE.heldItem.id === id);
       }
 
-      function renderInventory() {
-        const bar = document.getElementById('inventory-bar');
-        if (!bar) return;
-        bar.innerHTML = '';
-        if (STATE.inventory.length === 0) {
-          const empty = document.createElement('div');
-          empty.className = 'inv-slot';
-          empty.innerHTML = '<span class="inv-slot-icon">🎒</span><span>Beg Kosong</span>';
-          bar.appendChild(empty);
+      function consumeHeldItem() {
+        STATE.heldItem = null;
+        updateHandHud();
+      }
+
+      function dropHeldItem(silent = false) {
+        if (!STATE.heldItem) {
+          if (!silent) showToast('Tangan anda sudah kosong.');
           return;
         }
-        STATE.inventory.forEach((item, idx) => {
-          const slot = document.createElement('div');
-          slot.className = 'inv-slot' + (idx === STATE.selectedSlot ? ' active-slot' : '');
-          slot.innerHTML = '<span class="inv-slot-icon">' + item.icon + '</span><span>' + item.name + '</span>';
-          slot.addEventListener('click', () => {
-            STATE.selectedSlot = idx;
-            playTone(500, 'triangle', 0.04, 0.08);
-            renderInventory();
-          });
-          bar.appendChild(slot);
-        });
+        const dropped = STATE.heldItem;
+        STATE.heldItem = null;
+        updateHandHud();
+
+        // Letakkan item di atas lantai hadapan pemain supaya boleh dikutip semula
+        if (typeof spawnWorldItem === 'function' && typeof PLAYER !== 'undefined') {
+          const dropX = PLAYER.pos.x - Math.sin(PLAYER.yaw) * 0.75;
+          const dropZ = PLAYER.pos.z - Math.cos(PLAYER.yaw) * 0.75;
+          spawnWorldItem(
+            dropped.id,
+            dropped.name,
+            dropped.icon,
+            dropX,
+            0.35,
+            dropZ,
+            dropped.colorHex || 0xfacc15,
+            dropped.modelType || 'key'
+          );
+        }
+
+        if (!silent) {
+          playDropSfx();
+          showToast('⬇️ Anda meletakkan ' + dropped.name + ' di atas lantai.');
+        }
       }
+
+      function equipSingleItem(itemObj) {
+        // Jika sudah memegang item lain, jatuhkan item lama ke lantai (gaya Piggy)
+        if (STATE.heldItem) {
+          dropHeldItem(true);
+        }
+        STATE.heldItem = itemObj;
+        playPickupSfx();
+        updateHandHud();
+      }
+
+      document.getElementById('btn-drop-item').addEventListener('click', () => dropHeldItem(false));
+      document.getElementById('mob-btn-drop').addEventListener('click', () => dropHeldItem(false));
 
       function updateObjectivesHud() {
         const elCard = document.getElementById('obj-keycard');
@@ -1342,7 +1541,255 @@
         }
       }
 
-      /* ================= MODAL LOGIC (SAFE, GEAR, NOTE) ================= */
+      /* ================= PEMBINA MODEL 3D ITEM BERKUALITI TINGGI ================= */
+      function buildDetailedItemMesh(modelType, colorHex) {
+        const root = new THREE.Group();
+        const primaryMat = new THREE.MeshStandardMaterial({
+          color: colorHex,
+          emissive: colorHex,
+          emissiveIntensity: 0.25,
+          roughness: 0.28,
+          metalness: 0.65
+        });
+        const darkMetalMat = new THREE.MeshStandardMaterial({
+          color: 0x1e293b,
+          roughness: 0.4,
+          metalness: 0.75
+        });
+        const woodMat = new THREE.MeshStandardMaterial({
+          color: 0x92400e,
+          roughness: 0.75
+        });
+
+        if (modelType === 'key') {
+          // Kepala kunci cincin berukir
+          const ring = new THREE.Mesh(new THREE.TorusGeometry(0.14, 0.035, 10, 18), primaryMat);
+          ring.position.set(0, 0.16, 0);
+          root.add(ring);
+
+          const collar = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.05, 12), primaryMat);
+          collar.position.set(0, 0.02, 0);
+          root.add(collar);
+
+          // Batang kunci & 3 gigi kunci
+          const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.34, 10), primaryMat);
+          shaft.position.set(0, -0.15, 0);
+          root.add(shaft);
+
+          const tooth1 = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.04, 0.03), primaryMat);
+          tooth1.position.set(0.05, -0.22, 0);
+          root.add(tooth1);
+
+          const tooth2 = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.045, 0.03), primaryMat);
+          tooth2.position.set(0.06, -0.29, 0);
+          root.add(tooth2);
+
+        } else if (modelType === 'keycard') {
+          // Kad akses ID dengan jalur magnetik & klip lanyard
+          const card = new THREE.Mesh(
+            new THREE.BoxGeometry(0.32, 0.44, 0.025),
+            new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.3 })
+          );
+          root.add(card);
+
+          const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.325, 0.09, 0.03), primaryMat);
+          stripe.position.set(0, 0.12, 0);
+          root.add(stripe);
+
+          const chip = new THREE.Mesh(
+            new THREE.BoxGeometry(0.08, 0.07, 0.032),
+            new THREE.MeshStandardMaterial({ color: 0xfacc15, metalness: 0.8, roughness: 0.2 })
+          );
+          chip.position.set(-0.07, -0.02, 0);
+          root.add(chip);
+
+          const clip = new THREE.Mesh(new THREE.TorusGeometry(0.05, 0.012, 8, 14), darkMetalMat);
+          clip.position.set(0, 0.25, 0);
+          root.add(clip);
+
+        } else if (modelType === 'wrench') {
+          // Sepana paip industri dengan rahang berkembar
+          const handle = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.48, 0.035), primaryMat);
+          root.add(handle);
+
+          const ridge = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.32, 0.045), darkMetalMat);
+          root.add(ridge);
+
+          const jawLeft = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.14, 0.045), primaryMat);
+          jawLeft.position.set(-0.065, 0.26, 0);
+          jawLeft.rotation.z = 0.28;
+          root.add(jawLeft);
+
+          const jawRight = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.14, 0.045), primaryMat);
+          jawRight.position.set(0.065, 0.26, 0);
+          jawRight.rotation.z = -0.28;
+          root.add(jawRight);
+
+        } else if (modelType === 'hammer') {
+          // Tukul besi berpemegang kayu + kepala keluli cakar
+          const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.032, 0.04, 0.54, 10), woodMat);
+          root.add(shaft);
+
+          const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.044, 0.18, 10), darkMetalMat);
+          grip.position.set(0, -0.17, 0);
+          root.add(grip);
+
+          const head = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.26, 12), primaryMat);
+          head.rotation.z = Math.PI / 2;
+          head.position.set(0.02, 0.24, 0);
+          root.add(head);
+
+          const claw = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.04, 0.07), primaryMat);
+          claw.position.set(-0.14, 0.23, 0);
+          claw.rotation.z = 0.35;
+          root.add(claw);
+
+        } else if (modelType === 'gear') {
+          // Gear tembaga mekanikal bergigi 10 dengan jejari tengah
+          const outerRim = new THREE.Mesh(new THREE.TorusGeometry(0.21, 0.045, 10, 20), primaryMat);
+          root.add(outerRim);
+
+          const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.075, 0.09, 14), darkMetalMat);
+          hub.rotation.x = Math.PI / 2;
+          root.add(hub);
+
+          for (let s = 0; s < 4; s++) {
+            const spoke = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.035, 0.04), primaryMat);
+            spoke.rotation.z = (s * Math.PI) / 4;
+            root.add(spoke);
+          }
+
+          const numTeeth = 10;
+          for (let t = 0; t < numTeeth; t++) {
+            const angle = (t / numTeeth) * Math.PI * 2;
+            const tooth = new THREE.Mesh(new THREE.BoxGeometry(0.065, 0.075, 0.075), primaryMat);
+            tooth.position.set(Math.cos(angle) * 0.26, Math.sin(angle) * 0.26, 0);
+            tooth.rotation.z = angle;
+            root.add(tooth);
+          }
+
+        } else if (modelType === 'pistol') {
+          // Pistol Pelali (Tranquilizer Blaster gaya Piggy)
+          const body = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.14, 0.38), primaryMat);
+          body.position.set(0, 0.06, 0);
+          root.add(body);
+
+          const barrel = new THREE.Mesh(new THREE.CylinderGeometry(0.036, 0.042, 0.22, 12), darkMetalMat);
+          barrel.rotation.x = Math.PI / 2;
+          barrel.position.set(0, 0.08, -0.24);
+          root.add(barrel);
+
+          const canister = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.038, 0.038, 0.18, 12),
+            new THREE.MeshBasicMaterial({ color: 0x38bdf8 })
+          );
+          canister.rotation.x = Math.PI / 2;
+          canister.position.set(0, 0.14, -0.02);
+          root.add(canister);
+
+          const grip = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.22, 0.11), darkMetalMat);
+          grip.position.set(0, -0.09, 0.1);
+          grip.rotation.x = 0.28;
+          root.add(grip);
+
+        } else {
+          // Bekas Peluru Pelali (Ammo Canister)
+          const box = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.13, 0.28, 14), darkMetalMat);
+          root.add(box);
+
+          const glowBand = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.136, 0.136, 0.08, 14),
+            new THREE.MeshBasicMaterial({ color: colorHex })
+          );
+          root.add(glowBand);
+        }
+
+        return root;
+      }
+
+      /* ================= SISTEM PISTOL PELALI & PELURU (GAYA PIGGY) ================= */
+      const activeDarts = [];
+
+      function fireStunPistol() {
+        if (STATE.phase !== 'playing' || isAnyModalOpen()) return;
+        if (!hasHeldItem('pistol')) return;
+        if (STATE.shootCooldown > 0) return;
+
+        if (STATE.pistolAmmo <= 0) {
+          playTone(190, 'square', 0.08, 0.12);
+          showToast('🔸 Peluru pelali habis! Cari bekas peluru di sekitar tadika.');
+          return;
+        }
+
+        STATE.pistolAmmo -= 1;
+        STATE.shootCooldown = 0.55;
+        updateHandHud();
+        playPistolShotSfx();
+
+        // Hasilkan peluru dart bercahaya ke hadapan kamera
+        const forward = new THREE.Vector3(
+          -Math.sin(PLAYER.yaw) * Math.cos(PLAYER.pitch),
+          Math.sin(PLAYER.pitch),
+          -Math.cos(PLAYER.yaw) * Math.cos(PLAYER.pitch)
+        ).normalize();
+
+        const dartMesh = new THREE.Mesh(
+          new THREE.SphereGeometry(0.09, 8, 8),
+          new THREE.MeshBasicMaterial({ color: 0x38bdf8 })
+        );
+        dartMesh.position.copy(PLAYER.pos).addScaledVector(forward, 0.7);
+        scene.add(dartMesh);
+        activeDarts.push({
+          mesh: dartMesh,
+          vel: forward.clone().multiplyScalar(36),
+          life: 0.7
+        });
+
+        // Semak jika tembakan mengenai Fadhlina
+        if (STATE.fadhlinaSpawned && typeof FADHLINA !== 'undefined') {
+          const toBoss = new THREE.Vector3(
+            FADHLINA.pos.x - PLAYER.pos.x,
+            0,
+            FADHLINA.pos.z - PLAYER.pos.z
+          );
+          const dist = toBoss.length();
+          const flatForward = new THREE.Vector3(-Math.sin(PLAYER.yaw), 0, -Math.cos(PLAYER.yaw)).normalize();
+          const dot = flatForward.dot(toBoss.clone().normalize());
+
+          if (dist < 24 && dot > 0.88 && hasClearLineOfSight(PLAYER.pos, FADHLINA.pos)) {
+            STATE.fadhlinaStunTimer = 18.0;
+            STATE.isChasing = false;
+            playUnlockSfx();
+            showToast('⚡ TEMBAKAN TEPAT! Fadhlina lumpuh selama 18 saat! Cepat lari!', 3600);
+          } else {
+            showToast('💨 Tembakan tersasar! Baki peluru: ' + STATE.pistolAmmo);
+          }
+        } else {
+          showToast('🔫 Das pelali dilepaskan! Baki peluru: ' + STATE.pistolAmmo);
+        }
+      }
+
+      function hasClearLineOfSight(posA, posB) {
+        if (typeof WORLD === 'undefined') return true;
+        const steps = 16;
+        for (let s = 1; s < steps; s++) {
+          const t = s / steps;
+          const px = posA.x + (posB.x - posA.x) * t;
+          const pz = posA.z + (posB.z - posA.z) * t;
+          for (let i = 0; i < WORLD.wallBoxes.length; i++) {
+            const b = WORLD.wallBoxes[i];
+            if (b.minX > 900) continue;
+            if (px >= b.minX && px <= b.maxX && pz >= b.minZ && pz <= b.maxZ) {
+              return false;
+            }
+          }
+        }
+        return true;
+      }
+
+      document.getElementById('mob-btn-shoot').addEventListener('click', fireStunPistol);
+
+      /* ================= MODAL LOGIC (PETI BESI, GEAR & NOTA) ================= */
       function isAnyModalOpen() {
         return document.getElementById('safe-modal').classList.contains('open') ||
                document.getElementById('gear-modal').classList.contains('open') ||
@@ -1364,7 +1811,7 @@
 
       document.getElementById('note-close').addEventListener('click', closeAllModals);
 
-      // Peti Besi Kod (Safe Keypad)
+      // Peti Besi Kod
       function openSafeModal() {
         STATE.safeInput = '';
         document.getElementById('safe-display').textContent = '----';
@@ -1393,8 +1840,14 @@
           STATE.safeUnlocked = true;
           playUnlockSfx();
           closeAllModals();
-          addInventoryItem({ id: 'key_gold', name: 'Kunci Emas', icon: '👑' });
-          showToast('🔐 Peti Besi Terbuka! Anda memperoleh KUNCI EMAS UTAMA!', 3500);
+          equipSingleItem({
+            id: 'key_gold',
+            name: 'Kunci Emas Utama',
+            icon: '👑',
+            colorHex: 0xfacc15,
+            modelType: 'key'
+          });
+          showToast('🔐 Peti Besi Terbuka! Anda kini memegang KUNCI EMAS UTAMA!', 3600);
         } else {
           STATE.safeInput = '';
           document.getElementById('safe-display').textContent = 'SALAH';
@@ -1405,7 +1858,7 @@
         }
       });
 
-      // Kotak Gear Mekanikal (Gear Puzzle)
+      // Kotak Gear Mekanikal
       function refreshGearSlotsUi() {
         for (let i = 0; i < 3; i++) {
           const slotEl = document.getElementById('gear-slot-' + i);
@@ -1432,31 +1885,31 @@
           showToast('Semua 3 Gear sudah dipasang dan berputar!');
           return;
         }
-        if (STATE.gearsFound > STATE.gearsInstalled) {
+        if (hasHeldItem('gear')) {
           STATE.gearsInstalled += 1;
+          consumeHeldItem();
           playTone(340 + STATE.gearsInstalled * 90, 'sawtooth', 0.16, 0.14);
           refreshGearSlotsUi();
           updateObjectivesHud();
 
           if (STATE.gearsInstalled >= 3) {
-            removeInventoryItem('gear');
             playUnlockSfx();
             showToast('⚙️ Ketiga-tiga Gear berfungsi! Rantai Pintu Utama telah terbuka!', 3400);
             setTimeout(closeAllModals, 750);
-            checkVictoryCondition();
+            if (typeof checkVictoryCondition === 'function') checkVictoryCondition();
           } else {
             showToast('⚙️ Gear ' + STATE.gearsInstalled + '/3 dipasang! Cari baki gear lagi.');
           }
         } else {
           playTone(180, 'square', 0.12, 0.1);
-          showToast('Anda tiada Gear tambahan di dalam beg! Cari di bilik tadika.');
+          showToast('Anda perlu memegang Gear Tembaga di tangan untuk memasangnya!');
         }
       });
-      /* ================= ENJIN 3D THREE.JS & DUNIA TADIKA BESAR ================= */
+      /* ================= ENJIN 3D THREE.JS & PENCAHAYAAN SEIMBANG ================= */
       const canvas = document.getElementById('game-canvas');
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x090a0f);
-      scene.fog = new THREE.FogExp2(0x090a0f, 0.036);
+      scene.background = new THREE.Color(0x111625);
+      scene.fog = new THREE.FogExp2(0x111625, 0.022);
 
       const BASE_FOV = 66;
       const CHASE_FOV = 84;
@@ -1464,9 +1917,10 @@
         BASE_FOV,
         window.innerWidth / window.innerHeight,
         0.1,
-        95
+        110
       );
       camera.rotation.order = 'YXZ';
+      scene.add(camera);
 
       const renderer = new THREE.WebGLRenderer({
         canvas: canvas,
@@ -1475,96 +1929,223 @@
       });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.28;
 
-      /* ================= TEKSTUR PROSEDURAL TADIKA ================= */
-      function makeCheckerFloorTex() {
+      // Cahaya persekitaran asas supaya keseluruhan tadika tidak terlalu gelap
+      const hemiLight = new THREE.HemisphereLight(0xfef9c3, 0x334155, 1.05);
+      scene.add(hemiLight);
+
+      /* ================= FIRST-PERSON HAND VIEWMODEL (ITEM DI TANGAN) ================= */
+      const firstPersonHandGroup = new THREE.Group();
+      firstPersonHandGroup.position.set(0.34, -0.28, -0.52);
+      camera.add(firstPersonHandGroup);
+
+      function rebuildFirstPersonHandModel() {
+        while (firstPersonHandGroup.children.length > 0) {
+          firstPersonHandGroup.remove(firstPersonHandGroup.children[0]);
+        }
+        if (!STATE.heldItem) return;
+
+        // Lengan baju & tangan pemain
+        const armMesh = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.042, 0.052, 0.32, 10),
+          new THREE.MeshStandardMaterial({ color: 0x1e3a8a, roughness: 0.8 })
+        );
+        armMesh.rotation.x = Math.PI * 0.42;
+        armMesh.rotation.z = -0.18;
+        armMesh.position.set(0.04, -0.08, 0.14);
+        firstPersonHandGroup.add(armMesh);
+
+        const handMesh = new THREE.Mesh(
+          new THREE.SphereGeometry(0.052, 10, 10),
+          new THREE.MeshStandardMaterial({ color: 0xf1c27d, roughness: 0.65 })
+        );
+        handMesh.position.set(0, -0.02, 0.02);
+        firstPersonHandGroup.add(handMesh);
+
+        // Model 3D item terperinci yang dipegang
+        const itemModel = buildDetailedItemMesh(
+          STATE.heldItem.modelType || 'key',
+          STATE.heldItem.colorHex || 0xfacc15
+        );
+        itemModel.scale.set(0.68, 0.68, 0.68);
+        itemModel.position.set(-0.02, 0.05, -0.05);
+        if (STATE.heldItem.modelType === 'pistol') {
+          itemModel.scale.set(0.95, 0.95, 0.95);
+          itemModel.position.set(-0.02, 0.04, -0.08);
+        } else if (STATE.heldItem.modelType === 'gear') {
+          itemModel.rotation.y = 0.45;
+        }
+        firstPersonHandGroup.add(itemModel);
+      }
+
+      /* ================= TEKSTUR PROSEDURAL TADIKA CERIA ================= */
+      function makeKindergartenFloorTex() {
         const c = document.createElement('canvas');
         c.width = 256;
         c.height = 256;
         const ctx = c.getContext('2d');
-        const colors = ['#1e293b', '#273549', '#2b241d', '#1c2536'];
+        // Jubin vinyl tadika berwarna cerah lembut
+        const tiles = ['#e2e8f0', '#fef08a', '#bae6fd', '#bbf7d0'];
         const size = 64;
         for (let y = 0; y < 256; y += size) {
           for (let x = 0; x < 256; x += size) {
-            ctx.fillStyle = colors[((x / size) + (y / size)) % colors.length];
+            const idx = ((x / size) + (y / size) * 2) % tiles.length;
+            ctx.fillStyle = tiles[idx];
             ctx.fillRect(x, y, size, size);
-            ctx.strokeStyle = 'rgba(0,0,0,0.35)';
-            ctx.strokeRect(x, y, size, size);
+            ctx.strokeStyle = 'rgba(15, 23, 42, 0.18)';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x + 1, y + 1, size - 2, size - 2);
           }
         }
         const tex = new THREE.CanvasTexture(c);
         tex.wrapS = THREE.RepeatWrapping;
         tex.wrapT = THREE.RepeatWrapping;
-        tex.repeat.set(22, 22);
+        tex.repeat.set(24, 24);
+        tex.colorSpace = THREE.SRGBColorSpace;
         return tex;
       }
 
-      function makeKindergartenWallTex(tintHex) {
+      function makeKindergartenMuralTex(baseBgHex, stripeHex, lettersText) {
         const c = document.createElement('canvas');
-        c.width = 256;
+        c.width = 512;
         c.height = 256;
         const ctx = c.getContext('2d');
-        ctx.fillStyle = tintHex;
-        ctx.fillRect(0, 0, 256, 150);
-        // Jalur hiasan warna tadika di tengah dinding
-        ctx.fillStyle = '#eab308';
-        ctx.fillRect(0, 146, 256, 10);
-        // Panel kayu bahagian bawah
-        ctx.fillStyle = '#291d14';
-        ctx.fillRect(0, 156, 256, 100);
-        for (let x = 0; x < 256; x += 32) {
-          ctx.fillStyle = 'rgba(0,0,0,0.28)';
-          ctx.fillRect(x, 156, 3, 100);
+
+        // Dinding atas warna cerah pastel
+        ctx.fillStyle = baseBgHex;
+        ctx.fillRect(0, 0, 512, 165);
+
+        // Awan putih & matahari ceria
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.72)';
+        ctx.beginPath();
+        ctx.arc(90, 42, 18, 0, Math.PI * 2);
+        ctx.arc(110, 38, 22, 0, Math.PI * 2);
+        ctx.arc(132, 43, 17, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#facc15';
+        ctx.beginPath();
+        ctx.arc(440, 42, 20, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Lukisan pelangi kecil di dinding tadika
+        const rainbowColors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6'];
+        for (let r = 0; r < rainbowColors.length; r++) {
+          ctx.strokeStyle = rainbowColors[r];
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          ctx.arc(260, 145, 58 - r * 5, Math.PI, 0);
+          ctx.stroke();
         }
+
+        // Huruf & nombor pembelajaran tadika
+        ctx.fillStyle = '#1e293b';
+        ctx.font = 'bold 28px Fredoka, Comic Sans MS, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(lettersText, 256, 86);
+
+        // Jalur pemisah warna-warni
+        ctx.fillStyle = stripeHex;
+        ctx.fillRect(0, 160, 512, 14);
+
+        // Panel wainscoting kayu cerah di bahagian bawah
+        ctx.fillStyle = '#d97706';
+        ctx.fillRect(0, 174, 512, 82);
+        for (let x = 0; x < 512; x += 32) {
+          ctx.fillStyle = 'rgba(120, 53, 15, 0.28)';
+          ctx.fillRect(x, 174, 3, 82);
+        }
+
         const tex = new THREE.CanvasTexture(c);
         tex.wrapS = THREE.RepeatWrapping;
         tex.wrapT = THREE.RepeatWrapping;
-        tex.repeat.set(3, 1);
+        tex.repeat.set(2, 1);
+        tex.colorSpace = THREE.SRGBColorSpace;
+        return tex;
+      }
+
+      function makeSignboardTexture(titleLine, subLine) {
+        const c = document.createElement('canvas');
+        c.width = 512;
+        c.height = 160;
+        const ctx = c.getContext('2d');
+
+        ctx.fillStyle = '#fef08a';
+        ctx.fillRect(0, 0, 512, 160);
+        ctx.strokeStyle = '#dc2626';
+        ctx.lineWidth = 12;
+        ctx.strokeRect(6, 6, 500, 148);
+
+        ctx.fillStyle = '#1d4ed8';
+        ctx.font = 'bold 34px Fredoka, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(titleLine, 256, 72);
+
+        ctx.fillStyle = '#b91c1c';
+        ctx.font = 'bold 20px Courier Prime, monospace';
+        ctx.fillText(subLine, 256, 118);
+
+        const tex = new THREE.CanvasTexture(c);
+        tex.colorSpace = THREE.SRGBColorSpace;
         return tex;
       }
 
       const floorMat = new THREE.MeshStandardMaterial({
-        map: makeCheckerFloorTex(),
-        roughness: 0.72,
-        metalness: 0.08
+        map: makeKindergartenFloorTex(),
+        roughness: 0.65,
+        metalness: 0.05
       });
 
       const ceilingMat = new THREE.MeshStandardMaterial({
-        color: 0x161822,
-        roughness: 0.9
+        color: 0xf1f5f9,
+        roughness: 0.85
       });
 
       const wallMats = {
-        corridor: new THREE.MeshStandardMaterial({ map: makeKindergartenWallTex('#334155'), roughness: 0.8 }),
-        melur:    new THREE.MeshStandardMaterial({ map: makeKindergartenWallTex('#1e3a5f'), roughness: 0.8 }),
-        kantin:   new THREE.MeshStandardMaterial({ map: makeKindergartenWallTex('#422006'), roughness: 0.8 }),
-        muzik:    new THREE.MeshStandardMaterial({ map: makeKindergartenWallTex('#14532d'), roughness: 0.8 }),
-        taman:    new THREE.MeshStandardMaterial({ map: makeKindergartenWallTex('#3f2e18'), roughness: 0.8 }),
-        tidur:    new THREE.MeshStandardMaterial({ map: makeKindergartenWallTex('#3b0764'), roughness: 0.8 }),
-        pejabat:  new THREE.MeshStandardMaterial({ map: makeKindergartenWallTex('#450a0a'), roughness: 0.8 })
+        corridor: new THREE.MeshStandardMaterial({
+          map: makeKindergartenMuralTex('#fef3c7', '#ef4444', 'A  B  C  D  E  •  1  2  3'),
+          roughness: 0.72
+        }),
+        melur: new THREE.MeshStandardMaterial({
+          map: makeKindergartenMuralTex('#dbeafe', '#2563eb', 'KELAS MELUR  •  ALIF BA TA'),
+          roughness: 0.72
+        }),
+        kantin: new THREE.MeshStandardMaterial({
+          map: makeKindergartenMuralTex('#ffedd5', '#f97316', 'KANTIN CERIA  •  MARI MAKAN'),
+          roughness: 0.72
+        }),
+        muzik: new THREE.MeshStandardMaterial({
+          map: makeKindergartenMuralTex('#dcfce7', '#16a34a', 'BILIK MUZIK  •  DO RE MI FA'),
+          roughness: 0.72
+        }),
+        taman: new THREE.MeshStandardMaterial({
+          map: makeKindergartenMuralTex('#fef9c3', '#eab308', 'TAMAN PERMAINAN  •  SERONOK!'),
+          roughness: 0.72
+        }),
+        tidur: new THREE.MeshStandardMaterial({
+          map: makeKindergartenMuralTex('#f3e8ff', '#9333ea', 'BILIK REHAT  •  MIMPI INDAH'),
+          roughness: 0.72
+        }),
+        pejabat: new THREE.MeshStandardMaterial({
+          map: makeKindergartenMuralTex('#fee2e2', '#dc2626', 'PEJABAT GURU BESAR FADHLINA'),
+          roughness: 0.72
+        })
       };
-
-      // Lantai & Siling Utama Tadika (X: -28..28, Z: -32..24)
-      const mainFloor = new THREE.Mesh(new THREE.PlaneGeometry(58, 58), floorMat);
-      mainFloor.rotation.x = -Math.PI / 2;
-      mainFloor.position.set(0, 0, -4);
-      scene.add(mainFloor);
-
-      const mainCeiling = new THREE.Mesh(new THREE.PlaneGeometry(58, 58), ceilingMat);
-      mainCeiling.rotation.x = Math.PI / 2;
-      mainCeiling.position.set(0, 4.2, -4);
-      scene.add(mainCeiling);
 
       /* ================= SISTEM COLLIDER, PINTU & INTERAKTIF ================= */
       const WORLD = {
-        wallBoxes: [],     // { minX, maxX, minZ, maxZ, tag? }
+        wallBoxes: [],     // { minX, maxX, minZ, maxZ, tag?, mesh? }
         doors: [],         // { id, mesh, box, lockType, isOpen, targetRotY, name }
-        interactables: [], // { id, mesh, pos, radius, getPrompt, onInteract, active }
+        interactables: [], // { id, pos, radius, getPrompt, onInteract, active }
+        itemMeshes: [],    // { group, active }
         steamCloud: null,
         plankMeshes: [],
         exitDoorMesh: null,
         readerLightMesh: null,
-        gearPanelMesh: null
+        exteriorGateLeft: null,
+        exteriorGateRight: null
       };
 
       const WALL_H = 4.2;
@@ -1586,7 +2167,7 @@
       function addPropBox(cx, cz, w, h, d, colorHex, solid = true, yBase = 0) {
         const mesh = new THREE.Mesh(
           new THREE.BoxGeometry(w, h, d),
-          new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.65 })
+          new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.62 })
         );
         mesh.position.set(cx, yBase + h * 0.5, cz);
         scene.add(mesh);
@@ -1601,89 +2182,189 @@
         return mesh;
       }
 
-      function addCeilingLamp(x, z, colorHex = 0xfef3c7, intensity = 1.35, dist = 15) {
-        const bulb = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.22, 0.28, 0.12, 12),
+      // Lampu siling dengan tahap kecerahan berbeza (bilik cerah vs bilik suram)
+      function addCeilingLamp(x, z, colorHex = 0xfffbeb, intensity = 2.6, dist = 22) {
+        const panel = new THREE.Mesh(
+          new THREE.BoxGeometry(1.1, 0.1, 0.55),
           new THREE.MeshBasicMaterial({ color: colorHex })
         );
-        bulb.position.set(x, 4.12, z);
-        scene.add(bulb);
+        panel.position.set(x, 4.14, z);
+        scene.add(panel);
 
-        const light = new THREE.PointLight(colorHex, intensity, dist, 1.7);
+        const light = new THREE.PointLight(colorHex, intensity, dist, 1.45);
         light.position.set(x, 3.85, z);
         scene.add(light);
         return light;
       }
 
-      // Cahaya persekitaran asas supaya bilik jelas tetapi masih seram
-      scene.add(new THREE.AmbientLight(0x333848, 0.72));
+      /* ================= LANTAI & SILING DALAMAN TADIKA ================= */
+      const mainFloor = new THREE.Mesh(new THREE.PlaneGeometry(58, 56), floorMat);
+      mainFloor.rotation.x = -Math.PI / 2;
+      mainFloor.position.set(0, 0, -4);
+      scene.add(mainFloor);
 
-      /* ================= STRUKTUR DINDING 8 BILIK TADIKA ================= */
-      // 1. Dinding Luar Kompleks Tadika
-      addWallBox(-12.5, 12.5, -30.5, -30.0, wallMats.corridor); // Dinding Utara Lobi
-      addWallBox(-12.5, -12.0, -30.5, -18.0, wallMats.corridor); // Dinding Barat Lobi
-      addWallBox(12.0, 12.5, -30.5, -18.0, wallMats.corridor);   // Dinding Timur Lobi
-      addWallBox(-12.5, -4.0, -18.3, -17.8, wallMats.corridor);  // Sekatan Selatan Lobi Kiri
-      addWallBox(4.0, 12.5, -18.3, -17.8, wallMats.corridor);    // Sekatan Selatan Lobi Kanan
+      const mainCeiling = new THREE.Mesh(new THREE.PlaneGeometry(58, 56), ceilingMat);
+      mainCeiling.rotation.x = Math.PI / 2;
+      mainCeiling.position.set(0, 4.2, -4);
+      scene.add(mainCeiling);
 
-      // Dinding Luar Sayap Barat (X = -26.3) & Sayap Timur (X = +26.3)
+      /* ================= KAWASAN LUAR JALAN & HALAMAN TADIKA (UNTUK INTRO CUTSCENE) ================= */
+      (function buildExteriorKindergartenGrounds() {
+        // Rumput halaman luar (Z: -58 .. -30)
+        const grassMesh = new THREE.Mesh(
+          new THREE.PlaneGeometry(70, 30),
+          new THREE.MeshStandardMaterial({ color: 0x14532d, roughness: 0.9 })
+        );
+        grassMesh.rotation.x = -Math.PI / 2;
+        grassMesh.position.set(0, -0.02, -44);
+        scene.add(grassMesh);
+
+        // Laluan pejalan kaki berturap dari hujung jalan menuju pintu masuk tadika
+        const walkway = new THREE.Mesh(
+          new THREE.PlaneGeometry(5.2, 28),
+          new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.85 })
+        );
+        walkway.rotation.x = -Math.PI / 2;
+        walkway.position.set(0, 0.01, -43.5);
+        scene.add(walkway);
+
+        // Bangunan luar hadapan tadika & bumbung segi tiga berwarna merah ceria
+        const roofMesh = new THREE.Mesh(
+          new THREE.ConeGeometry(18.5, 4.5, 4),
+          new THREE.MeshStandardMaterial({ color: 0xb91c1c, roughness: 0.7 })
+        );
+        roofMesh.rotation.y = Math.PI / 4;
+        roofMesh.position.set(0, 6.4, -24);
+        scene.add(roofMesh);
+
+        // Papan Tanda Besar "TADIKA SERI FADHLINA" di atas pintu masuk luar
+        const signBoard = new THREE.Mesh(
+          new THREE.BoxGeometry(8.2, 2.2, 0.35),
+          new THREE.MeshBasicMaterial({
+            map: makeSignboardTexture('TADIKA SERI FADHLINA', 'BERILMU • BERAKHLAK • CERIA')
+          })
+        );
+        signBoard.position.set(0, 4.4, -30.5);
+        scene.add(signBoard);
+
+        // Tiang pagar utama luar & pintu masuk luar (Z = -30.2)
+        addPropBox(-2.6, -30.2, 0.8, 3.6, 0.8, 0xfacc15, false, 0);
+        addPropBox(2.6, -30.2, 0.8, 3.6, 0.8, 0xfacc15, false, 0);
+
+        const gateMat = new THREE.MeshStandardMaterial({ color: 0x1d4ed8, metalness: 0.5, roughness: 0.4 });
+        const gateL = new THREE.Mesh(new THREE.BoxGeometry(2.1, 2.8, 0.16), gateMat);
+        gateL.position.set(-1.1, 1.4, -30.2);
+        scene.add(gateL);
+        WORLD.exteriorGateLeft = gateL;
+
+        const gateR = new THREE.Mesh(new THREE.BoxGeometry(2.1, 2.8, 0.16), gateMat);
+        gateR.position.set(1.1, 1.4, -30.2);
+        scene.add(gateR);
+        WORLD.exteriorGateRight = gateR;
+
+        // Lampu jalan & pokok di tepi laluan luar
+        [-38, -48].forEach((lz) => {
+          addPropBox(-4.2, lz, 0.25, 4.2, 0.25, 0x1e293b, false, 0);
+          const streetLight = new THREE.PointLight(0xfef08a, 2.2, 18, 1.4);
+          streetLight.position.set(-3.8, 4.0, lz);
+          scene.add(streetLight);
+
+          // Pokok hiasan tadika
+          addPropBox(5.5, lz, 0.55, 2.4, 0.55, 0x78350f, false, 0);
+          const leaves = new THREE.Mesh(
+            new THREE.SphereGeometry(1.75, 10, 10),
+            new THREE.MeshStandardMaterial({ color: 0x15803d, roughness: 0.8 })
+          );
+          leaves.position.set(5.5, 3.3, lz);
+          scene.add(leaves);
+        });
+      })();
+      /* ================= STRUKTUR DINDING 8 BILIK & KORIDOR TADIKA ================= */
+      // 1. Dinding Hadapan Lobi Utama (Bukaan Pintu Masuk Luar di X: -2.2 .. +2.2, Z = -30.2)
+      addWallBox(-12.5, -2.2, -30.5, -30.0, wallMats.corridor);
+      addWallBox(2.2, 12.5, -30.5, -30.0, wallMats.corridor);
+      // Palang atas pintu masuk lobi (Y: 2.85 .. 4.2)
+      const lobbyLintel = new THREE.Mesh(
+        new THREE.BoxGeometry(4.4, 1.35, 0.5),
+        wallMats.corridor
+      );
+      lobbyLintel.position.set(0, 3.52, -30.25);
+      scene.add(lobbyLintel);
+
+      // Dinding Sisi & Pemisah Lobi Pendaftaran (Z: -30.0 .. -18.0)
+      addWallBox(-12.5, -12.0, -30.5, -18.0, wallMats.corridor);
+      addWallBox(12.0, 12.5, -30.5, -18.0, wallMats.corridor);
+      addWallBox(-12.5, -4.0, -18.3, -17.8, wallMats.corridor);
+      addWallBox(4.0, 12.5, -18.3, -17.8, wallMats.corridor);
+
+      // 2. Dinding Luar Sayap Barat (Kelas Melur, Bilik Muzik, Bilik Tidur)
       addWallBox(-26.5, -26.0, -16.5, 22.5, wallMats.melur);
-      addWallBox(26.0, 26.5, -16.5, 22.5, wallMats.kantin);
-
-      // Dinding Utara & Selatan Sayap Barat & Timur
       addWallBox(-26.5, -4.0, -16.5, -16.0, wallMats.melur);
+      addWallBox(-26.0, -4.0, -4.2, -3.8, wallMats.melur);   // Pemisah Kelas Melur & Bilik Muzik
+      addWallBox(-26.0, -4.0, 9.8, 10.2, wallMats.muzik);    // Pemisah Bilik Muzik & Bilik Tidur
       addWallBox(-26.5, -4.0, 22.0, 22.5, wallMats.tidur);
+
+      // 3. Dinding Luar Sayap Timur (Kantin, Taman Permainan, Pejabat Guru Besar)
+      addWallBox(26.0, 26.5, -16.5, 22.5, wallMats.kantin);
       addWallBox(4.0, 26.5, -16.5, -16.0, wallMats.kantin);
+      addWallBox(4.0, 26.0, -4.2, -3.8, wallMats.kantin);    // Pemisah Kantin & Taman Permainan
+      addWallBox(4.0, 26.0, 9.8, 10.2, wallMats.taman);      // Pemisah Taman Permainan & Pejabat
       addWallBox(4.0, 26.5, 22.0, 22.5, wallMats.pejabat);
 
-      // Dinding Selatan Koridor Utama (Pintu Keluar Utama pada X = -1.3..+1.3, Z = 22.2)
+      // 4. Dinding Selatan Koridor Utama (Bukaan Pintu Keluar Utama di X: -1.35 .. +1.35, Z = 22.2)
       addWallBox(-4.3, -1.35, 22.0, 22.5, wallMats.corridor);
       addWallBox(1.35, 4.3, 22.0, 22.5, wallMats.corridor);
 
-      // Sekatan Antara Bilik Barat:
-      // Bilik 1: Kelas Melur (Z: -16 .. -4)
-      addWallBox(-26.0, -4.0, -4.2, -3.8, wallMats.melur);
-      // Bilik 2: Bilik Muzik & Mainan (Z: -4 .. +10)
-      addWallBox(-26.0, -4.0, 9.8, 10.2, wallMats.muzik);
-      // Bilik 3: Bilik Tidur Tengah Hari (Z: +10 .. +22)
-
-      // Sekatan Antara Bilik Timur:
-      // Bilik 4: Kantin & Dapur (Z: -16 .. -4)
-      addWallBox(4.0, 26.0, -4.2, -3.8, wallMats.kantin);
-      // Bilik 5: Taman Permainan Tertutup (Z: -4 .. +10)
-      addWallBox(4.0, 26.0, 9.8, 10.2, wallMats.taman);
-      // Bilik 6: Pejabat Guru Besar Fadhlina (Z: +10 .. +22)
-
-      // Dinding Koridor Barat (X = -4.2) dengan 3 bukaan pintu (Z = -10, +3, +16)
+      // 5. Dinding Koridor Barat (X = -4.1) dengan 3 bukaan pintu lebar (Z = -10, +3, +16)
       addWallBox(-4.3, -3.9, -18.0, -11.3, wallMats.corridor);
       addWallBox(-4.3, -3.9, -8.7, 1.7, wallMats.corridor);
       addWallBox(-4.3, -3.9, 4.3, 14.7, wallMats.corridor);
       addWallBox(-4.3, -3.9, 17.3, 22.3, wallMats.corridor);
 
-      // Dinding Koridor Timur (X = +4.2) dengan 3 bukaan pintu (Z = -10, +3, +16)
+      // 6. Dinding Koridor Timur (X = +4.1) dengan 3 bukaan pintu lebar (Z = -10, +3, +16)
       addWallBox(3.9, 4.3, -18.0, -11.3, wallMats.corridor);
       addWallBox(3.9, 4.3, -8.7, 1.7, wallMats.corridor);
       addWallBox(3.9, 4.3, 4.3, 14.7, wallMats.corridor);
       addWallBox(3.9, 4.3, 17.3, 22.3, wallMats.corridor);
 
-      /* ================= PEMBINAAN PINTU BERKUNCI WARNA & KAD AKSES ================= */
+      /* ================= SISTEM PINTU BERKUNCI WARNA & KAD AKSES ================= */
+      function openDoorProgrammatically(doorObj, silent = false) {
+        if (!doorObj || doorObj.isOpen) return;
+        doorObj.isOpen = true;
+        doorObj.targetRotY = Math.PI * 0.54;
+        doorObj.box.minX = 999;
+        doorObj.box.maxX = 999;
+        if (!silent) {
+          playUnlockSfx();
+          showToast('🚪 ' + doorObj.name + ' telah dibuka!');
+        }
+      }
+
       function createInteractiveDoor(id, x, z, colorHex, lockType, labelName) {
         const pivot = new THREE.Group();
         pivot.position.set(x, 0, z - 1.25);
 
         const doorPanel = new THREE.Mesh(
           new THREE.BoxGeometry(0.22, 3.1, 2.5),
-          new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.55 })
+          new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.48 })
         );
         doorPanel.position.set(0, 1.55, 1.25);
         pivot.add(doorPanel);
 
-        // Tombol / Pemegang pintu emas
+        // Tingkap kaca kecil di bahagian atas pintu tadika
+        const doorWindow = new THREE.Mesh(
+          new THREE.BoxGeometry(0.24, 0.72, 0.72),
+          new THREE.MeshStandardMaterial({ color: 0xbae6fd, emissive: 0x0284c7, emissiveIntensity: 0.25, roughness: 0.2 })
+        );
+        doorWindow.position.set(0, 2.15, 1.25);
+        pivot.add(doorWindow);
+
+        // Tombol pintu emas
         const knob = new THREE.Mesh(
           new THREE.SphereGeometry(0.11, 10, 10),
-          new THREE.MeshStandardMaterial({ color: 0xfacc15, metalness: 0.7, roughness: 0.25 })
+          new THREE.MeshStandardMaterial({ color: 0xfacc15, metalness: 0.75, roughness: 0.2 })
         );
-        knob.position.set(0.16, 1.4, 2.15);
+        knob.position.set(0.16, 1.38, 2.15);
         pivot.add(knob);
 
         scene.add(pivot);
@@ -1698,6 +2379,8 @@
 
         const doorObj = {
           id,
+          x,
+          z,
           mesh: pivot,
           box,
           lockType, // 'key_blue' | 'key_green' | 'key_purple' | 'keycard' | 'none'
@@ -1714,34 +2397,30 @@
           active: true,
           getPrompt: () => {
             if (doorObj.isOpen) return '[E] Pintu ' + doorObj.name + ' (Terbuka)';
-            if (doorObj.lockType === 'key_blue') return '[E] Buka Pintu ' + doorObj.name + ' (Perlu Kunci Biru)';
-            if (doorObj.lockType === 'key_green') return '[E] Buka Pintu ' + doorObj.name + ' (Perlu Kunci Hijau)';
-            if (doorObj.lockType === 'key_purple') return '[E] Buka Pintu ' + doorObj.name + ' (Perlu Kunci Ungu)';
+            if (doorObj.lockType === 'key_blue') return '[E] Buka ' + doorObj.name + ' (Pegang Kunci Biru)';
+            if (doorObj.lockType === 'key_green') return '[E] Buka ' + doorObj.name + ' (Pegang Kunci Hijau)';
+            if (doorObj.lockType === 'key_purple') return '[E] Buka ' + doorObj.name + ' (Pegang Kunci Ungu)';
             if (doorObj.lockType === 'keycard') return '[E] Imbas Kad Akses — ' + doorObj.name;
             return '[E] Buka Pintu ' + doorObj.name;
           },
           onInteract: () => {
             if (doorObj.isOpen) return;
-            if (doorObj.lockType !== 'none' && !hasItem(doorObj.lockType)) {
-              const reqNames = {
-                key_blue: 'Kunci Biru (di Kaunter Lobi)',
-                key_green: 'Kunci Hijau (di Dapur Kantin)',
-                key_purple: 'Kunci Ungu (di Taman Permainan)',
-                keycard: 'Kad Akses (di Bilik Tidur)'
+            if (doorObj.lockType !== 'none' && !hasHeldItem(doorObj.lockType)) {
+              const reqHints = {
+                key_blue: 'Pegang Kunci Biru di tangan untuk membuka pintu ini!',
+                key_green: 'Pegang Kunci Hijau di tangan untuk membuka pintu ini!',
+                key_purple: 'Pegang Kunci Ungu di tangan untuk membuka pintu ini!',
+                keycard: 'Pegang Kad Akses di tangan untuk membuka Pejabat Guru Besar!'
               };
               playTone(170, 'square', 0.14, 0.12);
-              showToast('🔒 Pintu berkunci! Perlukan ' + (reqNames[doorObj.lockType] || 'kunci') + '.');
+              showToast('🔒 Berkunci! ' + (reqHints[doorObj.lockType] || 'Perlukan kunci yang sepadan.'));
               return;
             }
-            doorObj.isOpen = true;
-            doorObj.targetRotY = Math.PI * 0.52;
-            // Alihkan kotak halangan pintu supaya pemain & Fadhlina boleh lalu
-            doorObj.box.minX = 999;
-            doorObj.box.maxX = 999;
-            playUnlockSfx();
-            showToast('🚪 ' + doorObj.name + ' berjaya dibuka!');
+            openDoorProgrammatically(doorObj, false);
           }
         });
+
+        return doorObj;
       }
 
       // 4 Pintu Bilik Berkunci di Koridor
@@ -1752,14 +2431,14 @@
 
       /* ================= PENGHADANG PAPAN KAYU (TAMAN PERMAINAN - PERLUKAN TUKUL) ================= */
       const plankBarrierBox = addWallBox(3.9, 4.3, 1.7, 4.3, wallMats.taman, 'planks');
-      plankBarrierBox.mesh.visible = false; // Guna visual papan kayu melintang
+      plankBarrierBox.mesh.visible = false;
 
       for (let i = 0; i < 3; i++) {
         const plank = new THREE.Mesh(
-          new THREE.BoxGeometry(0.16, 0.34, 2.7),
-          new THREE.MeshStandardMaterial({ color: 0x78350f, roughness: 0.85 })
+          new THREE.BoxGeometry(0.16, 0.34, 2.75),
+          new THREE.MeshStandardMaterial({ color: 0x92400e, roughness: 0.82 })
         );
-        plank.position.set(4.1, 0.95 + i * 0.65, 3.0);
+        plank.position.set(4.1, 0.9 + i * 0.68, 3.0);
         plank.rotation.x = (i % 2 === 0 ? 0.08 : -0.08);
         scene.add(plank);
         WORLD.plankMeshes.push(plank);
@@ -1770,12 +2449,12 @@
         pos: new THREE.Vector3(4.1, 1.4, 3.0),
         radius: 3.1,
         active: true,
-        getPrompt: () => '[E] Pecahkan Papan Kayu (Perlu Tukul Besi)',
+        getPrompt: () => '[E] Pecahkan Papan Kayu (Pegang Tukul Besi)',
         onInteract: function () {
           if (STATE.planksBroken) return;
-          if (!hasItem('hammer')) {
+          if (!hasHeldItem('hammer')) {
             playTone(155, 'square', 0.14, 0.12);
-            showToast('🔨 Papan kayu dipaku rapat! Cari Tukul Besi di Bilik Muzik.');
+            showToast('🔨 Papan kayu dipaku rapat! Pegang Tukul Besi di tangan untuk memecahkannya.');
             return;
           }
           STATE.planksBroken = true;
@@ -1784,186 +2463,306 @@
           plankBarrierBox.maxX = 999;
           WORLD.plankMeshes.forEach((p) => { p.visible = false; });
           playSmashSfx();
-          showToast('💥 Papan kayu dipecahkan! Laluan ke Taman Permainan kini terbuka!');
+          showToast('💥 Papan kayu berkecai! Laluan ke Taman Permainan kini terbuka!');
         }
       });
 
-      /* ================= ITEM BOLEH KUTIP (KUNCI, ALATAN & 3 GEAR) ================= */
-      const itemMeshes = [];
+      /* ================= FUNGSI SPAWN ITEM 3D BERKUALITI DI DUNIA ================= */
+      function spawnWorldItem(id, name, icon, x, y, z, colorHex, modelType = 'key') {
+        const holder = new THREE.Group();
+        holder.position.set(x, y, z);
 
-      function spawnPickupItem(id, name, icon, x, y, z, colorHex, shapeType = 'key') {
-        const group = new THREE.Group();
-        group.position.set(x, y, z);
+        const detailedMesh = buildDetailedItemMesh(modelType, colorHex);
+        holder.add(detailedMesh);
 
-        let geo;
-        if (shapeType === 'gear') {
-          geo = new THREE.TorusGeometry(0.24, 0.08, 8, 12);
-        } else if (shapeType === 'card') {
-          geo = new THREE.BoxGeometry(0.38, 0.04, 0.25);
-        } else if (shapeType === 'tool') {
-          geo = new THREE.CylinderGeometry(0.06, 0.06, 0.55, 8);
-        } else {
-          geo = new THREE.OctahedronGeometry(0.22, 0);
-        }
+        // Tapak cahaya lembut supaya item mudah dilihat di atas meja/lantai
+        const glow = new THREE.PointLight(colorHex, 1.15, 5.2);
+        glow.position.set(0, 0.38, 0);
+        holder.add(glow);
 
-        const mat = new THREE.MeshStandardMaterial({
-          color: colorHex,
-          emissive: colorHex,
-          emissiveIntensity: 0.45,
-          roughness: 0.3,
-          metalness: 0.6
-        });
-        const mesh = new THREE.Mesh(geo, mat);
-        group.add(mesh);
-
-        const glow = new THREE.PointLight(colorHex, 0.9, 4.5);
-        glow.position.set(0, 0.35, 0);
-        group.add(glow);
-
-        scene.add(group);
-        itemMeshes.push(group);
+        scene.add(holder);
+        const entry = { group: holder, active: true };
+        WORLD.itemMeshes.push(entry);
 
         WORLD.interactables.push({
-          id: 'pickup_' + id + '_' + x + '_' + z,
+          id: 'item_' + id + '_' + Math.random().toString(36).slice(2, 7),
           pos: new THREE.Vector3(x, y, z),
           radius: 2.5,
           active: true,
-          getPrompt: () => '[E] Ambil ' + icon + ' ' + name,
+          getPrompt: () => {
+            if (id === 'ammo') return '[E] Ambil ' + icon + ' ' + name + ' (+2 Peluru)';
+            if (STATE.heldItem) return '[E] Tukar Pegang ' + icon + ' ' + name + ' (Letak ' + STATE.heldItem.name + ')';
+            return '[E] Ambil ' + icon + ' ' + name;
+          },
           onInteract: function () {
             this.active = false;
-            group.visible = false;
-            addInventoryItem({ id, name, icon });
-            showToast('✨ Anda mengambil ' + name + '!');
+            entry.active = false;
+            holder.visible = false;
+
+            if (id === 'ammo') {
+              STATE.pistolAmmo += 2;
+              playPickupSfx();
+              updateHandHud();
+              showToast('🔸 +2 Peluru Pelali diambil! (Jumlah Peluru: ' + STATE.pistolAmmo + ')');
+              return;
+            }
+
+            equipSingleItem({ id, name, icon, colorHex, modelType });
+            showToast('✋ Anda kini memegang ' + name + '!');
           }
         });
       }
 
-      /* ================= PERABOT & TEKA-TEKI SETIAP BILIK ================= */
-      // --- BILIK 1: LOBI & KAUNTER PENDAFTARAN (Z: -30..-18) ---
-      addCeilingLamp(0, -24, 0xfef3c7, 1.5, 18);
-      addPropBox(-6.5, -23.5, 3.6, 1.05, 1.3, 0x78350f, true); // Kaunter Pendaftaran
-      addPropBox(7.0, -22.0, 2.6, 0.7, 1.1, 0x1d4ed8, true);   // Sofa menunggu
-      // Kunci Biru atas kaunter
-      spawnPickupItem('key_blue', 'Kunci Biru', '🔵', -6.5, 1.25, -23.5, 0x3b82f6, 'key');
+      /* ================= PEMBINA PERABOT TADIKA CERIA ================= */
+      function addPlayCarpet(cx, cz, w, d, colorHex) {
+        const rug = new THREE.Mesh(
+          new THREE.BoxGeometry(w, 0.03, d),
+          new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.9 })
+        );
+        rug.position.set(cx, 0.015, cz);
+        scene.add(rug);
+      }
 
-      // Papan Kenyataan Lobi (Nota Petunjuk)
-      addPropBox(6.5, -29.8, 2.4, 1.4, 0.15, 0x92400e, false, 1.2);
+      function addKidsTableSet(cx, cz, tableColor, chairColor) {
+        // Meja tadika rendah
+        addPropBox(cx, cz, 1.7, 0.58, 1.1, tableColor, true, 0);
+        // 2 kerusi kecil berwarna ceria
+        addPropBox(cx - 0.45, cz - 0.78, 0.42, 0.36, 0.42, chairColor, false, 0);
+        addPropBox(cx + 0.45, cz + 0.78, 0.42, 0.36, 0.42, chairColor, false, 0);
+      }
+
+      function addColorfulBookshelf(cx, cz, rotY = 0) {
+        const shelfGroup = new THREE.Group();
+        shelfGroup.position.set(cx, 0, cz);
+        shelfGroup.rotation.y = rotY;
+
+        const frame = new THREE.Mesh(
+          new THREE.BoxGeometry(1.8, 1.7, 0.5),
+          new THREE.MeshStandardMaterial({ color: 0xb45309, roughness: 0.7 })
+        );
+        frame.position.y = 0.85;
+        shelfGroup.add(frame);
+
+        const bookColors = [0xef4444, 0x3b82f6, 0x22c55e, 0xeab308, 0xa855f7];
+        for (let row = 0; row < 3; row++) {
+          for (let b = 0; b < 6; b++) {
+            const book = new THREE.Mesh(
+              new THREE.BoxGeometry(0.18, 0.32, 0.54),
+              new THREE.MeshStandardMaterial({ color: bookColors[(row + b) % bookColors.length], roughness: 0.6 })
+            );
+            book.position.set(-0.62 + b * 0.25, 0.38 + row * 0.52, 0);
+            shelfGroup.add(book);
+          }
+        }
+        scene.add(shelfGroup);
+
+        const isRotated = Math.abs(Math.sin(rotY)) > 0.5;
+        const hw = isRotated ? 0.3 : 0.95;
+        const hd = isRotated ? 0.95 : 0.3;
+        WORLD.wallBoxes.push({
+          minX: cx - hw,
+          maxX: cx + hw,
+          minZ: cz - hd,
+          maxZ: cz + hd
+        });
+      }
+
+      function addToyBlocksStack(cx, cz) {
+        const blockCols = [0xef4444, 0x3b82f6, 0xfacc15, 0x22c55e];
+        for (let i = 0; i < 4; i++) {
+          const blk = new THREE.Mesh(
+            new THREE.BoxGeometry(0.36, 0.36, 0.36),
+            new THREE.MeshStandardMaterial({ color: blockCols[i], roughness: 0.5 })
+          );
+          const ox = (i % 2 === 0 ? -0.18 : 0.18);
+          const oy = i < 2 ? 0.18 : 0.54;
+          blk.position.set(cx + ox, oy, cz + (i === 2 ? 0.1 : -0.1));
+          blk.rotation.y = i * 0.35;
+          scene.add(blk);
+        }
+      }
+      /* ================= PENATAAN 8 BILIK TADIKA, PENCAHAYAAN & PENEMPATAN ITEM ================= */
+
+      // --- 1. LOBI PENDAFTARAN TADIKA (BILIK CERAH — Z: -30 .. -18) ---
+      addCeilingLamp(-5.5, -24.0, 0xfffbeb, 2.8, 22);
+      addCeilingLamp(5.5, -24.0, 0xfffbeb, 2.8, 22);
+      addPlayCarpet(0, -24.0, 7.5, 6.5, 0x38bdf8);
+
+      // Kaunter Pendaftaran & Kerusi Menunggu
+      addPropBox(-7.8, -24.2, 3.8, 1.05, 1.35, 0xd97706, true);
+      addPropBox(7.8, -25.5, 2.8, 0.65, 1.1, 0x2563eb, true);
+      addKidsTableSet(7.2, -21.5, 0xfacc15, 0xef4444);
+      addColorfulBookshelf(11.3, -23.5, -Math.PI / 2);
+      addToyBlocksStack(9.2, -26.5);
+
+      // Kunci Biru atas Kaunter Pendaftaran
+      spawnWorldItem('key_blue', 'Kunci Biru', '🔵', -7.8, 1.32, -24.2, 0x3b82f6, 'key');
+      // Peluru Pelali #1 tersorok di tepi rak buku lobi
+      spawnWorldItem('ammo', 'Peluru Pelali', '🔸', 10.2, 0.35, -21.2, 0x38bdf8, 'ammo');
+
+      // Papan Kenyataan Lobi (Nota Panduan)
+      addPropBox(6.5, -29.8, 2.6, 1.45, 0.15, 0x92400e, false, 1.25);
       WORLD.interactables.push({
         id: 'lobby_notice',
-        pos: new THREE.Vector3(6.5, 1.5, -29.5),
-        radius: 2.8,
+        pos: new THREE.Vector3(6.5, 1.5, -29.3),
+        radius: 2.9,
         active: true,
         getPrompt: () => '[E] Baca Papan Kenyataan Tadika',
         onInteract: () => {
           openNoteModal(
-            '📋 NOTIS PENGURUSAN TADIKA SERI FADHLINA',
-            'Pintu Keluar Utama di hujung koridor selatan memerlukan 3 perkara untuk dibuka:\n1) Imbas Kad Akses Utama\n2) Pasang 3 Gear Mekanikal pada kotak panel\n3) Buka Kunci Emas dari Peti Besi Pejabat Guru Besar.'
+            '📋 PANDUAN KESELAMATAN TADIKA SERI FADHLINA',
+            '1. Anda hanya boleh memegang SATU (1) item di tangan pada satu masa. Tekan [G] atau butang LETAK untuk meletakkan item.\n' +
+            '2. Pintu Keluar Utama di hujung koridor memerlukan:\n' +
+            '   • Imbas Kad Akses pada pengimbas\n' +
+            '   • Pasang 3 Gear Tembaga pada kotak panel\n' +
+            '   • Buka Kunci Emas dari Peti Besi Pejabat Guru Besar.'
           );
         }
       });
 
-      // --- KORIDOR UTAMA TADIKA (X: -4..+4, Z: -18..+22) ---
-      addCeilingLamp(0, -12, 0xfef3c7, 1.25, 15);
-      addCeilingLamp(0, 0, 0xfde68a, 1.25, 15);
-      addCeilingLamp(0, 12, 0xfef3c7, 1.25, 15);
+      // --- 2. KORIDOR UTAMA TADIKA (SEPARA CERAH — X: -4 .. +4, Z: -18 .. +22) ---
+      addCeilingLamp(0, -13.0, 0xfef3c7, 2.2, 18);
+      addCeilingLamp(0, 0.0, 0xfde68a, 1.65, 16);
+      addCeilingLamp(0, 14.0, 0xfef3c7, 2.1, 18);
+      addPlayCarpet(0, 0.0, 2.4, 34.0, 0xf87171);
 
-      // --- BILIK 2: KELAS MELUR (X: -26..-4, Z: -16..-4) ---
-      addCeilingLamp(-15, -10, 0xbae6fd, 1.4, 18);
-      addPropBox(-11, -13, 1.8, 0.65, 1.2, 0x2563eb, true); // Meja murid 1
-      addPropBox(-11, -7, 1.8, 0.65, 1.2, 0xf59e0b, true);  // Meja murid 2
-      addPropBox(-17, -13, 1.8, 0.65, 1.2, 0x16a34a, true); // Meja murid 3
-      addPropBox(-22, -7, 2.2, 0.9, 1.2, 0x78350f, true);   // Meja guru kelas
-      // Sepana Paip atas meja guru
-      spawnPickupItem('wrench', 'Sepana Paip', '🔧', -22, 1.15, -7, 0x94a3b8, 'tool');
+      // --- 3. KELAS MELUR (BILIK CERAH — X: -26 .. -4, Z: -16 .. -4) ---
+      addCeilingLamp(-15.0, -10.0, 0xffffff, 3.0, 24);
+      addPlayCarpet(-14.5, -10.0, 9.5, 7.5, 0x93c5fd);
 
-      // Papan Hitam Kelas Melur (Petunjuk Kod Bahagian 1)
-      addPropBox(-25.8, -10, 0.16, 1.6, 3.4, 0x064e3b, false, 1.1);
+      // Set Meja & Kerusi Murid Tadika Berwarna-warni
+      addKidsTableSet(-10.5, -13.2, 0x3b82f6, 0xfacc15);
+      addKidsTableSet(-10.5, -6.8, 0xef4444, 0x22c55e);
+      addKidsTableSet(-16.5, -13.2, 0x22c55e, 0xf97316);
+      addKidsTableSet(-16.5, -6.8, 0xfacc15, 0x3b82f6);
+      addColorfulBookshelf(-20.5, -15.3, 0);
+      addToyBlocksStack(-13.5, -10.0);
+
+      // Meja Guru Kelas Melur & Sepana Paip
+      addPropBox(-22.8, -6.5, 2.3, 0.9, 1.25, 0x92400e, true);
+      spawnWorldItem('wrench', 'Sepana Paip', '🔧', -22.8, 1.18, -6.5, 0x94a3b8, 'wrench');
+
+      // Papan Putih Kelas Melur (Petunjuk Kod Bahagian 1)
+      addPropBox(-25.8, -10.0, 0.16, 1.65, 3.6, 0xf8fafc, false, 1.15);
       WORLD.interactables.push({
         id: 'melur_board',
-        pos: new THREE.Vector3(-25.2, 1.6, -10),
-        radius: 3.0,
+        pos: new THREE.Vector3(-25.1, 1.6, -10.0),
+        radius: 3.1,
         active: true,
-        getPrompt: () => '[E] Periksa Papan Hitam Kelas Melur',
+        getPrompt: () => '[E] Periksa Papan Putih Kelas Melur',
         onInteract: () => {
           openNoteModal(
-            '🖍️ CONTENGAN KAPUR PADA PAPAN HITAM',
-            'Di sudut papan hitam tertulis dengan kapur merah:\n\n"2 DIGIT PERTAMA KOD PETI BESI: [ ' + codePartA + ' ]"\n\n(Baki 2 digit lagi ditulis di Papan Menu Kantin!)'
+            '🖍️ CATATAN PENANDA PADA PAPAN PUTIH KELAS',
+            'Di sudut papan putih kelas tertulis nombor besar:\n\n' +
+            '"2 DIGIT PERTAMA KOD PETI BESI: [ ' + codePartA + ' ]"\n\n' +
+            '(Baki 2 digit terakhir ada pada Papan Menu Kantin di seberang koridor!)'
           );
         }
       });
 
-      // --- BILIK 3: KANTIN & DAPUR TADIKA (X: +4..+26, Z: -16..-4) ---
-      addCeilingLamp(15, -10, 0xfde68a, 1.4, 18);
-      addPropBox(11, -10, 1.4, 0.75, 5.2, 0xd97706, true); // Meja panjang kantin
-      addPropBox(22, -13.5, 4.5, 1.0, 1.4, 0x475569, true); // Kaunter dapur
-      // Kunci Hijau di kaunter dapur
-      spawnPickupItem('key_green', 'Kunci Hijau', '🟢', 22, 1.22, -13.5, 0x22c55e, 'key');
+      // --- 4. KANTIN & DAPUR TADIKA (BILIK CERAH — X: +4 .. +26, Z: -16 .. -4) ---
+      addCeilingLamp(15.0, -10.0, 0xfffbeb, 2.9, 24);
+      addPlayCarpet(14.5, -10.0, 9.0, 7.0, 0xfdba74);
+
+      // Meja Makan Kanak-kanak & Bangku Kantin
+      addKidsTableSet(10.5, -12.8, 0xf97316, 0xfacc15);
+      addKidsTableSet(10.5, -7.2, 0x22c55e, 0x3b82f6);
+      addKidsTableSet(16.0, -10.0, 0xeab308, 0xef4444);
+
+      // Kaunter Dapur & Kunci Hijau di hujung dapur
+      addPropBox(23.5, -13.2, 3.8, 1.0, 1.5, 0x64748b, true);
+      spawnWorldItem('key_green', 'Kunci Hijau', '🟢', 23.5, 1.28, -13.2, 0x22c55e, 'key');
 
       // Papan Menu Kantin (Petunjuk Kod Bahagian 2)
-      addPropBox(25.8, -8, 0.16, 1.5, 2.8, 0x1e293b, false, 1.2);
+      addPropBox(25.8, -7.2, 0.16, 1.55, 3.0, 0x1e293b, false, 1.2);
       WORLD.interactables.push({
         id: 'kantin_board',
-        pos: new THREE.Vector3(25.2, 1.6, -8),
-        radius: 3.0,
+        pos: new THREE.Vector3(25.1, 1.6, -7.2),
+        radius: 3.1,
         active: true,
         getPrompt: () => '[E] Baca Papan Menu Kantin',
         onInteract: () => {
           openNoteModal(
             '🍲 PAPAN MENU HARIAN KANTIN',
-            'Di belakang senarai harga makanan tertera nota kecil:\n\n"2 DIGIT TERAKHIR KOD PETI BESI: [ ' + codePartB + ' ]"\n\nGabungkan dengan nombor dari Kelas Melur (4 digit).'
+            'Di bawah senarai harga nasi lemak & milo ais tertulis:\n\n' +
+            '"2 DIGIT TERAKHIR KOD PETI BESI: [ ' + codePartB + ' ]"\n\n' +
+            'Gabungkan dengan 2 digit dari Kelas Melur untuk membuka Peti Besi!'
           );
         }
       });
 
-      // --- BILIK 4: BILIK MUZIK & MAINAN (X: -26..-4, Z: -4..+10) ---
-      addCeilingLamp(-15, 3, 0xbef264, 1.4, 18);
-      addPropBox(-13, 0, 2.2, 1.1, 1.2, 0x1e293b, true); // Piano tegak
-      addPropBox(-20, 6, 2.4, 0.85, 1.4, 0xb45309, true); // Rak alat muzik
-      addPropBox(-14, 7.5, 1.8, 0.85, 1.4, 0x0f766e, true); // Meja mainan
-      // Tukul Besi & Gear #1
-      spawnPickupItem('hammer', 'Tukul Besi', '🔨', -20, 1.1, 6, 0xf97316, 'tool');
-      spawnPickupItem('gear', 'Gear Tembaga', '⚙️', -14, 1.1, 7.5, 0xfacc15, 'gear');
+      // --- 5. BILIK MUZIK & MAINAN (SEPARA CERAH — X: -26 .. -4, Z: -4 .. +10) ---
+      addCeilingLamp(-15.0, 3.0, 0xd9f999, 1.55, 20);
+      addPlayCarpet(-15.0, 3.0, 10.5, 8.5, 0x86efac);
 
-      // --- BILIK 5: TAMAN PERMAINAN TERTUTUP & INJAP PAIP (X: +4..+26, Z: -4..+10) ---
-      addCeilingLamp(15, 3, 0xfed7aa, 1.4, 18);
-      addPropBox(13, 2, 3.2, 1.6, 2.2, 0xef4444, true); // Struktur gelongsor merah
-      addPropBox(13, 6.5, 3.0, 0.6, 3.0, 0x3b82f6, true); // Kolam bola biru
+      // Piano Tegak, Gambang Warna-warni & Rak Alat Muzik
+      addPropBox(-11.5, -1.8, 2.4, 1.25, 1.2, 0x1e293b, true);
+      addPropBox(-18.0, -1.5, 2.2, 0.65, 1.0, 0xfacc15, true);
+      addColorfulBookshelf(-24.8, 3.0, Math.PI / 2);
+      addPropBox(-22.5, 7.8, 2.4, 0.85, 1.4, 0xb45309, true);
+      addToyBlocksStack(-14.5, 6.5);
 
-      // Paip Stim & Injap Merah (Perlukan Sepana untuk tutup wap panas)
-      addPropBox(23.5, 1.5, 0.6, 2.6, 0.6, 0x64748b, true);
+      // Tukul Besi atas meja rak muzik
+      spawnWorldItem('hammer', 'Tukul Besi', '🔨', -22.5, 1.15, 7.8, 0xf97316, 'hammer');
+      // Pistol Pelali (Tranquilizer Blaster) di tepi piano
+      spawnWorldItem('pistol', 'Pistol Pelali', '🔫', -9.2, 0.55, -2.4, 0x0284c7, 'pistol');
+
+      // --- 6. TAMAN PERMAINAN TERTUTUP (BILIK CERAH — X: +4 .. +26, Z: -4 .. +10) ---
+      addCeilingLamp(15.0, 3.0, 0xfef9c3, 2.85, 24);
+      addPlayCarpet(15.0, 3.0, 11.0, 9.0, 0xfde047);
+
+      // Gelongsor Merah Tadika & Kolam Bola Warna-warni
+      addPropBox(11.5, 0.5, 3.4, 1.75, 2.2, 0xef4444, true);
+      addPropBox(11.5, 6.8, 3.4, 0.65, 3.2, 0x2563eb, true);
+      // Bola-bola berwarna dalam kolam bola
+      const ballCols = [0xfacc15, 0xef4444, 0x22c55e, 0xa855f7, 0x38bdf8];
+      for (let b = 0; b < 10; b++) {
+        const ball = new THREE.Mesh(
+          new THREE.SphereGeometry(0.24, 10, 10),
+          new THREE.MeshStandardMaterial({ color: ballCols[b % ballCols.length], roughness: 0.35 })
+        );
+        ball.position.set(10.5 + (b % 5) * 0.5, 0.72, 5.8 + Math.floor(b / 5) * 1.4);
+        scene.add(ball);
+      }
+
+      // Gear Tembaga #1 diletakkan di sudut belakang kolam bola
+      spawnWorldItem('gear', 'Gear Tembaga', '⚙️', 14.2, 0.55, 8.2, 0xfacc15, 'gear');
+
+      // Paip Stim & Injap Merah (Perlukan Sepana Paip)
+      addPropBox(24.2, 1.2, 0.7, 2.8, 0.7, 0x475569, true);
       const valveWheel = new THREE.Mesh(
-        new THREE.TorusGeometry(0.28, 0.06, 8, 12),
-        new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.4 })
+        new THREE.TorusGeometry(0.3, 0.065, 10, 14),
+        new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.35 })
       );
-      valveWheel.position.set(23.1, 1.5, 1.5);
+      valveWheel.position.set(23.75, 1.55, 1.2);
       valveWheel.rotation.y = Math.PI / 2;
       scene.add(valveWheel);
 
-      // Wap panas yang menghalang Kunci Ungu di penjuru bilik
-      const steamBarrierBox = addWallBox(20.5, 25.8, 5.5, 6.1, wallMats.taman);
+      // Penghadang Wap Panas & Kunci Ungu di belakangnya
+      const steamBarrierBox = addWallBox(20.2, 25.8, 5.2, 5.8, wallMats.taman);
       steamBarrierBox.mesh.visible = false;
       const steamVisual = new THREE.Mesh(
-        new THREE.BoxGeometry(5.2, 2.4, 0.6),
-        new THREE.MeshBasicMaterial({ color: 0xe2e8f0, transparent: true, opacity: 0.35 })
+        new THREE.BoxGeometry(5.5, 2.6, 0.6),
+        new THREE.MeshBasicMaterial({ color: 0xf1f5f9, transparent: true, opacity: 0.42 })
       );
-      steamVisual.position.set(23.1, 1.2, 5.8);
+      steamVisual.position.set(23.0, 1.3, 5.5);
       scene.add(steamVisual);
       WORLD.steamCloud = steamVisual;
 
-      // Kunci Ungu di belakang wap stim
-      spawnPickupItem('key_purple', 'Kunci Ungu', '🟣', 23.5, 0.95, 8.0, 0xa855f7, 'key');
+      // Kunci Ungu di hujung bilik taman permainan
+      spawnWorldItem('key_purple', 'Kunci Ungu', '🟣', 23.8, 0.65, 8.2, 0xa855f7, 'key');
 
       WORLD.interactables.push({
         id: 'playground_valve',
-        pos: new THREE.Vector3(22.8, 1.5, 1.5),
-        radius: 2.9,
+        pos: new THREE.Vector3(23.3, 1.5, 1.2),
+        radius: 3.0,
         active: true,
-        getPrompt: () => STATE.valveTurned ? '[E] Injap Paip Sudah Ditutup' : '[E] Pusing Injap Paip (Perlu Sepana)',
+        getPrompt: () => STATE.valveTurned ? '[E] Injap Paip Sudah Ditutup' : '[E] Pusing Injap Paip (Pegang Sepana Paip)',
         onInteract: function () {
           if (STATE.valveTurned) return;
-          if (!hasItem('wrench')) {
+          if (!hasHeldItem('wrench')) {
             playTone(165, 'square', 0.14, 0.12);
-            showToast('🔧 Injap berkarat ketat! Perlukan Sepana Paip dari Kelas Melur.');
+            showToast('🔧 Injap berkarat ketat! Pegang Sepana Paip di tangan untuk memusingkannya.');
             return;
           }
           STATE.valveTurned = true;
@@ -1972,37 +2771,50 @@
           steamBarrierBox.maxX = 999;
           steamVisual.visible = false;
           playUnlockSfx();
-          showToast('💨 Wap panas telah dihentikan! Anda kini boleh ambil Kunci Ungu!');
+          showToast('💨 Wap panas telah dihentikan! Laluan ke Kunci Ungu kini selamat!');
         }
       });
 
-      // --- BILIK 6: BILIK TIDUR TENGAH HARI / NAP ROOM (X: -26..-4, Z: +10..+22) ---
-      addCeilingLamp(-15, 16, 0xd8b4fe, 1.35, 18);
-      addPropBox(-11, 13, 1.4, 0.55, 2.4, 0x9333ea, true); // Katil kanak-kanak 1
-      addPropBox(-15, 13, 1.4, 0.55, 2.4, 0xec4899, true); // Katil kanak-kanak 2
-      addPropBox(-19, 13, 1.4, 0.55, 2.4, 0x3b82f6, true); // Katil kanak-kanak 3
-      addPropBox(-22, 19, 2.0, 0.9, 1.2, 0x78350f, true);  // Almari selimut
-      // Kad Akses Utama & Gear #2
-      spawnPickupItem('keycard', 'Kad Akses', '🪪', -22, 1.12, 19, 0x38bdf8, 'card');
-      spawnPickupItem('gear', 'Gear Tembaga', '⚙️', -11, 0.85, 13, 0xfacc15, 'gear');
+      // --- 7. BILIK TIDUR TENGAH HARI / NAP ROOM (SEPARA CERAH — X: -26 .. -4, Z: +10 .. +22) ---
+      addCeilingLamp(-15.0, 16.0, 0xe9d5ff, 1.45, 20);
+      addPlayCarpet(-15.0, 16.0, 10.0, 8.0, 0xc084fc);
 
-      // --- BILIK 7: PEJABAT GURU BESAR FADHLINA (X: +4..+26, Z: +10..+22) ---
-      addCeilingLamp(15, 16, 0xfca5a5, 1.45, 18);
-      addPropBox(18, 17, 3.6, 1.05, 1.6, 0x450a0a, true); // Meja besar Guru Besar Fadhlina
-      // Gear #3 atas meja Fadhlina
-      spawnPickupItem('gear', 'Gear Tembaga', '⚙️', 18, 1.25, 17, 0xfacc15, 'gear');
+      // 4 Katil Kecil Kanak-kanak Tadika dengan Bantal Warna-warni
+      const bedColors = [0x9333ea, 0xec4899, 0x3b82f6, 0x10b981];
+      for (let b = 0; b < 4; b++) {
+        const bx = -9.5 - b * 3.4;
+        addPropBox(bx, 13.0, 1.45, 0.52, 2.5, bedColors[b], true);
+        addPropBox(bx, 12.1, 1.1, 0.16, 0.55, 0xf8fafc, false, 0.52);
+      }
+      addColorfulBookshelf(-14.5, 21.3, Math.PI);
 
-      // Peti Besi Kod (Safe Box) di Pejabat Guru Besar
-      addPropBox(23.8, 13, 1.4, 1.6, 1.4, 0x1e293b, true);
+      // Almari Selimut (Kad Akses), Gear #2 & Peluru Pelali #2 di sudut berbeza
+      addPropBox(-23.5, 19.5, 2.2, 0.95, 1.3, 0x92400e, true);
+      spawnWorldItem('keycard', 'Kad Akses', '🪪', -23.5, 1.22, 19.5, 0x38bdf8, 'keycard');
+      spawnWorldItem('gear', 'Gear Tembaga', '⚙️', -9.5, 0.55, 19.8, 0xfacc15, 'gear');
+      spawnWorldItem('ammo', 'Peluru Pelali', '🔸', -23.8, 0.45, 12.2, 0x38bdf8, 'ammo');
+
+      // --- 8. PEJABAT GURU BESAR FADHLINA (SEPARA CERAH — X: +4 .. +26, Z: +10 .. +22) ---
+      addCeilingLamp(15.5, 16.0, 0xfecaca, 1.55, 20);
+      addPlayCarpet(15.5, 16.0, 9.5, 7.5, 0x991b1b);
+
+      // Meja Besar Guru Besar Fadhlina & Rak Fail
+      addPropBox(17.5, 17.8, 3.8, 1.05, 1.65, 0x450a0a, true);
+      addColorfulBookshelf(11.5, 21.3, Math.PI);
+      // Gear #3 di atas meja Guru Besar
+      spawnWorldItem('gear', 'Gear Tembaga', '⚙️', 17.5, 1.32, 17.8, 0xfacc15, 'gear');
+
+      // Peti Besi Kod di penjuru pejabat
+      addPropBox(24.2, 12.5, 1.45, 1.65, 1.45, 0x1e293b, true);
       WORLD.interactables.push({
         id: 'principal_safe',
-        pos: new THREE.Vector3(23.0, 1.2, 13),
+        pos: new THREE.Vector3(23.2, 1.2, 12.5),
         radius: 3.1,
         active: true,
         getPrompt: () => STATE.safeUnlocked ? '[E] Peti Besi Sudah Dibuka' : '[E] Buka Peti Besi (Masukkan Kod 4 Digit)',
         onInteract: () => {
           if (STATE.safeUnlocked) {
-            showToast('Peti besi sudah kosong — anda sudah mengambil Kunci Emas.');
+            showToast('Peti besi sudah kosong.');
             return;
           }
           openSafeModal();
@@ -2012,7 +2824,7 @@
       /* ================= PINTU KELUAR UTAMA TADIKA (Z = 22.1) ================= */
       const mainExitDoor = new THREE.Mesh(
         new THREE.BoxGeometry(2.7, 3.2, 0.28),
-        new THREE.MeshStandardMaterial({ color: 0x7f1d1d, roughness: 0.5, metalness: 0.3 })
+        new THREE.MeshStandardMaterial({ color: 0x991b1b, roughness: 0.45, metalness: 0.35 })
       );
       mainExitDoor.position.set(0, 1.6, 22.1);
       scene.add(mainExitDoor);
@@ -2034,17 +2846,18 @@
       WORLD.interactables.push({
         id: 'exit_card_reader',
         pos: new THREE.Vector3(-2.2, 1.4, 21.4),
-        radius: 2.8,
+        radius: 2.9,
         active: true,
-        getPrompt: () => STATE.exitKeycardDone ? '[E] Pengimbas Kad Akses (SAH)' : '[E] Imbas Kad Akses pada Pengimbas',
+        getPrompt: () => STATE.exitKeycardDone ? '[E] Pengimbas Kad Akses (SAH)' : '[E] Imbas Kad Akses (Pegang Kad Akses)',
         onInteract: () => {
           if (STATE.exitKeycardDone) return;
-          if (!hasItem('keycard')) {
+          if (!hasHeldItem('keycard')) {
             playTone(165, 'square', 0.14, 0.12);
-            showToast('🪪 Perlukan Kad Akses! Cari di Bilik Tidur Tengah Hari.');
+            showToast('🪪 Pegang Kad Akses di tangan untuk mengimbas!');
             return;
           }
           STATE.exitKeycardDone = true;
+          consumeHeldItem();
           readerLight.material.color.setHex(0x22c55e);
           playUnlockSfx();
           updateObjectivesHud();
@@ -2058,7 +2871,7 @@
       WORLD.interactables.push({
         id: 'exit_gear_panel',
         pos: new THREE.Vector3(2.2, 1.4, 21.4),
-        radius: 2.8,
+        radius: 2.9,
         active: true,
         getPrompt: () => '[E] Periksa Panel 3 Gear (' + STATE.gearsInstalled + '/3)',
         onInteract: () => openGearModal()
@@ -2068,18 +2881,18 @@
       WORLD.interactables.push({
         id: 'exit_main_gate',
         pos: new THREE.Vector3(0, 1.5, 21.4),
-        radius: 3.0,
+        radius: 3.1,
         active: true,
-        getPrompt: () => STATE.exitGoldKeyDone ? '[E] Kunci Emas Terbuka!' : '[E] Buka Kunci Emas Pintu Keluar Utama',
+        getPrompt: () => STATE.exitGoldKeyDone ? '[E] Kunci Emas Terbuka!' : '[E] Buka Kunci Emas (Pegang Kunci Emas)',
         onInteract: () => {
           if (!STATE.exitGoldKeyDone) {
-            if (!hasItem('key_gold')) {
+            if (!hasHeldItem('key_gold')) {
               playTone(165, 'square', 0.14, 0.12);
-              showToast('👑 Perlukan Kunci Emas dari Peti Besi Pejabat Guru Besar!');
+              showToast('👑 Pegang Kunci Emas Utama di tangan untuk membuka kunci ini!');
               return;
             }
             STATE.exitGoldKeyDone = true;
-            removeInventoryItem('key_gold');
+            consumeHeldItem();
             playUnlockSfx();
             updateObjectivesHud();
             showToast('👑 Kunci Emas berjaya dibuka!');
@@ -2087,21 +2900,21 @@
           checkVictoryCondition();
         }
       });
-      /* ================= WATAK FADHLINA 3D & SISTEM AI PENGEJARAN ================= */
+      /* ================= WATAK FADHLINA 3D & AI ANTI-STUCK ================= */
       const FADHLINA = {
         group: new THREE.Group(),
         spriteMat: null,
         auraLight: null,
-        pos: new THREE.Vector3(14.0, 0, 16.0), // Muncul dari Pejabat Guru Besar
-        walkSpeed: 2.35,
+        stunRing: null,
+        pos: new THREE.Vector3(0, 0, 14.5), // Muncul di Koridor Selatan hadapan Pejabat Guru Besar
+        walkSpeed: 2.45,
         chaseSpeed: 4.35,
         waypointQueue: [],
         repathTimer: 0,
         stuckTimer: 0,
-        lastPos: new THREE.Vector3(14.0, 0, 16.0)
+        lastCheckPos: new THREE.Vector3(0, 0, 14.5)
       };
 
-      // Tekstur sandaran jika fadhlina.png lambat dimuatkan
       function createFallbackBossTexture() {
         const c = document.createElement('canvas');
         c.width = 256;
@@ -2109,9 +2922,9 @@
         const ctx = c.getContext('2d');
         ctx.fillStyle = '#450a0a';
         ctx.beginPath();
-        ctx.ellipse(128, 320, 72, 160, 0, 0, Math.PI * 2);
+        ctx.ellipse(128, 325, 72, 160, 0, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = '#fca5a5';
+        ctx.fillStyle = '#fecaca';
         ctx.beginPath();
         ctx.arc(128, 115, 48, 0, Math.PI * 2);
         ctx.fill();
@@ -2142,43 +2955,34 @@
             FADHLINA.spriteMat.needsUpdate = true;
           },
           undefined,
-          () => {
-            // Kekal guna tekstur sandaran jika fail tiada
-          }
+          () => {}
         );
 
         const sprite = new THREE.Sprite(FADHLINA.spriteMat);
-        sprite.scale.set(1.65, 2.75, 1);
-        sprite.position.set(0, 1.38, 0);
+        sprite.scale.set(1.68, 2.78, 1);
+        sprite.position.set(0, 1.39, 0);
         FADHLINA.group.add(sprite);
 
-        // Cahaya merah menakutkan di sekeliling Fadhlina
-        FADHLINA.auraLight = new THREE.PointLight(0xdc2626, 2.2, 11, 1.6);
-        FADHLINA.auraLight.position.set(0, 1.8, 0);
+        // Gelung elektrik biru bila Fadhlina lumpuh ditembak Pistol Pelali
+        const stunRing = new THREE.Mesh(
+          new THREE.TorusGeometry(0.75, 0.05, 8, 24),
+          new THREE.MeshBasicMaterial({ color: 0x38bdf8 })
+        );
+        stunRing.rotation.x = Math.PI / 2;
+        stunRing.position.set(0, 0.18, 0);
+        stunRing.visible = false;
+        FADHLINA.group.add(stunRing);
+        FADHLINA.stunRing = stunRing;
+
+        // Aura cahaya merah menakutkan di sekeliling Fadhlina
+        FADHLINA.auraLight = new THREE.PointLight(0xdc2626, 2.3, 12, 1.5);
+        FADHLINA.auraLight.position.set(0, 1.85, 0);
         FADHLINA.group.add(FADHLINA.auraLight);
 
         FADHLINA.group.position.copy(FADHLINA.pos);
         FADHLINA.group.visible = false;
         scene.add(FADHLINA.group);
       })();
-
-      // Titik laluan navigasi koridor & pintu bilik supaya Fadhlina tidak tersangkut
-      const NAV_NODES = [
-        { id: 'lobi',    x: 0,    z: -22.5 },
-        { id: 'cor_n',   x: 0,    z: -14.0 },
-        { id: 'cor_m1',  x: 0,    z: -10.0 },
-        { id: 'cor_0',   x: 0,    z: -2.0  },
-        { id: 'cor_m2',  x: 0,    z: 3.0   },
-        { id: 'cor_10',  x: 0,    z: 10.0  },
-        { id: 'cor_m3',  x: 0,    z: 16.0  },
-        { id: 'cor_s',   x: 0,    z: 19.5  },
-        { id: 'melur',   x: -12,  z: -10.0 },
-        { id: 'kantin',  x: 12,   z: -10.0 },
-        { id: 'muzik',   x: -12,  z: 3.0   },
-        { id: 'taman',   x: 12,   z: 3.0   },
-        { id: 'tidur',   x: -12,  z: 16.0  },
-        { id: 'pejabat', x: 12,   z: 16.0  }
-      ];
 
       function getZoneId(x, z) {
         if (z < -17.5) return 'lobi';
@@ -2195,11 +2999,37 @@
         return 'corridor';
       }
 
+      // Fadhlina berkeupayaan membuka pintu bilik atau memecahkan papan jika menghalang laluannya
+      function letFadhlinaClearObstacles() {
+        for (let i = 0; i < WORLD.doors.length; i++) {
+          const d = WORLD.doors[i];
+          if (!d.isOpen) {
+            const distToDoor = Math.hypot(FADHLINA.pos.x - d.x, FADHLINA.pos.z - d.z);
+            if (distToDoor < 2.35) {
+              openDoorProgrammatically(d, true);
+              playTone(130, 'sawtooth', 0.16, 0.14);
+            }
+          }
+        }
+
+        if (!STATE.planksBroken) {
+          const distToPlanks = Math.hypot(FADHLINA.pos.x - 4.1, FADHLINA.pos.z - 3.0);
+          if (distToPlanks < 2.35) {
+            STATE.planksBroken = true;
+            plankBarrierBox.minX = 999;
+            plankBarrierBox.maxX = 999;
+            WORLD.plankMeshes.forEach((p) => { p.visible = false; });
+            const plankInter = WORLD.interactables.find((it) => it.id === 'plank_barrier');
+            if (plankInter) plankInter.active = false;
+            playSmashSfx();
+          }
+        }
+      }
+
       function computeFadhlinaRoute(targetPos) {
         const fZone = getZoneId(FADHLINA.pos.x, FADHLINA.pos.z);
         const pZone = getZoneId(targetPos.x, targetPos.z);
 
-        // Jika dalam zon bilik yang sama atau kedua-duanya di koridor, terus ke pemain
         if (fZone === pZone) {
           return [new THREE.Vector3(targetPos.x, 0, targetPos.z)];
         }
@@ -2215,18 +3045,25 @@
           lobi: -17.5
         };
 
-        // Keluar ke koridor tengah dahulu jika Fadhlina berada di dalam bilik
+        // Keluar ke koridor tengah terlebih dahulu melalui titik tengah pintu bilik
         if (fZone !== 'corridor' && doorZMap[fZone] !== undefined) {
+          const exitSideX = FADHLINA.pos.x < 0 ? -2.2 : 2.2;
+          route.push(new THREE.Vector3(exitSideX, 0, doorZMap[fZone]));
           route.push(new THREE.Vector3(0, 0, doorZMap[fZone]));
         }
 
-        // Bergerak sepanjang paksi Z koridor menghampiri zon pemain
+        // Bergerak di tengah koridor utama (X = 0) menuju zon sasaran
         const targetDoorZ = (pZone !== 'corridor' && doorZMap[pZone] !== undefined)
           ? doorZMap[pZone]
           : targetPos.z;
         route.push(new THREE.Vector3(0, 0, targetDoorZ));
 
-        // Masuk ke kedudukan pemain
+        // Masuk melepasi ambang pintu ke dalam bilik pemain
+        if (pZone !== 'corridor' && doorZMap[pZone] !== undefined) {
+          const enterSideX = targetPos.x < 0 ? -5.8 : (targetPos.x > 0 ? 5.8 : 0);
+          route.push(new THREE.Vector3(enterSideX, 0, targetDoorZ));
+        }
+
         route.push(new THREE.Vector3(targetPos.x, 0, targetPos.z));
         return route;
       }
@@ -2234,18 +3071,25 @@
       function spawnFadhlinaNow() {
         if (STATE.fadhlinaSpawned) return;
         STATE.fadhlinaSpawned = true;
-        FADHLINA.pos.set(12.0, 0, 16.0);
+
+        // Pastikan pintu Pejabat Guru Besar dibuka dan Fadhlina muncul di koridor utama
+        const officeDoor = WORLD.doors.find((d) => d.id === 'pejabat');
+        if (officeDoor) openDoorProgrammatically(officeDoor, true);
+
+        FADHLINA.pos.set(0, 0, 15.8);
+        FADHLINA.lastCheckPos.copy(FADHLINA.pos);
         FADHLINA.group.position.copy(FADHLINA.pos);
         FADHLINA.group.visible = true;
 
+        // Paparkan teks "Fadhlina has spawned." di bawah timer apabila masa mencecah 09:30
         const spawnStatus = document.getElementById('hud-spawn-status');
         if (spawnStatus) {
-          spawnStatus.textContent = '⚠️ FADHLINA BERKELIARAN!';
-          spawnStatus.classList.add('active-threat');
+          spawnStatus.textContent = 'Fadhlina has spawned.';
+          spawnStatus.classList.add('visible');
         }
 
         playSpawnScreamSfx();
-        showToast('🚨 JAM 09:30! Guru Besar Fadhlina telah muncul di dalam tadika!', 4000);
+        showToast('🚨 Fadhlina has spawned! Hati-hati di koridor tadika!', 3800);
         if (fadhlinaAudio && !STATE.muted) {
           fadhlinaAudio.currentTime = 0;
           fadhlinaAudio.play().catch(() => {});
@@ -2258,15 +3102,15 @@
         yaw: Math.PI, // Menghadap ke arah koridor utama (+Z)
         pitch: 0,
         radius: 0.42,
-        walkSpeed: 2.85,   // Pemain berjalan perlahan (suspen)
-        sprintSpeed: 4.55, // Lari pecut bila guna stamina
+        walkSpeed: 2.95,
+        sprintSpeed: 4.65,
         bobPhase: 0
       };
 
       function resolveCircleWallCollision(posVec, radius) {
         for (let i = 0; i < WORLD.wallBoxes.length; i++) {
           const b = WORLD.wallBoxes[i];
-          if (b.minX > 900) continue; // Halangan telah dibuka
+          if (b.minX > 900) continue;
 
           const closestX = Math.max(b.minX, Math.min(posVec.x, b.maxX));
           const closestZ = Math.max(b.minZ, Math.min(posVec.z, b.maxZ));
@@ -2339,7 +3183,7 @@
           if (dist <= item.radius) {
             const dir = toObj.clone().normalize();
             const dot = forward.dot(dir);
-            if (dot > 0.35 && dist < bestDist) {
+            if (dot > 0.32 && dist < bestDist) {
               bestDist = dist;
               best = item;
             }
@@ -2372,7 +3216,7 @@
           endGame(
             true,
             'BERJAYA MELARIKAN DIRI!',
-            'Ketiga-tiga sistem keselamatan Pintu Utama Tadika Seri Fadhlina telah dibuka! Anda berjaya keluar dengan selamat sebelum ditangkap Fadhlina.'
+            'Ketiga-tiga sistem keselamatan Pintu Utama Tadika Seri Fadhlina telah dibuka! Anda berjaya meloloskan diri dengan selamat.'
           );
         }
       }
@@ -2407,27 +3251,26 @@
           playSpawnScreamSfx();
         }
       }
-
       /* ================= KAWALAN INPUT DESKTOP & SENTUHAN MOBILE ================= */
       const KEYS = {};
       window.addEventListener('keydown', (e) => {
         KEYS[e.code] = true;
 
-        if (e.code === 'KeyE' && STATE.phase === 'playing') {
-          triggerInteraction();
+        if (STATE.phase === 'playing') {
+          if (e.code === 'KeyE') {
+            triggerInteraction();
+          } else if (e.code === 'KeyG') {
+            dropHeldItem(false);
+          } else if (e.code === 'KeyF' || e.code === 'Space') {
+            if (hasHeldItem('pistol')) fireStunPistol();
+          }
         }
+
         if (e.code === 'Escape' || e.code === 'KeyP') {
           if (isAnyModalOpen()) {
             closeAllModals();
           } else if (STATE.phase === 'playing') {
             pauseGame();
-          }
-        }
-        if (e.code.startsWith('Digit')) {
-          const num = parseInt(e.code.replace('Digit', ''), 10);
-          if (num >= 1 && num <= STATE.inventory.length) {
-            STATE.selectedSlot = num - 1;
-            renderInventory();
           }
         }
       });
@@ -2436,16 +3279,28 @@
         KEYS[e.code] = false;
       });
 
-      // Mouse Look (Pointer Lock di PC)
-      canvas.addEventListener('click', () => {
-        if (STATE.phase === 'playing' && !isAnyModalOpen()) {
-          if (!isTouchDevice() && document.pointerLockElement !== canvas) {
-            canvas.requestPointerLock().catch(() => {});
+      // Klik Tetikus di PC: Kunci kamera & tembak jika memegang Pistol Pelali, atau interaksi
+      canvas.addEventListener('mousedown', (e) => {
+        if (STATE.phase !== 'playing' || isAnyModalOpen()) return;
+        if (isTouchDevice()) return;
+
+        if (document.pointerLockElement !== canvas) {
+          canvas.requestPointerLock().catch(() => {});
+          return;
+        }
+
+        if (e.button === 0) {
+          if (hasHeldItem('pistol')) {
+            fireStunPistol();
           } else {
             triggerInteraction();
           }
+        } else if (e.button === 2) {
+          triggerInteraction();
         }
       });
+
+      canvas.addEventListener('contextmenu', (e) => e.preventDefault());
 
       window.addEventListener('mousemove', (e) => {
         if (STATE.phase !== 'playing' || isAnyModalOpen()) return;
@@ -2456,7 +3311,7 @@
         }
       });
 
-      // Kawalan Sentuh Mobile (Joystick Kiri + Seret Kamera Kanan)
+      // Kawalan Sentuh Mobile (Kayu Ria Kiri + Seret Kamera Kanan)
       const joyState = { active: false, id: null, dx: 0, dy: 0 };
       const joyZone = document.getElementById('joystick-zone');
       const joyKnob = document.getElementById('joystick-knob');
@@ -2511,13 +3366,13 @@
         joyState.dy = vy / maxR;
       }
 
-      // Touch Look pada sebelah kanan skrin
+      // Kawalan Pusing Kamera pada sebelah kanan skrin Mobile
       const lookTouch = { active: false, id: null, lastX: 0, lastY: 0 };
       canvas.addEventListener('touchstart', (e) => {
         if (STATE.phase !== 'playing' || isAnyModalOpen()) return;
         for (let i = 0; i < e.changedTouches.length; i++) {
           const t = e.changedTouches[i];
-          if (t.clientX > window.innerWidth * 0.35 && !lookTouch.active) {
+          if (t.clientX > window.innerWidth * 0.34 && !lookTouch.active) {
             lookTouch.active = true;
             lookTouch.id = t.identifier;
             lookTouch.lastX = t.clientX;
@@ -2535,8 +3390,8 @@
             const dy = t.clientY - lookTouch.lastY;
             lookTouch.lastX = t.clientX;
             lookTouch.lastY = t.clientY;
-            PLAYER.yaw -= dx * 0.0052;
-            PLAYER.pitch = Math.max(-1.05, Math.min(1.05, PLAYER.pitch - dy * 0.0042));
+            PLAYER.yaw -= dx * 0.0054;
+            PLAYER.pitch = Math.max(-1.05, Math.min(1.05, PLAYER.pitch - dy * 0.0044));
           }
         }
       }, { passive: true });
@@ -2552,25 +3407,197 @@
       canvas.addEventListener('touchend', endLookTouch);
       canvas.addEventListener('touchcancel', endLookTouch);
 
-      // Butang Aksi Mobile
+      // Butang Aksi & Lari Mobile
       let mobileSprintHeld = false;
       document.getElementById('mob-btn-interact').addEventListener('click', triggerInteraction);
       const mobSprintBtn = document.getElementById('mob-btn-sprint');
       mobSprintBtn.addEventListener('touchstart', (e) => { e.preventDefault(); mobileSprintHeld = true; }, { passive: false });
       mobSprintBtn.addEventListener('touchend', () => { mobileSprintHeld = false; });
-      document.getElementById('mob-btn-turn').addEventListener('click', () => {
-        PLAYER.yaw += Math.PI;
-        playTone(320, 'triangle', 0.06, 0.09);
+
+      /* ================= BABAK PENGENALAN SINEMATIK (INTRO CUTSCENE) ================= */
+      // Halangan pintu masuk luar supaya pemain tidak keluar semula selepas pintu pagar tertutup
+      const lobbyFrontBarrier = { minX: -2.4, maxX: 2.4, minZ: -30.6, maxZ: -29.9 };
+      WORLD.wallBoxes.push(lobbyFrontBarrier);
+
+      const CUTSCENE = {
+        timer: 0,
+        duration: 24.0,
+        gateSlammed: false,
+        stepSoundAccum: 0
+      };
+
+      const CUTSCENE_SCRIPT = [
+        {
+          start: 0.0,
+          end: 5.5,
+          speaker: 'PEMAIN (TERCUNGAP-CUNGAP)',
+          text: 'Huff... huff... Akhirnya aku berjaya melepaskan diri daripada Zahid. Jalan sunyi ni membawa ke mana pula...?'
+        },
+        {
+          start: 5.5,
+          end: 11.5,
+          speaker: 'PEMAIN',
+          text: 'Kejap... Bangunan besar di hadapan tu... "TADIKA SERI FADHLINA"? Kenapa lampu di dalamnya masih menyala terang?'
+        },
+        {
+          start: 11.5,
+          end: 17.5,
+          speaker: 'PEMAIN',
+          text: 'Pintu pagarnya terbuka luas... Mungkin aku boleh tumpang berteduh dan cari telefon di kaunter lobi dalam tu.'
+        },
+        {
+          start: 17.5,
+          end: 24.0,
+          speaker: 'BUNYI PINTU BESI MENGHEMPAS!',
+          text: 'KLANG!! Pintu pagar tadika tertutup dan terkunci sendiri dari luar! Aku terperangkap di dalam!'
+        }
+      ];
+
+      function setExteriorGateOpen(isOpen) {
+        if (!WORLD.exteriorGateLeft || !WORLD.exteriorGateRight) return;
+        if (isOpen) {
+          WORLD.exteriorGateLeft.position.set(-2.05, 1.4, -29.3);
+          WORLD.exteriorGateLeft.rotation.y = Math.PI * 0.48;
+          WORLD.exteriorGateRight.position.set(2.05, 1.4, -29.3);
+          WORLD.exteriorGateRight.rotation.y = -Math.PI * 0.48;
+        } else {
+          WORLD.exteriorGateLeft.position.set(-1.1, 1.4, -30.2);
+          WORLD.exteriorGateLeft.rotation.y = 0;
+          WORLD.exteriorGateRight.position.set(1.1, 1.4, -30.2);
+          WORLD.exteriorGateRight.rotation.y = 0;
+        }
+      }
+
+      function startIntroCutscene() {
+        STATE.phase = 'cutscene';
+        CUTSCENE.timer = 0;
+        CUTSCENE.gateSlammed = false;
+        CUTSCENE.stepSoundAccum = 0;
+
+        setExteriorGateOpen(true);
+
+        document.getElementById('start-screen').classList.remove('active');
+        document.getElementById('game-hud').classList.remove('active');
+        document.getElementById('mobile-controls').classList.remove('active');
+        document.getElementById('cutscene-overlay').classList.add('active');
+
+        const flash = document.getElementById('cutscene-flash');
+        flash.style.opacity = '1';
+        setTimeout(() => { flash.style.opacity = '0'; }, 120);
+      }
+
+      function finishIntroCutscene() {
+        if (STATE.phase !== 'cutscene') return;
+        setExteriorGateOpen(false);
+
+        const flash = document.getElementById('cutscene-flash');
+        flash.style.opacity = '1';
+
+        setTimeout(() => {
+          document.getElementById('cutscene-overlay').classList.remove('active');
+          STATE.phase = 'start';
+          document.getElementById('start-screen').classList.add('active');
+          flash.style.opacity = '0';
+        }, 320);
+      }
+
+      document.getElementById('btn-skip-cutscene').addEventListener('click', () => {
+        ensureAudioCtx();
+        finishIntroCutscene();
       });
+
+      document.getElementById('btn-replay-intro').addEventListener('click', () => {
+        ensureAudioCtx();
+        startIntroCutscene();
+      });
+
+      function updateIntroCutscene(dt, elapsed) {
+        CUTSCENE.timer += dt;
+        const t = CUTSCENE.timer;
+
+        // Kemaskini sari kata dialog mengikut garis masa
+        const speakerEl = document.getElementById('cutscene-speaker');
+        const textEl = document.getElementById('cutscene-text');
+        for (let i = 0; i < CUTSCENE_SCRIPT.length; i++) {
+          const line = CUTSCENE_SCRIPT[i];
+          if (t >= line.start && t < line.end) {
+            if (speakerEl.textContent !== line.speaker) speakerEl.textContent = line.speaker;
+            if (textEl.textContent !== line.text) textEl.textContent = line.text;
+            break;
+          }
+        }
+
+        // Animasi pergerakan kamera berjalan dari jalan luar masuk ke dalam lobi tadika
+        if (t < 5.5) {
+          // Babak 1: Berjalan perlahan di laluan pejalan kaki sambil menoleh ke belakang (seolah-olah dikejar Zahid)
+          const p = t / 5.5;
+          const zPos = -56.0 + p * 11.0;
+          const bob = Math.sin(t * 7.5) * 0.05;
+          camera.position.set(Math.sin(t * 1.4) * 0.25, 1.65 + bob, zPos);
+          const lookBackX = Math.sin(p * Math.PI) * 2.4;
+          camera.lookAt(lookBackX, 1.75, zPos + 8.0);
+
+          CUTSCENE.stepSoundAccum -= dt;
+          if (CUTSCENE.stepSoundAccum <= 0) {
+            playFootstep(false);
+            CUTSCENE.stepSoundAccum = 0.56;
+          }
+        } else if (t < 11.5) {
+          // Babak 2: Berhenti di hadapan Tadika & mendongak melihat papan tanda "TADIKA SERI FADHLINA"
+          const p = (t - 5.5) / 6.0;
+          camera.position.set(0, 1.68, -45.0);
+          const lookY = 1.8 + Math.sin(Math.min(1, p * 1.4) * Math.PI * 0.5) * 2.55;
+          camera.lookAt(0, lookY, -30.5);
+        } else if (t < 17.5) {
+          // Babak 3: Berjalan mendekati pintu masuk utama yang terbuka
+          const p = (t - 11.5) / 6.0;
+          const zPos = -45.0 + p * 12.2;
+          const bob = Math.sin(t * 8.0) * 0.055;
+          camera.position.set(0, 1.65 + bob, zPos);
+          camera.lookAt(0, 1.85, -24.0);
+
+          CUTSCENE.stepSoundAccum -= dt;
+          if (CUTSCENE.stepSoundAccum <= 0) {
+            playFootstep(false);
+            CUTSCENE.stepSoundAccum = 0.52;
+          }
+        } else if (t < 24.0) {
+          // Babak 4: Melangkah masuk ke dalam Lobi Pendaftaran (-32.8 -> -26.5) & pintu pagar menghempas tutup
+          const p = (t - 17.5) / 6.5;
+          const walkProg = Math.min(1, p * 1.45);
+          const zPos = -32.8 + walkProg * 6.3;
+          const bob = walkProg < 1 ? Math.sin(t * 8.0) * 0.05 : 0;
+          camera.position.set(0, 1.65 + bob, zPos);
+
+          if (p >= 0.42 && !CUTSCENE.gateSlammed) {
+            CUTSCENE.gateSlammed = true;
+            setExteriorGateOpen(false);
+            playSmashSfx();
+          }
+
+          // Pusing menoleh ke belakang melihat pintu pagar terkunci apabila pintu tertutup
+          if (p < 0.42) {
+            camera.lookAt(0, 1.7, -20.0);
+          } else {
+            const turnP = Math.min(1, (p - 0.42) / 0.35);
+            const angle = turnP * Math.PI;
+            camera.lookAt(Math.sin(angle) * 6.0, 1.7, zPos + Math.cos(angle) * 6.0);
+          }
+        } else {
+          finishIntroCutscene();
+        }
+      }
 
       /* ================= PENGURUSAN SKRIN MULA / JEDA / MAIN SEMULA ================= */
       function startGame() {
         ensureAudioCtx();
         enforceLandscapeAndFullscreen(isTouchDevice());
+        setExteriorGateOpen(false);
 
         STATE.phase = 'playing';
         STATE.timeLeft = INITIAL_TIME_SEC;
         STATE.fadhlinaSpawned = false;
+        STATE.fadhlinaStunTimer = 0;
         STATE.isChasing = false;
         STATE.panicIntensity = 0;
         STATE.stamina = 100;
@@ -2581,6 +3608,7 @@
 
         FADHLINA.group.visible = false;
 
+        document.getElementById('cutscene-overlay').classList.remove('active');
         document.getElementById('start-screen').classList.remove('active');
         document.getElementById('pause-screen').classList.remove('active');
         document.getElementById('end-screen').classList.remove('active');
@@ -2589,9 +3617,9 @@
           document.getElementById('mobile-controls').classList.add('active');
         }
 
-        renderInventory();
+        updateHandHud();
         updateObjectivesHud();
-        showToast('🔦 Cari Kunci Biru di kaunter pendaftaran untuk membuka Kelas Melur!', 3800);
+        showToast('🔍 Periksa kaunter pendaftaran & bilik-bilik tadika untuk mencari jalan keluar!', 3800);
 
         if (!isTouchDevice() && canvas.requestPointerLock) {
           canvas.requestPointerLock().catch(() => {});
@@ -2622,7 +3650,7 @@
         window.location.reload();
       });
 
-      /* ================= GELUNG UTAMA (GAME LOOP, TIMER 10:00 & PANIC FOV/AURA) ================= */
+      /* ================= GELUNG UTAMA (GAME LOOP, TIMER 10:00, AI & PANIC AURA) ================= */
       const redAuraEl = document.getElementById('chase-red-aura');
       const staticLinesEl = document.getElementById('chase-static-lines');
       const alertBannerEl = document.getElementById('chase-alert-banner');
@@ -2649,22 +3677,44 @@
         const dt = Math.min(clock.getDelta(), 0.05);
         const elapsed = clock.getElapsedTime();
 
-        // Animasi pintu terbuka & item terapung
+        // Animasi pintu terbuka & item 3D berputar lembut
         for (let i = 0; i < WORLD.doors.length; i++) {
           const d = WORLD.doors[i];
           if (d.isOpen && Math.abs(d.mesh.rotation.y - d.targetRotY) > 0.01) {
             d.mesh.rotation.y += (d.targetRotY - d.mesh.rotation.y) * Math.min(1, dt * 7);
           }
         }
-        for (let i = 0; i < itemMeshes.length; i++) {
-          if (itemMeshes[i].visible) {
-            itemMeshes[i].rotation.y += dt * 1.9;
-            itemMeshes[i].children[0].position.y = Math.sin(elapsed * 3.2 + i) * 0.06;
+        for (let i = 0; i < WORLD.itemMeshes.length; i++) {
+          const itemEntry = WORLD.itemMeshes[i];
+          if (itemEntry.active && itemEntry.group.visible) {
+            itemEntry.group.rotation.y += dt * 1.85;
+            itemEntry.group.children[0].position.y = Math.sin(elapsed * 3.1 + i) * 0.055;
           }
         }
 
+        // Animasi peluru dart pelali
+        for (let i = activeDarts.length - 1; i >= 0; i--) {
+          const dart = activeDarts[i];
+          dart.life -= dt;
+          dart.mesh.position.addScaledVector(dart.vel, dt);
+          if (dart.life <= 0) {
+            scene.remove(dart.mesh);
+            activeDarts.splice(i, 1);
+          }
+        }
+
+        if (STATE.phase === 'cutscene') {
+          updateIntroCutscene(dt, elapsed);
+          renderer.render(scene, camera);
+          return;
+        }
+
         if (STATE.phase === 'playing') {
-          // 1. Kemaskini Timer 10:00 -> 09:30 Spawn Fadhlina
+          if (STATE.shootCooldown > 0) {
+            STATE.shootCooldown = Math.max(0, STATE.shootCooldown - dt);
+          }
+
+          // 1. Kemaskini Timer 10:00 -> Tepat 09:30 muncul Fadhlina + teks "Fadhlina has spawned."
           STATE.timeLeft -= dt;
           if (timerEl) {
             timerEl.textContent = formatTimer(STATE.timeLeft);
@@ -2685,7 +3735,7 @@
             return;
           }
 
-          // 2. Pergerakan Pemain (Slow Walk + Sprint terhad)
+          // 2. Pergerakan Pemain (Slow Walk + Sprint Stamina)
           let moveForward = 0;
           let moveRight = 0;
           if (!isAnyModalOpen()) {
@@ -2709,10 +3759,10 @@
           const wantsSprint = (KEYS['ShiftLeft'] || KEYS['ShiftRight'] || mobileSprintHeld) && inputLen > 0.1;
           if (wantsSprint && STATE.stamina > 4) {
             STATE.isSprinting = true;
-            STATE.stamina = Math.max(0, STATE.stamina - dt * 26);
+            STATE.stamina = Math.max(0, STATE.stamina - dt * 25);
           } else {
             STATE.isSprinting = false;
-            STATE.stamina = Math.min(100, STATE.stamina + dt * 15);
+            STATE.stamina = Math.min(100, STATE.stamina + dt * 16);
           }
           if (staminaFillEl) {
             staminaFillEl.style.width = STATE.stamina + '%';
@@ -2736,12 +3786,17 @@
               playFootstep(STATE.isSprinting);
               STATE.stepTimer = STATE.isSprinting ? 0.34 : 0.56;
             }
+            // Ayunan tangan & item di hadapan kamera
+            firstPersonHandGroup.position.y = -0.28 + Math.sin(PLAYER.bobPhase) * 0.016;
+            firstPersonHandGroup.position.x = 0.34 + Math.cos(PLAYER.bobPhase * 0.5) * 0.012;
+          } else {
+            firstPersonHandGroup.position.y = -0.28 + Math.sin(elapsed * 2.2) * 0.005;
           }
 
           updateCurrentRoomLabel();
           updateNearestInteractable();
 
-          // 3. Kemaskini AI Fadhlina & Kesan Panik (FOV + Red Aura + Shake)
+          // 3. Kemaskini AI Fadhlina (Anti-Stuck + Stun Pistol Pelali)
           let distToFadhlina = 999;
           if (STATE.fadhlinaSpawned) {
             distToFadhlina = Math.hypot(
@@ -2749,53 +3804,87 @@
               PLAYER.pos.z - FADHLINA.pos.z
             );
 
-            // Fadhlina mula mengejar jika dalam jarak 17m atau dalam zon bilik yang sama
-            const sameZone = getZoneId(PLAYER.pos.x, PLAYER.pos.z) === getZoneId(FADHLINA.pos.x, FADHLINA.pos.z);
-            STATE.isChasing = distToFadhlina < 16.5 || (sameZone && distToFadhlina < 22.0);
-
-            FADHLINA.repathTimer -= dt;
-            if (FADHLINA.repathTimer <= 0 || FADHLINA.waypointQueue.length === 0) {
-              FADHLINA.waypointQueue = computeFadhlinaRoute(PLAYER.pos);
-              FADHLINA.repathTimer = 0.45;
-            }
-
-            const targetWp = FADHLINA.waypointQueue[0];
-            if (targetWp) {
-              const dx = targetWp.x - FADHLINA.pos.x;
-              const dz = targetWp.z - FADHLINA.pos.z;
-              const wpDist = Math.hypot(dx, dz);
-
-              if (wpDist < 0.65 && FADHLINA.waypointQueue.length > 1) {
-                FADHLINA.waypointQueue.shift();
-              } else if (wpDist > 0.05) {
-                const spd = STATE.isChasing ? FADHLINA.chaseSpeed : FADHLINA.walkSpeed;
-                FADHLINA.pos.x += (dx / wpDist) * spd * dt;
-                FADHLINA.pos.z += (dz / wpDist) * spd * dt;
-                resolveCircleWallCollision(FADHLINA.pos, 0.42);
+            if (STATE.fadhlinaStunTimer > 0) {
+              STATE.fadhlinaStunTimer = Math.max(0, STATE.fadhlinaStunTimer - dt);
+              STATE.isChasing = false;
+              if (FADHLINA.stunRing) {
+                FADHLINA.stunRing.visible = true;
+                FADHLINA.stunRing.rotation.z += dt * 5;
               }
-            }
+              FADHLINA.group.position.set(FADHLINA.pos.x, -0.15, FADHLINA.pos.z);
+              if (STATE.fadhlinaStunTimer <= 0) {
+                if (FADHLINA.stunRing) FADHLINA.stunRing.visible = false;
+                showToast('⚠️ Kesan pelali tamat! Fadhlina kembali bergerak!', 2800);
+              }
+            } else {
+              if (FADHLINA.stunRing) FADHLINA.stunRing.visible = false;
 
-            // Animasi melompat/langkah seram Fadhlina
-            FADHLINA.group.position.set(
-              FADHLINA.pos.x,
-              Math.abs(Math.sin(elapsed * (STATE.isChasing ? 11 : 6))) * 0.14,
-              FADHLINA.pos.z
-            );
-            if (FADHLINA.auraLight) {
-              FADHLINA.auraLight.intensity = STATE.isChasing
-                ? 2.8 + Math.sin(elapsed * 24) * 0.9
-                : 1.8;
-            }
+              // Buka pintu bilik secara automatik jika menghalang laluan Fadhlina
+              letFadhlinaClearObstacles();
 
-            // Semak jika Fadhlina berjaya menangkap pemain
-            if (distToFadhlina < 1.32) {
-              endGame(
-                false,
-                'FADHLINA MENANGKAP ANDA!',
-                'Anda gagal melarikan diri daripada Guru Besar Fadhlina di dalam Tadika Seri Fadhlina.'
+              const sameZone = getZoneId(PLAYER.pos.x, PLAYER.pos.z) === getZoneId(FADHLINA.pos.x, FADHLINA.pos.z);
+              STATE.isChasing = distToFadhlina < 16.5 || (sameZone && distToFadhlina < 22.0);
+
+              FADHLINA.repathTimer -= dt;
+              if (FADHLINA.repathTimer <= 0 || FADHLINA.waypointQueue.length === 0) {
+                FADHLINA.waypointQueue = computeFadhlinaRoute(PLAYER.pos);
+                FADHLINA.repathTimer = 0.42;
+              }
+
+              const targetWp = FADHLINA.waypointQueue[0];
+              if (targetWp) {
+                const dx = targetWp.x - FADHLINA.pos.x;
+                const dz = targetWp.z - FADHLINA.pos.z;
+                const wpDist = Math.hypot(dx, dz);
+
+                if (wpDist < 0.65 && FADHLINA.waypointQueue.length > 1) {
+                  FADHLINA.waypointQueue.shift();
+                } else if (wpDist > 0.05) {
+                  const spd = STATE.isChasing ? FADHLINA.chaseSpeed : FADHLINA.walkSpeed;
+                  FADHLINA.pos.x += (dx / wpDist) * spd * dt;
+                  FADHLINA.pos.z += (dz / wpDist) * spd * dt;
+                  resolveCircleWallCollision(FADHLINA.pos, 0.36);
+                }
+              }
+
+              // Pengesan Anti-Stuck: Jika Fadhlina tersangkut > 1.5s, betulkan kedudukan ke titik tengah koridor terdekat
+              FADHLINA.stuckTimer += dt;
+              if (FADHLINA.stuckTimer >= 1.5) {
+                const movedDist = Math.hypot(
+                  FADHLINA.pos.x - FADHLINA.lastCheckPos.x,
+                  FADHLINA.pos.z - FADHLINA.lastCheckPos.z
+                );
+                if (movedDist < 0.32) {
+                  const zone = getZoneId(FADHLINA.pos.x, FADHLINA.pos.z);
+                  const doorZMap = { melur: -10, kantin: -10, muzik: 3, taman: 3, tidur: 16, pejabat: 16, lobi: -17.5 };
+                  const safeZ = doorZMap[zone] !== undefined ? doorZMap[zone] : FADHLINA.pos.z;
+                  FADHLINA.pos.set(0, 0, safeZ);
+                  FADHLINA.waypointQueue = computeFadhlinaRoute(PLAYER.pos);
+                }
+                FADHLINA.lastCheckPos.copy(FADHLINA.pos);
+                FADHLINA.stuckTimer = 0;
+              }
+
+              FADHLINA.group.position.set(
+                FADHLINA.pos.x,
+                Math.abs(Math.sin(elapsed * (STATE.isChasing ? 11 : 6))) * 0.14,
+                FADHLINA.pos.z
               );
-              renderer.render(scene, camera);
-              return;
+              if (FADHLINA.auraLight) {
+                FADHLINA.auraLight.intensity = STATE.isChasing
+                  ? 2.8 + Math.sin(elapsed * 24) * 0.9
+                  : 1.9;
+              }
+
+              if (distToFadhlina < 1.32) {
+                endGame(
+                  false,
+                  'FADHLINA MENANGKAP ANDA!',
+                  'Anda gagal melarikan diri daripada Guru Besar Fadhlina di dalam Tadika Seri Fadhlina.'
+                );
+                renderer.render(scene, camera);
+                return;
+              }
             }
           }
 
@@ -2841,15 +3930,15 @@
           camera.rotation.x = PLAYER.pitch;
           camera.rotation.z = STATE.isChasing ? Math.sin(elapsed * 18) * 0.018 * STATE.panicIntensity : 0;
         } else {
-          // Kamera pratonton perlahan semasa di skrin mula
+          // Kamera pratonton lembut semasa di skrin mula / jeda
           camera.position.set(Math.sin(elapsed * 0.3) * 1.2, 1.75, -26.5);
-          camera.lookAt(0, 1.6, -12);
+          camera.lookAt(0, 1.65, -12);
         }
 
         renderer.render(scene, camera);
       }
 
-      /* ================= SKRIN LOADING AWAL ================= */
+      /* ================= SKRIN LOADING AWAL -> TERUS KE INTRO CUTSCENE ================= */
       function runInitialLoading() {
         const screenEl = document.getElementById('loading-screen');
         const fillEl = document.getElementById('loading-bar-fill');
@@ -2857,9 +3946,9 @@
         const pctEl = document.getElementById('loading-percent');
 
         const messages = [
-          'Membina 8 bilik & koridor Tadika Seri Fadhlina...',
-          'Menyusun kunci warna, peti besi & panel 3 gear...',
-          'Menetapkan jam malam 10:00 & amaran 09:30...',
+          'Membina mural tadika, kelas & taman permainan...',
+          'Menyusun model 3D kunci, pistol pelali & 3 gear...',
+          'Menyediakan babak pengenalan selepas melarikan diri daripada Zahid...',
           'Sedia untuk bermula!'
         ];
 
@@ -2878,10 +3967,10 @@
             clearInterval(iv);
             setTimeout(() => {
               screenEl.classList.add('fade-out');
-              STATE.phase = 'start';
-            }, 250);
+              startIntroCutscene();
+            }, 260);
           }
-        }, 80);
+        }, 75);
       }
 
       enforceLandscapeAndFullscreen(false);
