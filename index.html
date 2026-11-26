@@ -5063,5 +5063,20 @@
       requestAnimationFrame(animate);
     })();
   </script>
+  
+  <script>
+  // Penyelamat jika skrin loading sangkut lebih 2.5 saat
+  setTimeout(function () {
+    const loadScreen = document.getElementById('loading-screen');
+    const statusTxt = document.getElementById('loading-status-text');
+    if (loadScreen && !loadScreen.classList.contains('fade-out')) {
+      if (typeof THREE === 'undefined') {
+        if (statusTxt) statusTxt.textContent = 'Ralat: Enjin 3D (Three.js) gagal dimuatkan. Semak sambungan internet!';
+      } else {
+        if (statusTxt) statusTxt.textContent = 'Ralat kod dikesan semasa cantuman! Sila semak Console (F12).';
+      }
+    }
+  }, 2500);
+</script>
 </body>
 </html>
