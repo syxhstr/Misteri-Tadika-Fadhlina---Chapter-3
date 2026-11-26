@@ -2958,20 +2958,26 @@
           : '[E] Baca Papan Kenyataan Tadika',
         onInteract: () => {
           openNoteModal(
-            '📋 PANDUAN KESELAMATAN TADIKA SERI FADHLINA',
-            '1. Anda hanya boleh memegang SATU (1) item di tangan pada satu masa. Tekan [G] atau butang LETAK untuk meletakkan item.\n' +
-            '2. Bangunan ini mempunyai DUA koridor selari di kiri & kanan—gunakan laluan berbeza untuk mengelak Fadhlina!\n' +
-            '3. Pintu Keluar Utama di hujung koridor memerlukan:\n' +
-            '   • Imbas Kad Akses pada pengimbas\n' +
-            '   • Pasang 3 Gear Tembaga pada kotak panel\n' +
-            '   • Buka Kunci Emas dari Peti Besi Pejabat Guru Besar.',
-            '📋 TADIKA SERI FADHLINA SAFETY GUIDE',
-            '1. You can only hold ONE (1) item at a time. Press [G] or the DROP button to place your held item down.\n' +
-            '2. This large building has TWO parallel corridors on the left & right—use alternate routes to evade Fadhlina!\n' +
-            '3. The Main Exit Gate at the south end requires:\n' +
-            '   • Scan the Access Keycard at the reader\n' +
-            '   • Install 3 Brass Gears into the gear panel\n' +
-            '   • Unlock the Main Gold Key from the Principal Office Safe.'
+            '📋 PANDUAN LENGKAP TADIKA SERI FADHLINA',
+            '1. Anda hanya boleh memegang SATU (1) item pada satu masa. Tekan [G] atau butang LETAK untuk meletakkan item.\n' +
+            '2. Untuk membuka Pintu Keluar Utama di hujung koridor selatan, lengkapkan 3 syarat ini:\n' +
+            '   • Imbas KAD AKSES (dijumpai dalam Bilik Tidur) pada pengimbas pintu.\n' +
+            '   • Pasang 3 GEAR TEMBAGA pada kotak panel pintu.\n' +
+            '   • Buka KUNCI PUTIH (White Key) yang disimpan di dalam PETI BESI (Vault).\n' +
+            '3. LOKASI PETI BESI & KOD:\n' +
+            '   • Peti Besi berada di penjuru dalam PEJABAT GURU BESAR FADHLINA (sayap tenggara — buka pintunya guna Kad Akses).\n' +
+            '   • 2 digit pertama kod tertulis pada Papan Putih KELAS MELUR.\n' +
+            '   • 2 digit terakhir kod tertulis pada Papan Menu KANTIN.',
+            '📋 TADIKA SERI FADHLINA COMPLETE GUIDE',
+            '1. You can only hold ONE (1) item at a time. Press [G] or the DROP button to put your item down.\n' +
+            '2. To unlock the Main Exit Gate at the south corridor, complete these 3 locks:\n' +
+            '   • Scan the ACCESS KEYCARD (found in the Nap Room) at the door reader.\n' +
+            '   • Install 3 BRASS GEARS into the exit gear panel.\n' +
+            '   • Unlock the MAIN WHITE KEY stored inside the VAULT (Safe).\n' +
+            '3. VAULT & CODE LOCATION:\n' +
+            '   • The Vault is inside PRINCIPAL FADHLINA\'S OFFICE (southeast wing — unlock its door with the Access Keycard).\n' +
+            '   • First 2 code digits are on the MELUR CLASSROOM whiteboard.\n' +
+            '   • Last 2 code digits are on the CANTEEN menu board.'
           );
         }
       });
@@ -3205,8 +3211,12 @@
       // Gear #3 di atas meja besar Guru Besar
       spawnWorldItem('gear', 'Gear Tembaga', '⚙️', 23.5, 1.32, 24.5, 0xfacc15, 'gear');
 
-      // Peti Besi Kod di penjuru Pejabat Guru Besar
-      addPropBox(33.2, 16.0, 1.55, 1.75, 1.55, 0x1e293b, true);
+     // Peti Besi (Vault) di penjuru Pejabat Guru Besar dengan lampu penunjuk jelas
+      addPropBox(33.2, 16.0, 1.65, 1.85, 1.65, 0x1e293b, true);
+      addPropBox(32.35, 16.0, 0.08, 1.45, 1.25, 0x94a3b8, false, 0.2);
+      const vaultBeacon = new THREE.PointLight(0xffffff, 1.8, 7);
+      vaultBeacon.position.set(31.8, 1.8, 16.0);
+      scene.add(vaultBeacon);
       WORLD.interactables.push({
         id: 'principal_safe',
         pos: new THREE.Vector3(32.0, 1.2, 16.0),
@@ -3297,35 +3307,35 @@
         onInteract: () => openGearModal()
       });
 
-      // 3) Pintu Utama / Kunci Emas
+    // 3) Pintu Utama / Kunci Putih (White Key)
       WORLD.interactables.push({
         id: 'exit_main_gate',
         pos: new THREE.Vector3(0, 1.5, 29.3),
         radius: 3.2,
         active: true,
         getPrompt: () => {
-          if (STATE.exitGoldKeyDone) {
-            return CURRENT_LANG === 'en' ? '[E] Main Gold Lock Unlocked!' : '[E] Kunci Emas Terbuka!';
+          if (STATE.exitWhiteKeyDone) {
+            return CURRENT_LANG === 'en' ? '[E] Main White Lock Unlocked!' : '[E] Kunci Putih Terbuka!';
           }
           return CURRENT_LANG === 'en'
-            ? '[E] Unlock Gold Lock (Hold Main Gold Key)'
-            : '[E] Buka Kunci Emas (Pegang Kunci Emas)';
+            ? '[E] Unlock White Lock (Hold Main White Key)'
+            : '[E] Buka Kunci Putih (Pegang Kunci Putih)';
         },
         onInteract: () => {
-          if (!STATE.exitGoldKeyDone) {
-            if (!hasHeldItem('key_gold')) {
+          if (!STATE.exitWhiteKeyDone) {
+            if (!hasHeldItem('key_white')) {
               playTone(165, 'square', 0.14, 0.12);
               showToast(
-                '👑 Pegang Kunci Emas Utama di tangan untuk membuka kunci ini!',
-                '👑 Hold the Main Gold Key in your hand to unlock this gate!'
+                '⚪ Pegang Kunci Putih (dari Peti Besi Pejabat Guru Besar) untuk membuka kunci ini!',
+                '⚪ Hold the Main White Key (from the Principal Office Vault) to unlock this gate!'
               );
               return;
             }
-            STATE.exitGoldKeyDone = true;
+            STATE.exitWhiteKeyDone = true;
             consumeHeldItem();
             playUnlockSfx();
             updateObjectivesHud();
-            showToast('👑 Kunci Emas berjaya dibuka!', '👑 Main Gold Key unlocked!');
+            showToast('⚪ Kunci Putih berjaya dibuka!', '⚪ Main White Key unlocked!');
           }
           checkVictoryCondition();
         }
@@ -3666,7 +3676,7 @@
       }
 
       function checkVictoryCondition() {
-        if (STATE.exitKeycardDone && STATE.gearsInstalled >= 3 && STATE.exitGoldKeyDone) {
+        if (STATE.exitKeycardDone && STATE.gearsInstalled >= 3 && STATE.exitWhiteKeyDone) {
           if (WORLD.exitDoorMesh) {
             WORLD.exitDoorMesh.visible = false;
           }
