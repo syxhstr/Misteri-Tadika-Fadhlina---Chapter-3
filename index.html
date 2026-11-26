@@ -1,0 +1,2893 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="screen-orientation" content="landscape" />
+  <meta name="x5-orientation" content="landscape" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Misteri Tadika Fadhlina — Bab 3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&family=Fredoka:wght@600;700&family=Special+Elite&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      background: #050507;
+      color: #f8fafc;
+      font-family: 'Fredoka', 'Segoe UI', system-ui, sans-serif;
+    }
+
+    /* ================= FORCED HORIZONTAL GUARD ================= */
+    #orientation-guard {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: radial-gradient(circle at center, #1f160d 0%, #050507 100%);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      gap: 14px;
+    }
+
+    .rotate-icon {
+      font-size: 3.4rem;
+      animation: tiltHorizontal 1.7s ease-in-out infinite;
+    }
+
+    @keyframes tiltHorizontal {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-90deg); }
+    }
+
+    #orientation-guard h2 {
+      font-family: 'Special Elite', 'Courier Prime', monospace;
+      font-size: 1.4rem;
+      color: #fde047;
+      letter-spacing: 1.5px;
+    }
+
+    #orientation-guard p {
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      max-width: 340px;
+      line-height: 1.5;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .btn-gold-action {
+      background: linear-gradient(180deg, #eab308, #a16207);
+      border: 2.5px solid #fef08a;
+      color: #090705;
+      font-family: 'Courier Prime', monospace;
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 11px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(234, 179, 8, 0.35);
+    }
+
+    @media screen and (orientation: portrait) and (pointer: coarse),
+           screen and (max-width: 820px) and (orientation: portrait) {
+      #orientation-guard {
+        display: flex !important;
+      }
+    }
+
+    /* ================= LOADING SCREEN ================= */
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9500;
+      background:
+        radial-gradient(circle at 50% 25%, rgba(250, 204, 21, 0.14) 0%, rgba(15, 12, 9, 0.96) 60%, #050507 100%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 2px, transparent 2px, transparent 42px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: opacity 0.55s ease, visibility 0.55s ease;
+    }
+
+    #loading-screen.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loading-card {
+      width: min(470px, 92vw);
+      background: rgba(12, 14, 20, 0.92);
+      border: 2.5px solid rgba(250, 204, 21, 0.45);
+      border-radius: 18px;
+      padding: clamp(18px, 4vh, 28px) clamp(20px, 4vw, 30px);
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.92);
+    }
+
+    .loading-badge {
+      display: inline-block;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #fde047;
+      background: rgba(234, 179, 8, 0.16);
+      border: 1.5px solid rgba(250, 204, 21, 0.45);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    .loading-title {
+      font-family: 'Special Elite', 'Courier Prime', monospace;
+      font-size: clamp(1.55rem, 4.8vh, 2.5rem);
+      color: #ffffff;
+      letter-spacing: 3px;
+      text-shadow: 0 4px 0 #000, 0 0 18px rgba(234, 179, 8, 0.35);
+      margin-bottom: 16px;
+    }
+
+    .loading-bar-track {
+      width: 100%;
+      height: 12px;
+      background: #090b10;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      border-radius: 999px;
+      overflow: hidden;
+      padding: 1px;
+    }
+
+    .loading-bar-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #eab308, #f97316, #ef4444);
+      transition: width 0.14s ease-out;
+    }
+
+    .loading-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 9px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.82rem;
+      color: #cbd5e1;
+    }
+
+    #loading-percent {
+      color: #fde047;
+      font-weight: 700;
+    }
+
+    /* ================= 3D CANVAS & PANIC AURA LAYERS ================= */
+    #game-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+    }
+
+    #base-vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: radial-gradient(circle at center, transparent 48%, rgba(0, 0, 0, 0.78) 100%);
+    }
+
+    /* RED PANIC AURA & SCREEN DISTORTION BILA FADHLINA KEJAR */
+    #chase-red-aura {
+      position: fixed;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.22s ease;
+      background:
+        radial-gradient(circle at center, rgba(220, 38, 38, 0.06) 35%, rgba(185, 28, 28, 0.52) 78%, rgba(127, 29, 29, 0.92) 100%);
+      box-shadow: inset 0 0 95px rgba(239, 68, 68, 0.95);
+    }
+
+    #chase-red-aura.active {
+      opacity: 1;
+      animation: panicPulse 0.55s ease-in-out infinite alternate;
+    }
+
+    @keyframes panicPulse {
+      0% {
+        box-shadow: inset 0 0 70px rgba(220, 38, 38, 0.78);
+        filter: contrast(1.06) saturate(1.2);
+      }
+      100% {
+        box-shadow: inset 0 0 135px rgba(239, 68, 68, 1);
+        filter: contrast(1.18) saturate(1.45);
+      }
+    }
+
+    #chase-static-lines {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      opacity: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 0, 0, 0.05) 0px,
+        rgba(255, 0, 0, 0.05) 2px,
+        transparent 2px,
+        transparent 6px
+      );
+      transition: opacity 0.2s ease;
+    }
+
+    #chase-static-lines.active {
+      opacity: 0.75;
+      animation: staticJitter 0.12s steps(2) infinite;
+    }
+
+    @keyframes staticJitter {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(3px); }
+    }
+
+    #chase-alert-banner {
+      position: fixed;
+      top: clamp(54px, 11vh, 78px);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 25;
+      pointer-events: none;
+      display: none;
+      background: rgba(127, 29, 29, 0.9);
+      border: 2.5px solid #f87171;
+      color: #ffffff;
+      font-family: 'Special Elite', 'Courier Prime', monospace;
+      font-size: clamp(0.85rem, 2.2vh, 1.15rem);
+      letter-spacing: 1.5px;
+      padding: 7px 18px;
+      border-radius: 10px;
+      box-shadow: 0 0 24px rgba(239, 68, 68, 0.85);
+      white-space: nowrap;
+    }
+
+    #chase-alert-banner.active {
+      display: block;
+      animation: bannerShake 0.22s infinite;
+    }
+
+    @keyframes bannerShake {
+      0%, 100% { transform: translateX(-50%) rotate(0deg); }
+      25% { transform: translateX(calc(-50% - 2px)) rotate(-0.6deg); }
+      75% { transform: translateX(calc(-50% + 2px)) rotate(0.6deg); }
+    }
+
+    /* ================= OVERLAY SCREENS (START / PAUSE / END) ================= */
+    .overlay-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background: rgba(6, 8, 12, 0.86);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .overlay-screen.active {
+      display: flex;
+    }
+
+    .story-panel {
+      width: min(680px, 94vw);
+      max-height: 90dvh;
+      overflow-y: auto;
+      background: rgba(13, 16, 24, 0.96);
+      border: 3px solid #eab308;
+      border-radius: 20px;
+      padding: clamp(16px, 3vh, 28px) clamp(18px, 3.2vw, 30px);
+      box-shadow: 0 24px 65px rgba(0, 0, 0, 0.95), 0 0 30px rgba(234, 179, 8, 0.2);
+      text-align: center;
+    }
+
+    .story-panel.danger-border {
+      border-color: #ef4444;
+      box-shadow: 0 24px 65px rgba(0, 0, 0, 0.95), 0 0 35px rgba(239, 68, 68, 0.35);
+    }
+
+    .story-panel.victory-border {
+      border-color: #22c55e;
+      box-shadow: 0 24px 65px rgba(0, 0, 0, 0.95), 0 0 35px rgba(34, 197, 94, 0.35);
+    }
+
+    .chapter-kicker {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.85rem;
+      color: #fde047;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+
+    .story-title {
+      font-family: 'Special Elite', 'Courier Prime', monospace;
+      font-size: clamp(1.5rem, 4.4vh, 2.4rem);
+      color: #ffffff;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      text-shadow: 0 3px 0 #000;
+    }
+
+    .story-brief {
+      font-family: 'Segoe UI', sans-serif;
+      font-size: clamp(0.84rem, 2vh, 0.98rem);
+      color: #cbd5e1;
+      line-height: 1.52;
+      margin-bottom: 14px;
+      text-align: left;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .mission-checklist {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px 12px;
+      text-align: left;
+      font-size: clamp(0.76rem, 1.85vh, 0.88rem);
+      color: #f1f5f9;
+      margin-bottom: 16px;
+    }
+
+    .mission-checklist li {
+      background: rgba(234, 179, 8, 0.1);
+      border: 1px solid rgba(234, 179, 8, 0.28);
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+
+    .btn-row-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-main-play {
+      flex: 1;
+      min-width: 190px;
+      padding: 13px 20px;
+      border-radius: 12px;
+      border: 3px solid #4ade80;
+      background: linear-gradient(180deg, #16a34a, #14532d);
+      color: #ffffff;
+      font-family: 'Courier Prime', monospace;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-main-play:hover {
+      filter: brightness(1.12);
+    }
+
+    .btn-lobby-link {
+      flex: 1;
+      min-width: 190px;
+      padding: 13px 20px;
+      border-radius: 12px;
+      border: 2.5px solid #94a3b8;
+      background: #1e293b;
+      color: #f8fafc;
+      font-family: 'Courier Prime', monospace;
+      font-weight: 700;
+      font-size: 0.98rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-lobby-link:hover {
+      background: #334155;
+      border-color: #ffffff;
+    }
+
+    /* ================= IN-GAME HUD ================= */
+    #game-hud {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding:
+        max(10px, env(safe-area-inset-top))
+        max(14px, env(safe-area-inset-right))
+        max(10px, env(safe-area-inset-bottom))
+        max(14px, env(safe-area-inset-left));
+    }
+
+    #game-hud.active {
+      display: flex;
+    }
+
+    .hud-top-bar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .hud-box {
+      pointer-events: auto;
+      background: rgba(10, 12, 18, 0.84);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      border-radius: 12px;
+      padding: 7px 12px;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
+    }
+
+    .timer-card {
+      text-align: center;
+      border-color: #eab308;
+      min-width: 132px;
+    }
+
+    .timer-label {
+      font-size: 0.65rem;
+      letter-spacing: 1.5px;
+      color: #fde047;
+      text-transform: uppercase;
+      font-family: 'Courier Prime', monospace;
+    }
+
+    #hud-timer {
+      font-family: 'Courier Prime', monospace;
+      font-size: clamp(1.2rem, 3.2vh, 1.65rem);
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    #hud-timer.danger {
+      color: #f87171;
+      animation: timerBlink 0.7s infinite alternate;
+    }
+
+    @keyframes timerBlink {
+      from { opacity: 1; }
+      to { opacity: 0.45; }
+    }
+
+    #hud-spawn-status {
+      font-size: 0.66rem;
+      color: #86efac;
+      font-family: 'Courier Prime', monospace;
+    }
+
+    #hud-spawn-status.active-threat {
+      color: #fca5a5;
+    }
+
+    .hud-objectives-card {
+      max-width: 310px;
+    }
+
+    .hud-room-name {
+      font-size: 0.78rem;
+      color: #fde047;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .hud-obj-list {
+      font-size: 0.72rem;
+      color: #e2e8f0;
+      font-family: 'Segoe UI', sans-serif;
+      line-height: 1.38;
+    }
+
+    .hud-obj-done {
+      color: #4ade80;
+      text-decoration: line-through;
+      opacity: 0.8;
+    }
+
+    .hud-top-buttons {
+      display: flex;
+      gap: 7px;
+      pointer-events: auto;
+    }
+
+    .hud-mini-btn {
+      background: rgba(12, 15, 22, 0.88);
+      border: 2px solid rgba(255, 255, 255, 0.32);
+      color: #f8fafc;
+      font-family: 'Courier Prime', monospace;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 8px 11px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .hud-mini-btn:hover {
+      border-color: #fde047;
+      color: #fde047;
+    }
+
+    /* Crosshair & Interaction Prompt */
+    .hud-center-reticle {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 21;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .crosshair-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 0 6px #000;
+    }
+
+    #interact-prompt {
+      display: none;
+      background: rgba(10, 12, 18, 0.92);
+      border: 2px solid #facc15;
+      color: #fef08a;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 999px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.85);
+      white-space: nowrap;
+    }
+
+    #interact-prompt.visible {
+      display: block;
+    }
+
+    /* Toast Notification In-Game */
+    #game-toast {
+      position: fixed;
+      top: 22%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 28;
+      pointer-events: none;
+      background: rgba(15, 23, 42, 0.94);
+      border: 2px solid #38bdf8;
+      color: #f8fafc;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.86rem;
+      padding: 8px 16px;
+      border-radius: 10px;
+      opacity: 0;
+      transition: opacity 0.22s ease;
+      text-align: center;
+      max-width: 86vw;
+    }
+
+    #game-toast.show {
+      opacity: 1;
+    }
+
+    /* Bottom Stamina & Inventory Hotbar */
+    .hud-bottom-bar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .stamina-wrap {
+      width: min(260px, 52vw);
+      background: rgba(10, 12, 18, 0.82);
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      border-radius: 999px;
+      padding: 3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .stamina-bar-bg {
+      flex: 1;
+      height: 7px;
+      background: #1e293b;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    #stamina-fill {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #4ade80);
+      transition: width 0.08s linear;
+    }
+
+    .inventory-bar {
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(10, 12, 18, 0.88);
+      border: 2px solid rgba(255, 255, 255, 0.24);
+      border-radius: 14px;
+      padding: 5px 8px;
+      max-width: 94vw;
+      overflow-x: auto;
+    }
+
+    .inv-slot {
+      min-width: 64px;
+      height: 52px;
+      border-radius: 10px;
+      background: rgba(30, 41, 59, 0.72);
+      border: 2px solid rgba(148, 163, 184, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 6px;
+      cursor: pointer;
+      font-size: 0.65rem;
+      color: #cbd5e1;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .inv-slot.active-slot {
+      border-color: #facc15;
+      background: rgba(234, 179, 8, 0.22);
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(250, 204, 21, 0.35);
+    }
+
+    .inv-slot-icon {
+      font-size: 1.2rem;
+      line-height: 1.1;
+    }
+
+    /* ================= INTERACTIVE PUZZLE MODALS (GEAR & CODE SAFE & CLUE) ================= */
+    .puzzle-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .puzzle-modal-backdrop.open {
+      display: flex;
+    }
+
+    .puzzle-box {
+      width: min(440px, 92vw);
+      background: #0f131c;
+      border: 3px solid #eab308;
+      border-radius: 18px;
+      padding: 18px 20px;
+      text-align: center;
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.95);
+    }
+
+    .puzzle-box h3 {
+      font-family: 'Special Elite', 'Courier Prime', monospace;
+      font-size: 1.3rem;
+      color: #fde047;
+      margin-bottom: 6px;
+    }
+
+    .puzzle-box p {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      margin-bottom: 14px;
+      line-height: 1.45;
+    }
+
+    /* Code Safe Keypad */
+    .safe-display {
+      font-family: 'Courier Prime', monospace;
+      font-size: 1.85rem;
+      letter-spacing: 8px;
+      background: #05070a;
+      border: 2px solid #38bdf8;
+      color: #38bdf8;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+
+    .keypad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .key-btn {
+      padding: 11px;
+      border-radius: 10px;
+      background: #1e293b;
+      border: 2px solid #475569;
+      color: #ffffff;
+      font-family: 'Courier Prime', monospace;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .key-btn:active {
+      transform: scale(0.95);
+      background: #334155;
+    }
+
+    .key-btn.key-ok {
+      background: #15803d;
+      border-color: #4ade80;
+    }
+
+    .key-btn.key-clr {
+      background: #991b1b;
+      border-color: #f87171;
+    }
+
+    /* Gear Puzzle Slots */
+    .gear-slots-row {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin: 14px 0 18px;
+    }
+
+    .gear-socket {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      border: 3px dashed #64748b;
+      background: #090c12;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      color: #94a3b8;
+    }
+
+    .gear-socket.installed {
+      border-style: solid;
+      border-color: #facc15;
+      background: rgba(234, 179, 8, 0.16);
+      color: #fef08a;
+    }
+
+    .gear-socket.installed .gear-spin {
+      font-size: 2rem;
+      animation: spinGear 3s linear infinite;
+    }
+
+    @keyframes spinGear {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* ================= MOBILE TOUCH CONTROLS ================= */
+    #mobile-controls {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 22;
+      pointer-events: none;
+    }
+
+    @media (pointer: coarse) {
+      #mobile-controls.active {
+        display: block;
+      }
+    }
+
+    #joystick-zone {
+      position: absolute;
+      left: 18px;
+      bottom: 66px;
+      width: 124px;
+      height: 124px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      pointer-events: auto;
+      touch-action: none;
+    }
+
+    #joystick-knob {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 48px;
+      height: 48px;
+      margin-top: -24px;
+      margin-left: -24px;
+      border-radius: 50%;
+      background: rgba(250, 204, 21, 0.78);
+      border: 2px solid #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+    }
+
+    .mobile-action-cluster {
+      position: absolute;
+      right: 18px;
+      bottom: 66px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: auto;
+    }
+
+    .mob-btn {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.85);
+      border: 2.5px solid #facc15;
+      color: #fef08a;
+      font-family: 'Courier Prime', monospace;
+      font-weight: 700;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8);
+    }
+
+    .mob-btn:active {
+      transform: scale(0.92);
+      background: rgba(234, 179, 8, 0.35);
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+</head>
+<body>
+  <!-- FORCED HORIZONTAL GUARD -->
+  <div id="orientation-guard" role="alertdialog" aria-modal="true">
+    <div class="rotate-icon">📱🔄</div>
+    <h2>PUSINGKAN SKRIN MELINTANG</h2>
+    <p>Bab 3: Misteri Tadika Fadhlina dikunci dalam mod melintang (Horizontal). Sila pusingkan peranti anda untuk bermain.</p>
+    <button type="button" id="btn-force-landscape" class="btn-gold-action">KUNCI MELINTANG &amp; SKRIN PENUH</button>
+  </div>
+
+  <!-- LOADING SCREEN -->
+  <div id="loading-screen">
+    <div class="loading-card">
+      <div class="loading-badge">BAB 3 • TADIKA SERI FADHLINA</div>
+      <div class="loading-title">MISTERI TADIKA FADHLINA</div>
+      <div class="loading-bar-track">
+        <div class="loading-bar-fill" id="loading-bar-fill"></div>
+      </div>
+      <div class="loading-meta">
+        <span id="loading-status-text">Membina bilik darjah &amp; koridor tadika...</span>
+        <span id="loading-percent">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUDIO MUZIK KEJARAN / SUASANA FADHLINA -->
+  <audio id="fadhlina-audio" src="fadhlina.mp3" loop preload="auto"></audio>
+
+  <!-- 3D CANVAS & PANIC AURA LAYERS -->
+  <canvas id="game-canvas"></canvas>
+  <div id="base-vignette"></div>
+  <div id="chase-red-aura"></div>
+  <div id="chase-static-lines"></div>
+  <div id="chase-alert-banner">⚠️ FADHLINA SEDANG MENGEJAR ANDA! LARI! ⚠️</div>
+
+  <!-- ================= SKRIN MULA / BRIEFING ================= -->
+  <div id="start-screen" class="overlay-screen active">
+    <div class="story-panel">
+      <div class="chapter-kicker">MALAM SAMA MADANI • BAB 3</div>
+      <h1 class="story-title">MISTERI TADIKA FADHLINA</h1>
+      <div class="story-brief">
+        Jam menunjukkan pukul <strong>10:00 malam</strong>. Anda terperangkap di dalam <strong>Tadika Seri Fadhlina</strong> selepas semua pintu utama dikunci secara automatik. Bunyi tapak kaki dari bilik guru akan mula kedengaran apabila jam mencecah <strong>09:30</strong>... Selesaikan teka-teki di setiap bilik sebelum terlambat!
+      </div>
+
+      <ul class="mission-checklist">
+        <li>🔑 Cari Kunci Biru, Hijau, Ungu &amp; Emas</li>
+        <li>🪪 Imbas Kad Akses pada Pintu Utama</li>
+        <li>⚙️ Kumpul 3 Gear &amp; pasang pada Kotak Gear</li>
+        <li>🔢 Buka Peti Besi dengan kod rahsia kelas</li>
+      </ul>
+
+      <div class="btn-row-actions">
+        <button type="button" id="btn-start-game" class="btn-main-play">MULA BERMAIN &raquo;</button>
+        <a href="https://syxhstr.github.io/Malam-Sama-MADANI/" class="btn-lobby-link">&larr; KEMBALI KE LOBI</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SKRIN JEDA (PAUSE) ================= -->
+  <div id="pause-screen" class="overlay-screen">
+    <div class="story-panel">
+      <div class="chapter-kicker">PERMAINAN DIJEDA</div>
+      <h2 class="story-title">TADIKA SERI FADHLINA</h2>
+      <p style="color:#cbd5e1;margin-bottom:18px;font-size:0.92rem;">
+        Kawalan PC: <strong>WASD</strong> Gerak • <strong>Tetikus</strong> Pusing Kamera • <strong>Shift</strong> Lari Pantas • <strong>E / Klik</strong> Interaksi • <strong>1-8</strong> Pilih Item
+      </p>
+      <div class="btn-row-actions">
+        <button type="button" id="btn-resume-game" class="btn-main-play">SAMBUNG MAIN</button>
+        <a href="https://syxhstr.github.io/Malam-Sama-MADANI/" class="btn-lobby-link">&larr; KEMBALI KE LOBI</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SKRIN TAMAT (MENANG / KALAH) ================= -->
+  <div id="end-screen" class="overlay-screen">
+    <div class="story-panel" id="end-panel-box">
+      <div class="chapter-kicker" id="end-kicker">TAMAT</div>
+      <h2 class="story-title" id="end-title">ANDA DITANGKAP!</h2>
+      <div class="story-brief" id="end-desc" style="text-align:center;">
+        Fadhlina berjaya menangkap anda di dalam Tadika Seri Fadhlina.
+      </div>
+      <div class="btn-row-actions">
+        <button type="button" id="btn-retry-game" class="btn-main-play">MAIN SEMULA</button>
+        <a href="https://syxhstr.github.io/Malam-Sama-MADANI/" class="btn-lobby-link">&larr; KEMBALI KE LOBI</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= IN-GAME HUD ================= -->
+  <div id="game-hud">
+    <div class="hud-top-bar">
+      <!-- Kiri: Lokasi & Senarai Objektif Pintu Utama -->
+      <div class="hud-box hud-objectives-card">
+        <div class="hud-room-name" id="hud-room-label">📍 Koridor Utama Tadika</div>
+        <div class="hud-obj-list">
+          <div id="obj-keycard">⬜ Imbas Kad Akses pada Pintu Keluar</div>
+          <div id="obj-gears">⬜ Pasang 3 Gear Mekanikal (0/3)</div>
+          <div id="obj-goldkey">⬜ Buka Kunci Emas Utama</div>
+        </div>
+      </div>
+
+      <!-- Tengah: Timer 10:00 -> 9:30 Spawn Fadhlina -->
+      <div class="hud-box timer-card">
+        <div class="timer-label">MASA BERBAKI</div>
+        <div id="hud-timer">10:00</div>
+        <div id="hud-spawn-status">Fadhlina muncul pada 09:30</div>
+      </div>
+
+      <!-- Kanan: Butang Fullscreen, Audio & Jeda -->
+      <div class="hud-top-buttons">
+        <button type="button" id="btn-hud-fs" class="hud-mini-btn" title="Skrin Penuh">⛶</button>
+        <button type="button" id="btn-hud-mute" class="hud-mini-btn" title="Bunyi">🔊</button>
+        <button type="button" id="btn-hud-pause" class="hud-mini-btn">⏸ JEDA</button>
+      </div>
+    </div>
+
+    <!-- Tengah: Crosshair & Prompt Interaksi -->
+    <div class="hud-center-reticle">
+      <div class="crosshair-dot"></div>
+      <div id="interact-prompt">[E] Interaksi</div>
+    </div>
+
+    <!-- Notifikasi Toast -->
+    <div id="game-toast"></div>
+
+    <!-- Bawah: Stamina & Slot Inventori -->
+    <div class="hud-bottom-bar">
+      <div class="stamina-wrap">
+        <span style="font-size:0.66rem;padding-left:6px;color:#7dd3fc;font-family:'Courier Prime',monospace;">STAMINA</span>
+        <div class="stamina-bar-bg">
+          <div id="stamina-fill"></div>
+        </div>
+      </div>
+      <div class="inventory-bar" id="inventory-bar"></div>
+    </div>
+  </div>
+
+  <!-- KAWALAN SENTUH MOBILE -->
+  <div id="mobile-controls">
+    <div id="joystick-zone">
+      <div id="joystick-knob"></div>
+    </div>
+    <div class="mobile-action-cluster">
+      <button type="button" id="mob-btn-interact" class="mob-btn">AKSI</button>
+      <button type="button" id="mob-btn-sprint" class="mob-btn" style="border-color:#38bdf8;color:#7dd3fc;">LARI</button>
+      <button type="button" id="mob-btn-turn" class="mob-btn" style="border-color:#f87171;color:#fca5a5;">180°</button>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 1: PETI BESI KOD (CODE PUZZLE) ================= -->
+  <div id="safe-modal" class="puzzle-modal-backdrop">
+    <div class="puzzle-box">
+      <h3>🔐 PETI BESI PEJABAT GURU BESAR</h3>
+      <p>Masukkan 4 digit kod rahsia yang tertulis pada papan tulis kelas &amp; papan menu kantin.</p>
+      <div class="safe-display" id="safe-display">----</div>
+      <div class="keypad-grid" id="safe-keypad">
+        <button type="button" class="key-btn" data-num="1">1</button>
+        <button type="button" class="key-btn" data-num="2">2</button>
+        <button type="button" class="key-btn" data-num="3">3</button>
+        <button type="button" class="key-btn" data-num="4">4</button>
+        <button type="button" class="key-btn" data-num="5">5</button>
+        <button type="button" class="key-btn" data-num="6">6</button>
+        <button type="button" class="key-btn" data-num="7">7</button>
+        <button type="button" class="key-btn" data-num="8">8</button>
+        <button type="button" class="key-btn" data-num="9">9</button>
+        <button type="button" class="key-btn key-clr" id="safe-clear">PADAM</button>
+        <button type="button" class="key-btn" data-num="0">0</button>
+        <button type="button" class="key-btn key-ok" id="safe-enter">BUKA</button>
+      </div>
+      <button type="button" class="btn-lobby-link" id="safe-close" style="width:100%;padding:9px;">TUTUP</button>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 2: KOTAK GEAR MEKANIKAL (GEAR PUZZLE) ================= -->
+  <div id="gear-modal" class="puzzle-modal-backdrop">
+    <div class="puzzle-box">
+      <h3>⚙️ PANEL GEAR PINTU UTAMA</h3>
+      <p>Pasang kesemua <strong>3 Gear Tembaga</strong> untuk menggerakkan rantai pintu besi utama tadika.</p>
+      <div class="gear-slots-row">
+        <div class="gear-socket" id="gear-slot-0"><span>GEAR 1</span></div>
+        <div class="gear-socket" id="gear-slot-1"><span>GEAR 2</span></div>
+        <div class="gear-socket" id="gear-slot-2"><span>GEAR 3</span></div>
+      </div>
+      <div class="btn-row-actions">
+        <button type="button" class="btn-main-play" id="btn-insert-gear" style="padding:10px 14px;font-size:0.92rem;">PASANG GEAR DARI BEG</button>
+        <button type="button" class="btn-lobby-link" id="gear-close" style="padding:10px 14px;font-size:0.92rem;">TUTUP</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 3: NOTA / PETUNJUK INTERAKTIF ================= -->
+  <div id="note-modal" class="puzzle-modal-backdrop">
+    <div class="puzzle-box">
+      <h3 id="note-title">📜 PETUNJUK TADIKA</h3>
+      <p id="note-body" style="font-size:0.98rem;color:#f8fafc;background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;"></p>
+      <button type="button" class="btn-main-play" id="note-close" style="width:100%;padding:10px;">FAHAM</button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      /* ================= KONFIGURASI UTAMA & KEADAAN PERMAINAN ================= */
+      const LOBBY_URL = 'https://syxhstr.github.io/Malam-Sama-MADANI/';
+      const INITIAL_TIME_SEC = 600; // 10:00
+      const SPAWN_TIME_SEC = 570;   // 09:30 -> Fadhlina akan spawn!
+
+      // Kod 4 digit rawak setiap kali main (2 digit di Taman Permainan, 2 digit di Kantin)
+      const codePartA = String(Math.floor(10 + Math.random() * 89));
+      const codePartB = String(Math.floor(10 + Math.random() * 89));
+      const SECRET_SAFE_CODE = codePartA + codePartB;
+
+      const STATE = {
+        phase: 'loading', // 'loading' | 'start' | 'playing' | 'paused' | 'ended'
+        timeLeft: INITIAL_TIME_SEC,
+        fadhlinaSpawned: false,
+        isChasing: false,
+        panicIntensity: 0,
+        muted: false,
+        stamina: 100,
+        isSprinting: false,
+        selectedSlot: 0,
+        inventory: [], // { id, name, icon }
+        gearsFound: 0,
+        gearsInstalled: 0,
+        exitKeycardDone: false,
+        exitGoldKeyDone: false,
+        safeUnlocked: false,
+        safeInput: '',
+        valveTurned: false,
+        planksBroken: false,
+        currentRoomName: 'Koridor Utama Tadika',
+        heartbeatTimer: 0,
+        stepTimer: 0
+      };
+
+      /* ================= FORCED HORIZONTAL & FULLSCREEN ================= */
+      function isTouchDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+               (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+      }
+
+      async function enforceLandscapeAndFullscreen(tryFs = true) {
+        try {
+          const el = document.documentElement;
+          if (tryFs && !document.fullscreenElement && !document.webkitFullscreenElement) {
+            if (el.requestFullscreen) {
+              await el.requestFullscreen({ navigationUI: 'hide' }).catch(() => {});
+            } else if (el.webkitRequestFullscreen) {
+              el.webkitRequestFullscreen();
+            }
+          }
+          if (screen.orientation && screen.orientation.lock) {
+            await screen.orientation.lock('landscape').catch(() => {
+              screen.orientation.lock('landscape-primary').catch(() => {});
+            });
+          }
+        } catch (e) {}
+      }
+
+      function toggleFullscreen() {
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+          enforceLandscapeAndFullscreen(true);
+        } else {
+          if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+          else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        }
+      }
+
+      document.getElementById('btn-force-landscape').addEventListener('click', () => enforceLandscapeAndFullscreen(true));
+      document.getElementById('btn-hud-fs').addEventListener('click', toggleFullscreen);
+      window.addEventListener('orientationchange', () => enforceLandscapeAndFullscreen(isTouchDevice()));
+
+      /* ================= ENJIN BUNYI PROCEDURAL + FADHLINA.MP3 ================= */
+      let audioCtx = null;
+      const fadhlinaAudio = document.getElementById('fadhlina-audio');
+
+      function ensureAudioCtx() {
+        if (!audioCtx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) audioCtx = new AC();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume().catch(() => {});
+        }
+      }
+
+      function playTone(freq, type = 'sine', dur = 0.12, vol = 0.12, endFreq = null) {
+        if (STATE.muted) return;
+        try {
+          ensureAudioCtx();
+          if (!audioCtx) return;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+          if (endFreq) {
+            osc.frequency.exponentialRampToValueAtTime(endFreq, audioCtx.currentTime + dur);
+          }
+          gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + dur);
+        } catch (e) {}
+      }
+
+      function playHeartbeat() {
+        playTone(68, 'sine', 0.14, 0.28, 38);
+        setTimeout(() => playTone(58, 'sine', 0.16, 0.22, 34), 150);
+      }
+
+      function playFootstep(fast = false) {
+        playTone(fast ? 135 : 105, 'triangle', 0.06, fast ? 0.08 : 0.045, 55);
+      }
+
+      function playPickupSfx() {
+        playTone(580, 'triangle', 0.09, 0.14, 880);
+      }
+
+      function playUnlockSfx() {
+        playTone(420, 'square', 0.1, 0.12, 660);
+        setTimeout(() => playTone(660, 'square', 0.14, 0.12, 920), 90);
+      }
+
+      function playSmashSfx() {
+        playTone(120, 'sawtooth', 0.24, 0.25, 36);
+      }
+
+      function playSpawnScreamSfx() {
+        playTone(210, 'sawtooth', 0.75, 0.25, 72);
+        setTimeout(() => playTone(165, 'square', 0.65, 0.2, 55), 140);
+      }
+
+      function updateFadhlinaAudio(distToFadhlina) {
+        if (!fadhlinaAudio) return;
+        if (STATE.muted || STATE.phase !== 'playing' || !STATE.fadhlinaSpawned) {
+          if (!fadhlinaAudio.paused) fadhlinaAudio.pause();
+          return;
+        }
+        if (fadhlinaAudio.paused) {
+          fadhlinaAudio.play().catch(() => {});
+        }
+        // Kelantangan & kelajuan fadhlina.mp3 meningkat bila Fadhlina dekat atau mengejar!
+        const proximity = Math.max(0, Math.min(1, 1 - distToFadhlina / 32));
+        const targetVol = STATE.isChasing ? Math.min(1, 0.55 + proximity * 0.45) : Math.max(0.12, proximity * 0.65);
+        fadhlinaAudio.volume = targetVol;
+        fadhlinaAudio.playbackRate = STATE.isChasing ? 1.18 : 1.0;
+      }
+
+      document.getElementById('btn-hud-mute').addEventListener('click', () => {
+        STATE.muted = !STATE.muted;
+        document.getElementById('btn-hud-mute').textContent = STATE.muted ? '🔇' : '🔊';
+        if (STATE.muted && fadhlinaAudio) fadhlinaAudio.pause();
+      });
+
+      /* ================= TOAST, INVENTORI & OBJEKTIF HUD ================= */
+      let toastTimeout = null;
+      function showToast(msg, duration = 2600) {
+        const el = document.getElementById('game-toast');
+        if (!el) return;
+        el.textContent = msg;
+        el.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => el.classList.remove('show'), duration);
+      }
+
+      function addInventoryItem(item) {
+        if (item.id === 'gear') {
+          STATE.gearsFound += 1;
+          const existing = STATE.inventory.find((i) => i.id === 'gear');
+          if (existing) {
+            existing.name = 'Gear (' + STATE.gearsFound + '/3)';
+          } else {
+            STATE.inventory.push({ id: 'gear', name: 'Gear (' + STATE.gearsFound + '/3)', icon: '⚙️' });
+          }
+        } else {
+          if (!STATE.inventory.some((i) => i.id === item.id)) {
+            STATE.inventory.push(item);
+          }
+        }
+        STATE.selectedSlot = Math.max(0, STATE.inventory.length - 1);
+        playPickupSfx();
+        renderInventory();
+      }
+
+      function removeInventoryItem(id) {
+        const idx = STATE.inventory.findIndex((i) => i.id === id);
+        if (idx !== -1) {
+          STATE.inventory.splice(idx, 1);
+          if (STATE.selectedSlot >= STATE.inventory.length) {
+            STATE.selectedSlot = Math.max(0, STATE.inventory.length - 1);
+          }
+          renderInventory();
+        }
+      }
+
+      function hasItem(id) {
+        return STATE.inventory.some((i) => i.id === id);
+      }
+
+      function renderInventory() {
+        const bar = document.getElementById('inventory-bar');
+        if (!bar) return;
+        bar.innerHTML = '';
+        if (STATE.inventory.length === 0) {
+          const empty = document.createElement('div');
+          empty.className = 'inv-slot';
+          empty.innerHTML = '<span class="inv-slot-icon">🎒</span><span>Beg Kosong</span>';
+          bar.appendChild(empty);
+          return;
+        }
+        STATE.inventory.forEach((item, idx) => {
+          const slot = document.createElement('div');
+          slot.className = 'inv-slot' + (idx === STATE.selectedSlot ? ' active-slot' : '');
+          slot.innerHTML = '<span class="inv-slot-icon">' + item.icon + '</span><span>' + item.name + '</span>';
+          slot.addEventListener('click', () => {
+            STATE.selectedSlot = idx;
+            playTone(500, 'triangle', 0.04, 0.08);
+            renderInventory();
+          });
+          bar.appendChild(slot);
+        });
+      }
+
+      function updateObjectivesHud() {
+        const elCard = document.getElementById('obj-keycard');
+        const elGear = document.getElementById('obj-gears');
+        const elGold = document.getElementById('obj-goldkey');
+
+        if (elCard) {
+          elCard.textContent = (STATE.exitKeycardDone ? '✅' : '⬜') + ' Imbas Kad Akses pada Pintu Keluar';
+          elCard.classList.toggle('hud-obj-done', STATE.exitKeycardDone);
+        }
+        if (elGear) {
+          elGear.textContent = (STATE.gearsInstalled >= 3 ? '✅' : '⬜') + ' Pasang 3 Gear Mekanikal (' + STATE.gearsInstalled + '/3)';
+          elGear.classList.toggle('hud-obj-done', STATE.gearsInstalled >= 3);
+        }
+        if (elGold) {
+          elGold.textContent = (STATE.exitGoldKeyDone ? '✅' : '⬜') + ' Buka Kunci Emas Utama';
+          elGold.classList.toggle('hud-obj-done', STATE.exitGoldKeyDone);
+        }
+      }
+
+      /* ================= MODAL LOGIC (SAFE, GEAR, NOTE) ================= */
+      function isAnyModalOpen() {
+        return document.getElementById('safe-modal').classList.contains('open') ||
+               document.getElementById('gear-modal').classList.contains('open') ||
+               document.getElementById('note-modal').classList.contains('open');
+      }
+
+      function closeAllModals() {
+        document.getElementById('safe-modal').classList.remove('open');
+        document.getElementById('gear-modal').classList.remove('open');
+        document.getElementById('note-modal').classList.remove('open');
+      }
+
+      function openNoteModal(title, body) {
+        document.getElementById('note-title').textContent = title;
+        document.getElementById('note-body').textContent = body;
+        document.getElementById('note-modal').classList.add('open');
+        if (document.pointerLockElement) document.exitPointerLock();
+      }
+
+      document.getElementById('note-close').addEventListener('click', closeAllModals);
+
+      // Peti Besi Kod (Safe Keypad)
+      function openSafeModal() {
+        STATE.safeInput = '';
+        document.getElementById('safe-display').textContent = '----';
+        document.getElementById('safe-modal').classList.add('open');
+        if (document.pointerLockElement) document.exitPointerLock();
+      }
+
+      document.getElementById('safe-close').addEventListener('click', closeAllModals);
+      document.getElementById('safe-clear').addEventListener('click', () => {
+        STATE.safeInput = '';
+        document.getElementById('safe-display').textContent = '----';
+        playTone(300, 'square', 0.06, 0.09);
+      });
+
+      document.querySelectorAll('#safe-keypad [data-num]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (STATE.safeInput.length >= 4) return;
+          STATE.safeInput += btn.getAttribute('data-num');
+          document.getElementById('safe-display').textContent = STATE.safeInput.padEnd(4, '-');
+          playTone(620, 'sine', 0.05, 0.09);
+        });
+      });
+
+      document.getElementById('safe-enter').addEventListener('click', () => {
+        if (STATE.safeInput === SECRET_SAFE_CODE) {
+          STATE.safeUnlocked = true;
+          playUnlockSfx();
+          closeAllModals();
+          addInventoryItem({ id: 'key_gold', name: 'Kunci Emas', icon: '👑' });
+          showToast('🔐 Peti Besi Terbuka! Anda memperoleh KUNCI EMAS UTAMA!', 3500);
+        } else {
+          STATE.safeInput = '';
+          document.getElementById('safe-display').textContent = 'SALAH';
+          playTone(160, 'sawtooth', 0.22, 0.16);
+          setTimeout(() => {
+            document.getElementById('safe-display').textContent = '----';
+          }, 650);
+        }
+      });
+
+      // Kotak Gear Mekanikal (Gear Puzzle)
+      function refreshGearSlotsUi() {
+        for (let i = 0; i < 3; i++) {
+          const slotEl = document.getElementById('gear-slot-' + i);
+          if (!slotEl) continue;
+          if (i < STATE.gearsInstalled) {
+            slotEl.classList.add('installed');
+            slotEl.innerHTML = '<span class="gear-spin">⚙️</span><span>AKTIF</span>';
+          } else {
+            slotEl.classList.remove('installed');
+            slotEl.innerHTML = '<span>GEAR ' + (i + 1) + '</span>';
+          }
+        }
+      }
+
+      function openGearModal() {
+        refreshGearSlotsUi();
+        document.getElementById('gear-modal').classList.add('open');
+        if (document.pointerLockElement) document.exitPointerLock();
+      }
+
+      document.getElementById('gear-close').addEventListener('click', closeAllModals);
+      document.getElementById('btn-insert-gear').addEventListener('click', () => {
+        if (STATE.gearsInstalled >= 3) {
+          showToast('Semua 3 Gear sudah dipasang dan berputar!');
+          return;
+        }
+        if (STATE.gearsFound > STATE.gearsInstalled) {
+          STATE.gearsInstalled += 1;
+          playTone(340 + STATE.gearsInstalled * 90, 'sawtooth', 0.16, 0.14);
+          refreshGearSlotsUi();
+          updateObjectivesHud();
+
+          if (STATE.gearsInstalled >= 3) {
+            removeInventoryItem('gear');
+            playUnlockSfx();
+            showToast('⚙️ Ketiga-tiga Gear berfungsi! Rantai Pintu Utama telah terbuka!', 3400);
+            setTimeout(closeAllModals, 750);
+            checkVictoryCondition();
+          } else {
+            showToast('⚙️ Gear ' + STATE.gearsInstalled + '/3 dipasang! Cari baki gear lagi.');
+          }
+        } else {
+          playTone(180, 'square', 0.12, 0.1);
+          showToast('Anda tiada Gear tambahan di dalam beg! Cari di bilik tadika.');
+        }
+      });
+      /* ================= ENJIN 3D THREE.JS & DUNIA TADIKA BESAR ================= */
+      const canvas = document.getElementById('game-canvas');
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x090a0f);
+      scene.fog = new THREE.FogExp2(0x090a0f, 0.036);
+
+      const BASE_FOV = 66;
+      const CHASE_FOV = 84;
+      const camera = new THREE.PerspectiveCamera(
+        BASE_FOV,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        95
+      );
+      camera.rotation.order = 'YXZ';
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        powerPreference: 'high-performance'
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+      /* ================= TEKSTUR PROSEDURAL TADIKA ================= */
+      function makeCheckerFloorTex() {
+        const c = document.createElement('canvas');
+        c.width = 256;
+        c.height = 256;
+        const ctx = c.getContext('2d');
+        const colors = ['#1e293b', '#273549', '#2b241d', '#1c2536'];
+        const size = 64;
+        for (let y = 0; y < 256; y += size) {
+          for (let x = 0; x < 256; x += size) {
+            ctx.fillStyle = colors[((x / size) + (y / size)) % colors.length];
+            ctx.fillRect(x, y, size, size);
+            ctx.strokeStyle = 'rgba(0,0,0,0.35)';
+            ctx.strokeRect(x, y, size, size);
+          }
+        }
+        const tex = new THREE.CanvasTexture(c);
+        tex.wrapS = THREE.RepeatWrapping;
+        tex.wrapT = THREE.RepeatWrapping;
+        tex.repeat.set(22, 22);
+        return tex;
+      }
+
+      function makeKindergartenWallTex(tintHex) {
+        const c = document.createElement('canvas');
+        c.width = 256;
+        c.height = 256;
+        const ctx = c.getContext('2d');
+        ctx.fillStyle = tintHex;
+        ctx.fillRect(0, 0, 256, 150);
+        // Jalur hiasan warna tadika di tengah dinding
+        ctx.fillStyle = '#eab308';
+        ctx.fillRect(0, 146, 256, 10);
+        // Panel kayu bahagian bawah
+        ctx.fillStyle = '#291d14';
+        ctx.fillRect(0, 156, 256, 100);
+        for (let x = 0; x < 256; x += 32) {
+          ctx.fillStyle = 'rgba(0,0,0,0.28)';
+          ctx.fillRect(x, 156, 3, 100);
+        }
+        const tex = new THREE.CanvasTexture(c);
+        tex.wrapS = THREE.RepeatWrapping;
+        tex.wrapT = THREE.RepeatWrapping;
+        tex.repeat.set(3, 1);
+        return tex;
+      }
+
+      const floorMat = new THREE.MeshStandardMaterial({
+        map: makeCheckerFloorTex(),
+        roughness: 0.72,
+        metalness: 0.08
+      });
+
+      const ceilingMat = new THREE.MeshStandardMaterial({
+        color: 0x161822,
+        roughness: 0.9
+      });
+
+      const wallMats = {
+        corridor: new THREE.MeshStandardMaterial({ map: makeKindergartenWallTex('#334155'), roughness: 0.8 }),
+        melur:    new THREE.MeshStandardMaterial({ map: makeKindergartenWallTex('#1e3a5f'), roughness: 0.8 }),
+        kantin:   new THREE.MeshStandardMaterial({ map: makeKindergartenWallTex('#422006'), roughness: 0.8 }),
+        muzik:    new THREE.MeshStandardMaterial({ map: makeKindergartenWallTex('#14532d'), roughness: 0.8 }),
+        taman:    new THREE.MeshStandardMaterial({ map: makeKindergartenWallTex('#3f2e18'), roughness: 0.8 }),
+        tidur:    new THREE.MeshStandardMaterial({ map: makeKindergartenWallTex('#3b0764'), roughness: 0.8 }),
+        pejabat:  new THREE.MeshStandardMaterial({ map: makeKindergartenWallTex('#450a0a'), roughness: 0.8 })
+      };
+
+      // Lantai & Siling Utama Tadika (X: -28..28, Z: -32..24)
+      const mainFloor = new THREE.Mesh(new THREE.PlaneGeometry(58, 58), floorMat);
+      mainFloor.rotation.x = -Math.PI / 2;
+      mainFloor.position.set(0, 0, -4);
+      scene.add(mainFloor);
+
+      const mainCeiling = new THREE.Mesh(new THREE.PlaneGeometry(58, 58), ceilingMat);
+      mainCeiling.rotation.x = Math.PI / 2;
+      mainCeiling.position.set(0, 4.2, -4);
+      scene.add(mainCeiling);
+
+      /* ================= SISTEM COLLIDER, PINTU & INTERAKTIF ================= */
+      const WORLD = {
+        wallBoxes: [],     // { minX, maxX, minZ, maxZ, tag? }
+        doors: [],         // { id, mesh, box, lockType, isOpen, targetRotY, name }
+        interactables: [], // { id, mesh, pos, radius, getPrompt, onInteract, active }
+        steamCloud: null,
+        plankMeshes: [],
+        exitDoorMesh: null,
+        readerLightMesh: null,
+        gearPanelMesh: null
+      };
+
+      const WALL_H = 4.2;
+
+      function addWallBox(minX, maxX, minZ, maxZ, mat = wallMats.corridor, tag = null) {
+        const w = Math.abs(maxX - minX);
+        const d = Math.abs(maxZ - minZ);
+        const cx = (minX + maxX) * 0.5;
+        const cz = (minZ + maxZ) * 0.5;
+        const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, WALL_H, d), mat);
+        mesh.position.set(cx, WALL_H * 0.5, cz);
+        scene.add(mesh);
+
+        const box = { minX, maxX, minZ, maxZ, tag, mesh };
+        WORLD.wallBoxes.push(box);
+        return box;
+      }
+
+      function addPropBox(cx, cz, w, h, d, colorHex, solid = true, yBase = 0) {
+        const mesh = new THREE.Mesh(
+          new THREE.BoxGeometry(w, h, d),
+          new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.65 })
+        );
+        mesh.position.set(cx, yBase + h * 0.5, cz);
+        scene.add(mesh);
+        if (solid) {
+          WORLD.wallBoxes.push({
+            minX: cx - w * 0.5,
+            maxX: cx + w * 0.5,
+            minZ: cz - d * 0.5,
+            maxZ: cz + d * 0.5
+          });
+        }
+        return mesh;
+      }
+
+      function addCeilingLamp(x, z, colorHex = 0xfef3c7, intensity = 1.35, dist = 15) {
+        const bulb = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.22, 0.28, 0.12, 12),
+          new THREE.MeshBasicMaterial({ color: colorHex })
+        );
+        bulb.position.set(x, 4.12, z);
+        scene.add(bulb);
+
+        const light = new THREE.PointLight(colorHex, intensity, dist, 1.7);
+        light.position.set(x, 3.85, z);
+        scene.add(light);
+        return light;
+      }
+
+      // Cahaya persekitaran asas supaya bilik jelas tetapi masih seram
+      scene.add(new THREE.AmbientLight(0x333848, 0.72));
+
+      /* ================= STRUKTUR DINDING 8 BILIK TADIKA ================= */
+      // 1. Dinding Luar Kompleks Tadika
+      addWallBox(-12.5, 12.5, -30.5, -30.0, wallMats.corridor); // Dinding Utara Lobi
+      addWallBox(-12.5, -12.0, -30.5, -18.0, wallMats.corridor); // Dinding Barat Lobi
+      addWallBox(12.0, 12.5, -30.5, -18.0, wallMats.corridor);   // Dinding Timur Lobi
+      addWallBox(-12.5, -4.0, -18.3, -17.8, wallMats.corridor);  // Sekatan Selatan Lobi Kiri
+      addWallBox(4.0, 12.5, -18.3, -17.8, wallMats.corridor);    // Sekatan Selatan Lobi Kanan
+
+      // Dinding Luar Sayap Barat (X = -26.3) & Sayap Timur (X = +26.3)
+      addWallBox(-26.5, -26.0, -16.5, 22.5, wallMats.melur);
+      addWallBox(26.0, 26.5, -16.5, 22.5, wallMats.kantin);
+
+      // Dinding Utara & Selatan Sayap Barat & Timur
+      addWallBox(-26.5, -4.0, -16.5, -16.0, wallMats.melur);
+      addWallBox(-26.5, -4.0, 22.0, 22.5, wallMats.tidur);
+      addWallBox(4.0, 26.5, -16.5, -16.0, wallMats.kantin);
+      addWallBox(4.0, 26.5, 22.0, 22.5, wallMats.pejabat);
+
+      // Dinding Selatan Koridor Utama (Pintu Keluar Utama pada X = -1.3..+1.3, Z = 22.2)
+      addWallBox(-4.3, -1.35, 22.0, 22.5, wallMats.corridor);
+      addWallBox(1.35, 4.3, 22.0, 22.5, wallMats.corridor);
+
+      // Sekatan Antara Bilik Barat:
+      // Bilik 1: Kelas Melur (Z: -16 .. -4)
+      addWallBox(-26.0, -4.0, -4.2, -3.8, wallMats.melur);
+      // Bilik 2: Bilik Muzik & Mainan (Z: -4 .. +10)
+      addWallBox(-26.0, -4.0, 9.8, 10.2, wallMats.muzik);
+      // Bilik 3: Bilik Tidur Tengah Hari (Z: +10 .. +22)
+
+      // Sekatan Antara Bilik Timur:
+      // Bilik 4: Kantin & Dapur (Z: -16 .. -4)
+      addWallBox(4.0, 26.0, -4.2, -3.8, wallMats.kantin);
+      // Bilik 5: Taman Permainan Tertutup (Z: -4 .. +10)
+      addWallBox(4.0, 26.0, 9.8, 10.2, wallMats.taman);
+      // Bilik 6: Pejabat Guru Besar Fadhlina (Z: +10 .. +22)
+
+      // Dinding Koridor Barat (X = -4.2) dengan 3 bukaan pintu (Z = -10, +3, +16)
+      addWallBox(-4.3, -3.9, -18.0, -11.3, wallMats.corridor);
+      addWallBox(-4.3, -3.9, -8.7, 1.7, wallMats.corridor);
+      addWallBox(-4.3, -3.9, 4.3, 14.7, wallMats.corridor);
+      addWallBox(-4.3, -3.9, 17.3, 22.3, wallMats.corridor);
+
+      // Dinding Koridor Timur (X = +4.2) dengan 3 bukaan pintu (Z = -10, +3, +16)
+      addWallBox(3.9, 4.3, -18.0, -11.3, wallMats.corridor);
+      addWallBox(3.9, 4.3, -8.7, 1.7, wallMats.corridor);
+      addWallBox(3.9, 4.3, 4.3, 14.7, wallMats.corridor);
+      addWallBox(3.9, 4.3, 17.3, 22.3, wallMats.corridor);
+
+      /* ================= PEMBINAAN PINTU BERKUNCI WARNA & KAD AKSES ================= */
+      function createInteractiveDoor(id, x, z, colorHex, lockType, labelName) {
+        const pivot = new THREE.Group();
+        pivot.position.set(x, 0, z - 1.25);
+
+        const doorPanel = new THREE.Mesh(
+          new THREE.BoxGeometry(0.22, 3.1, 2.5),
+          new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.55 })
+        );
+        doorPanel.position.set(0, 1.55, 1.25);
+        pivot.add(doorPanel);
+
+        // Tombol / Pemegang pintu emas
+        const knob = new THREE.Mesh(
+          new THREE.SphereGeometry(0.11, 10, 10),
+          new THREE.MeshStandardMaterial({ color: 0xfacc15, metalness: 0.7, roughness: 0.25 })
+        );
+        knob.position.set(0.16, 1.4, 2.15);
+        pivot.add(knob);
+
+        scene.add(pivot);
+
+        const box = {
+          minX: x - 0.35,
+          maxX: x + 0.35,
+          minZ: z - 1.3,
+          maxZ: z + 1.3
+        };
+        WORLD.wallBoxes.push(box);
+
+        const doorObj = {
+          id,
+          mesh: pivot,
+          box,
+          lockType, // 'key_blue' | 'key_green' | 'key_purple' | 'keycard' | 'none'
+          isOpen: false,
+          targetRotY: 0,
+          name: labelName
+        };
+        WORLD.doors.push(doorObj);
+
+        WORLD.interactables.push({
+          id: 'door_' + id,
+          pos: new THREE.Vector3(x, 1.4, z),
+          radius: 3.1,
+          active: true,
+          getPrompt: () => {
+            if (doorObj.isOpen) return '[E] Pintu ' + doorObj.name + ' (Terbuka)';
+            if (doorObj.lockType === 'key_blue') return '[E] Buka Pintu ' + doorObj.name + ' (Perlu Kunci Biru)';
+            if (doorObj.lockType === 'key_green') return '[E] Buka Pintu ' + doorObj.name + ' (Perlu Kunci Hijau)';
+            if (doorObj.lockType === 'key_purple') return '[E] Buka Pintu ' + doorObj.name + ' (Perlu Kunci Ungu)';
+            if (doorObj.lockType === 'keycard') return '[E] Imbas Kad Akses — ' + doorObj.name;
+            return '[E] Buka Pintu ' + doorObj.name;
+          },
+          onInteract: () => {
+            if (doorObj.isOpen) return;
+            if (doorObj.lockType !== 'none' && !hasItem(doorObj.lockType)) {
+              const reqNames = {
+                key_blue: 'Kunci Biru (di Kaunter Lobi)',
+                key_green: 'Kunci Hijau (di Dapur Kantin)',
+                key_purple: 'Kunci Ungu (di Taman Permainan)',
+                keycard: 'Kad Akses (di Bilik Tidur)'
+              };
+              playTone(170, 'square', 0.14, 0.12);
+              showToast('🔒 Pintu berkunci! Perlukan ' + (reqNames[doorObj.lockType] || 'kunci') + '.');
+              return;
+            }
+            doorObj.isOpen = true;
+            doorObj.targetRotY = Math.PI * 0.52;
+            // Alihkan kotak halangan pintu supaya pemain & Fadhlina boleh lalu
+            doorObj.box.minX = 999;
+            doorObj.box.maxX = 999;
+            playUnlockSfx();
+            showToast('🚪 ' + doorObj.name + ' berjaya dibuka!');
+          }
+        });
+      }
+
+      // 4 Pintu Bilik Berkunci di Koridor
+      createInteractiveDoor('melur', -4.1, -10.0, 0x2563eb, 'key_blue', 'Kelas Melur');
+      createInteractiveDoor('muzik', -4.1, 3.0, 0x16a34a, 'key_green', 'Bilik Muzik & Mainan');
+      createInteractiveDoor('tidur', -4.1, 16.0, 0x9333ea, 'key_purple', 'Bilik Tidur Tengah Hari');
+      createInteractiveDoor('pejabat', 4.1, 16.0, 0xdc2626, 'keycard', 'Pejabat Guru Besar Fadhlina');
+
+      /* ================= PENGHADANG PAPAN KAYU (TAMAN PERMAINAN - PERLUKAN TUKUL) ================= */
+      const plankBarrierBox = addWallBox(3.9, 4.3, 1.7, 4.3, wallMats.taman, 'planks');
+      plankBarrierBox.mesh.visible = false; // Guna visual papan kayu melintang
+
+      for (let i = 0; i < 3; i++) {
+        const plank = new THREE.Mesh(
+          new THREE.BoxGeometry(0.16, 0.34, 2.7),
+          new THREE.MeshStandardMaterial({ color: 0x78350f, roughness: 0.85 })
+        );
+        plank.position.set(4.1, 0.95 + i * 0.65, 3.0);
+        plank.rotation.x = (i % 2 === 0 ? 0.08 : -0.08);
+        scene.add(plank);
+        WORLD.plankMeshes.push(plank);
+      }
+
+      WORLD.interactables.push({
+        id: 'plank_barrier',
+        pos: new THREE.Vector3(4.1, 1.4, 3.0),
+        radius: 3.1,
+        active: true,
+        getPrompt: () => '[E] Pecahkan Papan Kayu (Perlu Tukul Besi)',
+        onInteract: function () {
+          if (STATE.planksBroken) return;
+          if (!hasItem('hammer')) {
+            playTone(155, 'square', 0.14, 0.12);
+            showToast('🔨 Papan kayu dipaku rapat! Cari Tukul Besi di Bilik Muzik.');
+            return;
+          }
+          STATE.planksBroken = true;
+          this.active = false;
+          plankBarrierBox.minX = 999;
+          plankBarrierBox.maxX = 999;
+          WORLD.plankMeshes.forEach((p) => { p.visible = false; });
+          playSmashSfx();
+          showToast('💥 Papan kayu dipecahkan! Laluan ke Taman Permainan kini terbuka!');
+        }
+      });
+
+      /* ================= ITEM BOLEH KUTIP (KUNCI, ALATAN & 3 GEAR) ================= */
+      const itemMeshes = [];
+
+      function spawnPickupItem(id, name, icon, x, y, z, colorHex, shapeType = 'key') {
+        const group = new THREE.Group();
+        group.position.set(x, y, z);
+
+        let geo;
+        if (shapeType === 'gear') {
+          geo = new THREE.TorusGeometry(0.24, 0.08, 8, 12);
+        } else if (shapeType === 'card') {
+          geo = new THREE.BoxGeometry(0.38, 0.04, 0.25);
+        } else if (shapeType === 'tool') {
+          geo = new THREE.CylinderGeometry(0.06, 0.06, 0.55, 8);
+        } else {
+          geo = new THREE.OctahedronGeometry(0.22, 0);
+        }
+
+        const mat = new THREE.MeshStandardMaterial({
+          color: colorHex,
+          emissive: colorHex,
+          emissiveIntensity: 0.45,
+          roughness: 0.3,
+          metalness: 0.6
+        });
+        const mesh = new THREE.Mesh(geo, mat);
+        group.add(mesh);
+
+        const glow = new THREE.PointLight(colorHex, 0.9, 4.5);
+        glow.position.set(0, 0.35, 0);
+        group.add(glow);
+
+        scene.add(group);
+        itemMeshes.push(group);
+
+        WORLD.interactables.push({
+          id: 'pickup_' + id + '_' + x + '_' + z,
+          pos: new THREE.Vector3(x, y, z),
+          radius: 2.5,
+          active: true,
+          getPrompt: () => '[E] Ambil ' + icon + ' ' + name,
+          onInteract: function () {
+            this.active = false;
+            group.visible = false;
+            addInventoryItem({ id, name, icon });
+            showToast('✨ Anda mengambil ' + name + '!');
+          }
+        });
+      }
+
+      /* ================= PERABOT & TEKA-TEKI SETIAP BILIK ================= */
+      // --- BILIK 1: LOBI & KAUNTER PENDAFTARAN (Z: -30..-18) ---
+      addCeilingLamp(0, -24, 0xfef3c7, 1.5, 18);
+      addPropBox(-6.5, -23.5, 3.6, 1.05, 1.3, 0x78350f, true); // Kaunter Pendaftaran
+      addPropBox(7.0, -22.0, 2.6, 0.7, 1.1, 0x1d4ed8, true);   // Sofa menunggu
+      // Kunci Biru atas kaunter
+      spawnPickupItem('key_blue', 'Kunci Biru', '🔵', -6.5, 1.25, -23.5, 0x3b82f6, 'key');
+
+      // Papan Kenyataan Lobi (Nota Petunjuk)
+      addPropBox(6.5, -29.8, 2.4, 1.4, 0.15, 0x92400e, false, 1.2);
+      WORLD.interactables.push({
+        id: 'lobby_notice',
+        pos: new THREE.Vector3(6.5, 1.5, -29.5),
+        radius: 2.8,
+        active: true,
+        getPrompt: () => '[E] Baca Papan Kenyataan Tadika',
+        onInteract: () => {
+          openNoteModal(
+            '📋 NOTIS PENGURUSAN TADIKA SERI FADHLINA',
+            'Pintu Keluar Utama di hujung koridor selatan memerlukan 3 perkara untuk dibuka:\n1) Imbas Kad Akses Utama\n2) Pasang 3 Gear Mekanikal pada kotak panel\n3) Buka Kunci Emas dari Peti Besi Pejabat Guru Besar.'
+          );
+        }
+      });
+
+      // --- KORIDOR UTAMA TADIKA (X: -4..+4, Z: -18..+22) ---
+      addCeilingLamp(0, -12, 0xfef3c7, 1.25, 15);
+      addCeilingLamp(0, 0, 0xfde68a, 1.25, 15);
+      addCeilingLamp(0, 12, 0xfef3c7, 1.25, 15);
+
+      // --- BILIK 2: KELAS MELUR (X: -26..-4, Z: -16..-4) ---
+      addCeilingLamp(-15, -10, 0xbae6fd, 1.4, 18);
+      addPropBox(-11, -13, 1.8, 0.65, 1.2, 0x2563eb, true); // Meja murid 1
+      addPropBox(-11, -7, 1.8, 0.65, 1.2, 0xf59e0b, true);  // Meja murid 2
+      addPropBox(-17, -13, 1.8, 0.65, 1.2, 0x16a34a, true); // Meja murid 3
+      addPropBox(-22, -7, 2.2, 0.9, 1.2, 0x78350f, true);   // Meja guru kelas
+      // Sepana Paip atas meja guru
+      spawnPickupItem('wrench', 'Sepana Paip', '🔧', -22, 1.15, -7, 0x94a3b8, 'tool');
+
+      // Papan Hitam Kelas Melur (Petunjuk Kod Bahagian 1)
+      addPropBox(-25.8, -10, 0.16, 1.6, 3.4, 0x064e3b, false, 1.1);
+      WORLD.interactables.push({
+        id: 'melur_board',
+        pos: new THREE.Vector3(-25.2, 1.6, -10),
+        radius: 3.0,
+        active: true,
+        getPrompt: () => '[E] Periksa Papan Hitam Kelas Melur',
+        onInteract: () => {
+          openNoteModal(
+            '🖍️ CONTENGAN KAPUR PADA PAPAN HITAM',
+            'Di sudut papan hitam tertulis dengan kapur merah:\n\n"2 DIGIT PERTAMA KOD PETI BESI: [ ' + codePartA + ' ]"\n\n(Baki 2 digit lagi ditulis di Papan Menu Kantin!)'
+          );
+        }
+      });
+
+      // --- BILIK 3: KANTIN & DAPUR TADIKA (X: +4..+26, Z: -16..-4) ---
+      addCeilingLamp(15, -10, 0xfde68a, 1.4, 18);
+      addPropBox(11, -10, 1.4, 0.75, 5.2, 0xd97706, true); // Meja panjang kantin
+      addPropBox(22, -13.5, 4.5, 1.0, 1.4, 0x475569, true); // Kaunter dapur
+      // Kunci Hijau di kaunter dapur
+      spawnPickupItem('key_green', 'Kunci Hijau', '🟢', 22, 1.22, -13.5, 0x22c55e, 'key');
+
+      // Papan Menu Kantin (Petunjuk Kod Bahagian 2)
+      addPropBox(25.8, -8, 0.16, 1.5, 2.8, 0x1e293b, false, 1.2);
+      WORLD.interactables.push({
+        id: 'kantin_board',
+        pos: new THREE.Vector3(25.2, 1.6, -8),
+        radius: 3.0,
+        active: true,
+        getPrompt: () => '[E] Baca Papan Menu Kantin',
+        onInteract: () => {
+          openNoteModal(
+            '🍲 PAPAN MENU HARIAN KANTIN',
+            'Di belakang senarai harga makanan tertera nota kecil:\n\n"2 DIGIT TERAKHIR KOD PETI BESI: [ ' + codePartB + ' ]"\n\nGabungkan dengan nombor dari Kelas Melur (4 digit).'
+          );
+        }
+      });
+
+      // --- BILIK 4: BILIK MUZIK & MAINAN (X: -26..-4, Z: -4..+10) ---
+      addCeilingLamp(-15, 3, 0xbef264, 1.4, 18);
+      addPropBox(-13, 0, 2.2, 1.1, 1.2, 0x1e293b, true); // Piano tegak
+      addPropBox(-20, 6, 2.4, 0.85, 1.4, 0xb45309, true); // Rak alat muzik
+      addPropBox(-14, 7.5, 1.8, 0.85, 1.4, 0x0f766e, true); // Meja mainan
+      // Tukul Besi & Gear #1
+      spawnPickupItem('hammer', 'Tukul Besi', '🔨', -20, 1.1, 6, 0xf97316, 'tool');
+      spawnPickupItem('gear', 'Gear Tembaga', '⚙️', -14, 1.1, 7.5, 0xfacc15, 'gear');
+
+      // --- BILIK 5: TAMAN PERMAINAN TERTUTUP & INJAP PAIP (X: +4..+26, Z: -4..+10) ---
+      addCeilingLamp(15, 3, 0xfed7aa, 1.4, 18);
+      addPropBox(13, 2, 3.2, 1.6, 2.2, 0xef4444, true); // Struktur gelongsor merah
+      addPropBox(13, 6.5, 3.0, 0.6, 3.0, 0x3b82f6, true); // Kolam bola biru
+
+      // Paip Stim & Injap Merah (Perlukan Sepana untuk tutup wap panas)
+      addPropBox(23.5, 1.5, 0.6, 2.6, 0.6, 0x64748b, true);
+      const valveWheel = new THREE.Mesh(
+        new THREE.TorusGeometry(0.28, 0.06, 8, 12),
+        new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.4 })
+      );
+      valveWheel.position.set(23.1, 1.5, 1.5);
+      valveWheel.rotation.y = Math.PI / 2;
+      scene.add(valveWheel);
+
+      // Wap panas yang menghalang Kunci Ungu di penjuru bilik
+      const steamBarrierBox = addWallBox(20.5, 25.8, 5.5, 6.1, wallMats.taman);
+      steamBarrierBox.mesh.visible = false;
+      const steamVisual = new THREE.Mesh(
+        new THREE.BoxGeometry(5.2, 2.4, 0.6),
+        new THREE.MeshBasicMaterial({ color: 0xe2e8f0, transparent: true, opacity: 0.35 })
+      );
+      steamVisual.position.set(23.1, 1.2, 5.8);
+      scene.add(steamVisual);
+      WORLD.steamCloud = steamVisual;
+
+      // Kunci Ungu di belakang wap stim
+      spawnPickupItem('key_purple', 'Kunci Ungu', '🟣', 23.5, 0.95, 8.0, 0xa855f7, 'key');
+
+      WORLD.interactables.push({
+        id: 'playground_valve',
+        pos: new THREE.Vector3(22.8, 1.5, 1.5),
+        radius: 2.9,
+        active: true,
+        getPrompt: () => STATE.valveTurned ? '[E] Injap Paip Sudah Ditutup' : '[E] Pusing Injap Paip (Perlu Sepana)',
+        onInteract: function () {
+          if (STATE.valveTurned) return;
+          if (!hasItem('wrench')) {
+            playTone(165, 'square', 0.14, 0.12);
+            showToast('🔧 Injap berkarat ketat! Perlukan Sepana Paip dari Kelas Melur.');
+            return;
+          }
+          STATE.valveTurned = true;
+          valveWheel.rotation.x += Math.PI;
+          steamBarrierBox.minX = 999;
+          steamBarrierBox.maxX = 999;
+          steamVisual.visible = false;
+          playUnlockSfx();
+          showToast('💨 Wap panas telah dihentikan! Anda kini boleh ambil Kunci Ungu!');
+        }
+      });
+
+      // --- BILIK 6: BILIK TIDUR TENGAH HARI / NAP ROOM (X: -26..-4, Z: +10..+22) ---
+      addCeilingLamp(-15, 16, 0xd8b4fe, 1.35, 18);
+      addPropBox(-11, 13, 1.4, 0.55, 2.4, 0x9333ea, true); // Katil kanak-kanak 1
+      addPropBox(-15, 13, 1.4, 0.55, 2.4, 0xec4899, true); // Katil kanak-kanak 2
+      addPropBox(-19, 13, 1.4, 0.55, 2.4, 0x3b82f6, true); // Katil kanak-kanak 3
+      addPropBox(-22, 19, 2.0, 0.9, 1.2, 0x78350f, true);  // Almari selimut
+      // Kad Akses Utama & Gear #2
+      spawnPickupItem('keycard', 'Kad Akses', '🪪', -22, 1.12, 19, 0x38bdf8, 'card');
+      spawnPickupItem('gear', 'Gear Tembaga', '⚙️', -11, 0.85, 13, 0xfacc15, 'gear');
+
+      // --- BILIK 7: PEJABAT GURU BESAR FADHLINA (X: +4..+26, Z: +10..+22) ---
+      addCeilingLamp(15, 16, 0xfca5a5, 1.45, 18);
+      addPropBox(18, 17, 3.6, 1.05, 1.6, 0x450a0a, true); // Meja besar Guru Besar Fadhlina
+      // Gear #3 atas meja Fadhlina
+      spawnPickupItem('gear', 'Gear Tembaga', '⚙️', 18, 1.25, 17, 0xfacc15, 'gear');
+
+      // Peti Besi Kod (Safe Box) di Pejabat Guru Besar
+      addPropBox(23.8, 13, 1.4, 1.6, 1.4, 0x1e293b, true);
+      WORLD.interactables.push({
+        id: 'principal_safe',
+        pos: new THREE.Vector3(23.0, 1.2, 13),
+        radius: 3.1,
+        active: true,
+        getPrompt: () => STATE.safeUnlocked ? '[E] Peti Besi Sudah Dibuka' : '[E] Buka Peti Besi (Masukkan Kod 4 Digit)',
+        onInteract: () => {
+          if (STATE.safeUnlocked) {
+            showToast('Peti besi sudah kosong — anda sudah mengambil Kunci Emas.');
+            return;
+          }
+          openSafeModal();
+        }
+      });
+
+      /* ================= PINTU KELUAR UTAMA TADIKA (Z = 22.1) ================= */
+      const mainExitDoor = new THREE.Mesh(
+        new THREE.BoxGeometry(2.7, 3.2, 0.28),
+        new THREE.MeshStandardMaterial({ color: 0x7f1d1d, roughness: 0.5, metalness: 0.3 })
+      );
+      mainExitDoor.position.set(0, 1.6, 22.1);
+      scene.add(mainExitDoor);
+      WORLD.exitDoorMesh = mainExitDoor;
+
+      const exitGateBox = { minX: -1.4, maxX: 1.4, minZ: 21.8, maxZ: 22.5 };
+      WORLD.wallBoxes.push(exitGateBox);
+
+      // 1) Pengimbas Kad Akses di kiri pintu utama
+      addPropBox(-2.2, 21.8, 0.45, 0.65, 0.25, 0x0f172a, false, 1.15);
+      const readerLight = new THREE.Mesh(
+        new THREE.BoxGeometry(0.25, 0.14, 0.28),
+        new THREE.MeshBasicMaterial({ color: 0xef4444 })
+      );
+      readerLight.position.set(-2.2, 1.62, 21.8);
+      scene.add(readerLight);
+      WORLD.readerLightMesh = readerLight;
+
+      WORLD.interactables.push({
+        id: 'exit_card_reader',
+        pos: new THREE.Vector3(-2.2, 1.4, 21.4),
+        radius: 2.8,
+        active: true,
+        getPrompt: () => STATE.exitKeycardDone ? '[E] Pengimbas Kad Akses (SAH)' : '[E] Imbas Kad Akses pada Pengimbas',
+        onInteract: () => {
+          if (STATE.exitKeycardDone) return;
+          if (!hasItem('keycard')) {
+            playTone(165, 'square', 0.14, 0.12);
+            showToast('🪪 Perlukan Kad Akses! Cari di Bilik Tidur Tengah Hari.');
+            return;
+          }
+          STATE.exitKeycardDone = true;
+          readerLight.material.color.setHex(0x22c55e);
+          playUnlockSfx();
+          updateObjectivesHud();
+          showToast('✅ Kad Akses disahkan!');
+          checkVictoryCondition();
+        }
+      });
+
+      // 2) Kotak Panel Gear Mekanikal di kanan pintu utama
+      addPropBox(2.2, 21.8, 0.75, 0.85, 0.28, 0x334155, false, 1.1);
+      WORLD.interactables.push({
+        id: 'exit_gear_panel',
+        pos: new THREE.Vector3(2.2, 1.4, 21.4),
+        radius: 2.8,
+        active: true,
+        getPrompt: () => '[E] Periksa Panel 3 Gear (' + STATE.gearsInstalled + '/3)',
+        onInteract: () => openGearModal()
+      });
+
+      // 3) Pintu Utama / Kunci Emas
+      WORLD.interactables.push({
+        id: 'exit_main_gate',
+        pos: new THREE.Vector3(0, 1.5, 21.4),
+        radius: 3.0,
+        active: true,
+        getPrompt: () => STATE.exitGoldKeyDone ? '[E] Kunci Emas Terbuka!' : '[E] Buka Kunci Emas Pintu Keluar Utama',
+        onInteract: () => {
+          if (!STATE.exitGoldKeyDone) {
+            if (!hasItem('key_gold')) {
+              playTone(165, 'square', 0.14, 0.12);
+              showToast('👑 Perlukan Kunci Emas dari Peti Besi Pejabat Guru Besar!');
+              return;
+            }
+            STATE.exitGoldKeyDone = true;
+            removeInventoryItem('key_gold');
+            playUnlockSfx();
+            updateObjectivesHud();
+            showToast('👑 Kunci Emas berjaya dibuka!');
+          }
+          checkVictoryCondition();
+        }
+      });
+      /* ================= WATAK FADHLINA 3D & SISTEM AI PENGEJARAN ================= */
+      const FADHLINA = {
+        group: new THREE.Group(),
+        spriteMat: null,
+        auraLight: null,
+        pos: new THREE.Vector3(14.0, 0, 16.0), // Muncul dari Pejabat Guru Besar
+        walkSpeed: 2.35,
+        chaseSpeed: 4.35,
+        waypointQueue: [],
+        repathTimer: 0,
+        stuckTimer: 0,
+        lastPos: new THREE.Vector3(14.0, 0, 16.0)
+      };
+
+      // Tekstur sandaran jika fadhlina.png lambat dimuatkan
+      function createFallbackBossTexture() {
+        const c = document.createElement('canvas');
+        c.width = 256;
+        c.height = 512;
+        const ctx = c.getContext('2d');
+        ctx.fillStyle = '#450a0a';
+        ctx.beginPath();
+        ctx.ellipse(128, 320, 72, 160, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#fca5a5';
+        ctx.beginPath();
+        ctx.arc(128, 115, 48, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.arc(110, 108, 7, 0, Math.PI * 2);
+        ctx.arc(146, 108, 7, 0, Math.PI * 2);
+        ctx.fill();
+        return new THREE.CanvasTexture(c);
+      }
+
+      (function initFadhlinaEntity() {
+        const texLoader = new THREE.TextureLoader();
+        const fallbackTex = createFallbackBossTexture();
+
+        FADHLINA.spriteMat = new THREE.SpriteMaterial({
+          map: fallbackTex,
+          transparent: true,
+          alphaTest: 0.15,
+          color: 0xffffff
+        });
+
+        texLoader.load(
+          'fadhlina.png',
+          (loadedTex) => {
+            loadedTex.colorSpace = THREE.SRGBColorSpace;
+            FADHLINA.spriteMat.map = loadedTex;
+            FADHLINA.spriteMat.needsUpdate = true;
+          },
+          undefined,
+          () => {
+            // Kekal guna tekstur sandaran jika fail tiada
+          }
+        );
+
+        const sprite = new THREE.Sprite(FADHLINA.spriteMat);
+        sprite.scale.set(1.65, 2.75, 1);
+        sprite.position.set(0, 1.38, 0);
+        FADHLINA.group.add(sprite);
+
+        // Cahaya merah menakutkan di sekeliling Fadhlina
+        FADHLINA.auraLight = new THREE.PointLight(0xdc2626, 2.2, 11, 1.6);
+        FADHLINA.auraLight.position.set(0, 1.8, 0);
+        FADHLINA.group.add(FADHLINA.auraLight);
+
+        FADHLINA.group.position.copy(FADHLINA.pos);
+        FADHLINA.group.visible = false;
+        scene.add(FADHLINA.group);
+      })();
+
+      // Titik laluan navigasi koridor & pintu bilik supaya Fadhlina tidak tersangkut
+      const NAV_NODES = [
+        { id: 'lobi',    x: 0,    z: -22.5 },
+        { id: 'cor_n',   x: 0,    z: -14.0 },
+        { id: 'cor_m1',  x: 0,    z: -10.0 },
+        { id: 'cor_0',   x: 0,    z: -2.0  },
+        { id: 'cor_m2',  x: 0,    z: 3.0   },
+        { id: 'cor_10',  x: 0,    z: 10.0  },
+        { id: 'cor_m3',  x: 0,    z: 16.0  },
+        { id: 'cor_s',   x: 0,    z: 19.5  },
+        { id: 'melur',   x: -12,  z: -10.0 },
+        { id: 'kantin',  x: 12,   z: -10.0 },
+        { id: 'muzik',   x: -12,  z: 3.0   },
+        { id: 'taman',   x: 12,   z: 3.0   },
+        { id: 'tidur',   x: -12,  z: 16.0  },
+        { id: 'pejabat', x: 12,   z: 16.0  }
+      ];
+
+      function getZoneId(x, z) {
+        if (z < -17.5) return 'lobi';
+        if (x < -4.2) {
+          if (z < -4.0) return 'melur';
+          if (z < 10.0) return 'muzik';
+          return 'tidur';
+        }
+        if (x > 4.2) {
+          if (z < -4.0) return 'kantin';
+          if (z < 10.0) return 'taman';
+          return 'pejabat';
+        }
+        return 'corridor';
+      }
+
+      function computeFadhlinaRoute(targetPos) {
+        const fZone = getZoneId(FADHLINA.pos.x, FADHLINA.pos.z);
+        const pZone = getZoneId(targetPos.x, targetPos.z);
+
+        // Jika dalam zon bilik yang sama atau kedua-duanya di koridor, terus ke pemain
+        if (fZone === pZone) {
+          return [new THREE.Vector3(targetPos.x, 0, targetPos.z)];
+        }
+
+        const route = [];
+        const doorZMap = {
+          melur: -10.0,
+          kantin: -10.0,
+          muzik: 3.0,
+          taman: 3.0,
+          tidur: 16.0,
+          pejabat: 16.0,
+          lobi: -17.5
+        };
+
+        // Keluar ke koridor tengah dahulu jika Fadhlina berada di dalam bilik
+        if (fZone !== 'corridor' && doorZMap[fZone] !== undefined) {
+          route.push(new THREE.Vector3(0, 0, doorZMap[fZone]));
+        }
+
+        // Bergerak sepanjang paksi Z koridor menghampiri zon pemain
+        const targetDoorZ = (pZone !== 'corridor' && doorZMap[pZone] !== undefined)
+          ? doorZMap[pZone]
+          : targetPos.z;
+        route.push(new THREE.Vector3(0, 0, targetDoorZ));
+
+        // Masuk ke kedudukan pemain
+        route.push(new THREE.Vector3(targetPos.x, 0, targetPos.z));
+        return route;
+      }
+
+      function spawnFadhlinaNow() {
+        if (STATE.fadhlinaSpawned) return;
+        STATE.fadhlinaSpawned = true;
+        FADHLINA.pos.set(12.0, 0, 16.0);
+        FADHLINA.group.position.copy(FADHLINA.pos);
+        FADHLINA.group.visible = true;
+
+        const spawnStatus = document.getElementById('hud-spawn-status');
+        if (spawnStatus) {
+          spawnStatus.textContent = '⚠️ FADHLINA BERKELIARAN!';
+          spawnStatus.classList.add('active-threat');
+        }
+
+        playSpawnScreamSfx();
+        showToast('🚨 JAM 09:30! Guru Besar Fadhlina telah muncul di dalam tadika!', 4000);
+        if (fadhlinaAudio && !STATE.muted) {
+          fadhlinaAudio.currentTime = 0;
+          fadhlinaAudio.play().catch(() => {});
+        }
+      }
+
+      /* ================= PERGERAKAN PEMAIN & PERLANGGARAN DINDING ================= */
+      const PLAYER = {
+        pos: new THREE.Vector3(0, 1.65, -26.5), // Mula di Lobi Pendaftaran Tadika
+        yaw: Math.PI, // Menghadap ke arah koridor utama (+Z)
+        pitch: 0,
+        radius: 0.42,
+        walkSpeed: 2.85,   // Pemain berjalan perlahan (suspen)
+        sprintSpeed: 4.55, // Lari pecut bila guna stamina
+        bobPhase: 0
+      };
+
+      function resolveCircleWallCollision(posVec, radius) {
+        for (let i = 0; i < WORLD.wallBoxes.length; i++) {
+          const b = WORLD.wallBoxes[i];
+          if (b.minX > 900) continue; // Halangan telah dibuka
+
+          const closestX = Math.max(b.minX, Math.min(posVec.x, b.maxX));
+          const closestZ = Math.max(b.minZ, Math.min(posVec.z, b.maxZ));
+          const dx = posVec.x - closestX;
+          const dz = posVec.z - closestZ;
+          const distSq = dx * dx + dz * dz;
+
+          if (distSq < radius * radius) {
+            const dist = Math.sqrt(distSq);
+            if (dist > 0.0001) {
+              const overlap = radius - dist;
+              posVec.x += (dx / dist) * overlap;
+              posVec.z += (dz / dist) * overlap;
+            } else {
+              posVec.z += radius;
+            }
+          }
+        }
+      }
+
+      function updateCurrentRoomLabel() {
+        const zone = getZoneId(PLAYER.pos.x, PLAYER.pos.z);
+        const names = {
+          lobi: '📍 Lobi Pendaftaran Tadika',
+          corridor: '📍 Koridor Utama Tadika',
+          melur: '📍 Kelas Melur (Bilik Biru)',
+          kantin: '📍 Kantin & Dapur Tadika',
+          muzik: '📍 Bilik Muzik & Mainan',
+          taman: '📍 Taman Permainan Tertutup',
+          tidur: '📍 Bilik Tidur Tengah Hari',
+          pejabat: '📍 Pejabat Guru Besar Fadhlina'
+        };
+        const label = names[zone] || '📍 Tadika Seri Fadhlina';
+        if (label !== STATE.currentRoomName) {
+          STATE.currentRoomName = label;
+          const el = document.getElementById('hud-room-label');
+          if (el) el.textContent = label;
+        }
+      }
+
+      /* ================= INTERAKSI & SYARAT KEMENANGAN ================= */
+      let nearestInteractable = null;
+
+      function updateNearestInteractable() {
+        const promptEl = document.getElementById('interact-prompt');
+        if (!promptEl || STATE.phase !== 'playing' || isAnyModalOpen()) {
+          if (promptEl) promptEl.classList.remove('visible');
+          nearestInteractable = null;
+          return;
+        }
+
+        let best = null;
+        let bestDist = Infinity;
+        const forward = new THREE.Vector3(
+          -Math.sin(PLAYER.yaw),
+          0,
+          -Math.cos(PLAYER.yaw)
+        ).normalize();
+
+        for (let i = 0; i < WORLD.interactables.length; i++) {
+          const item = WORLD.interactables[i];
+          if (!item.active) continue;
+
+          const toObj = new THREE.Vector3(
+            item.pos.x - PLAYER.pos.x,
+            0,
+            item.pos.z - PLAYER.pos.z
+          );
+          const dist = toObj.length();
+          if (dist <= item.radius) {
+            const dir = toObj.clone().normalize();
+            const dot = forward.dot(dir);
+            if (dot > 0.35 && dist < bestDist) {
+              bestDist = dist;
+              best = item;
+            }
+          }
+        }
+
+        nearestInteractable = best;
+        if (best) {
+          promptEl.textContent = best.getPrompt();
+          promptEl.classList.add('visible');
+        } else {
+          promptEl.classList.remove('visible');
+        }
+      }
+
+      function triggerInteraction() {
+        if (STATE.phase !== 'playing' || isAnyModalOpen()) return;
+        if (nearestInteractable && typeof nearestInteractable.onInteract === 'function') {
+          nearestInteractable.onInteract();
+        }
+      }
+
+      function checkVictoryCondition() {
+        if (STATE.exitKeycardDone && STATE.gearsInstalled >= 3 && STATE.exitGoldKeyDone) {
+          if (WORLD.exitDoorMesh) {
+            WORLD.exitDoorMesh.visible = false;
+          }
+          exitGateBox.minX = 999;
+          exitGateBox.maxX = 999;
+          endGame(
+            true,
+            'BERJAYA MELARIKAN DIRI!',
+            'Ketiga-tiga sistem keselamatan Pintu Utama Tadika Seri Fadhlina telah dibuka! Anda berjaya keluar dengan selamat sebelum ditangkap Fadhlina.'
+          );
+        }
+      }
+
+      function endGame(isVictory, titleText, descText) {
+        if (STATE.phase === 'ended') return;
+        STATE.phase = 'ended';
+        STATE.isChasing = false;
+
+        if (document.pointerLockElement) document.exitPointerLock();
+        closeAllModals();
+        if (fadhlinaAudio) fadhlinaAudio.pause();
+
+        document.getElementById('chase-red-aura').classList.remove('active');
+        document.getElementById('chase-static-lines').classList.remove('active');
+        document.getElementById('chase-alert-banner').classList.remove('active');
+        document.getElementById('game-hud').classList.remove('active');
+        document.getElementById('mobile-controls').classList.remove('active');
+
+        const panel = document.getElementById('end-panel-box');
+        panel.classList.remove('danger-border', 'victory-border');
+        panel.classList.add(isVictory ? 'victory-border' : 'danger-border');
+
+        document.getElementById('end-kicker').textContent = isVictory ? 'MISI SELESAI • BAB 3' : 'DITANGKAP • BAB 3';
+        document.getElementById('end-title').textContent = titleText;
+        document.getElementById('end-desc').textContent = descText;
+        document.getElementById('end-screen').classList.add('active');
+
+        if (isVictory) {
+          playUnlockSfx();
+        } else {
+          playSpawnScreamSfx();
+        }
+      }
+
+      /* ================= KAWALAN INPUT DESKTOP & SENTUHAN MOBILE ================= */
+      const KEYS = {};
+      window.addEventListener('keydown', (e) => {
+        KEYS[e.code] = true;
+
+        if (e.code === 'KeyE' && STATE.phase === 'playing') {
+          triggerInteraction();
+        }
+        if (e.code === 'Escape' || e.code === 'KeyP') {
+          if (isAnyModalOpen()) {
+            closeAllModals();
+          } else if (STATE.phase === 'playing') {
+            pauseGame();
+          }
+        }
+        if (e.code.startsWith('Digit')) {
+          const num = parseInt(e.code.replace('Digit', ''), 10);
+          if (num >= 1 && num <= STATE.inventory.length) {
+            STATE.selectedSlot = num - 1;
+            renderInventory();
+          }
+        }
+      });
+
+      window.addEventListener('keyup', (e) => {
+        KEYS[e.code] = false;
+      });
+
+      // Mouse Look (Pointer Lock di PC)
+      canvas.addEventListener('click', () => {
+        if (STATE.phase === 'playing' && !isAnyModalOpen()) {
+          if (!isTouchDevice() && document.pointerLockElement !== canvas) {
+            canvas.requestPointerLock().catch(() => {});
+          } else {
+            triggerInteraction();
+          }
+        }
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (STATE.phase !== 'playing' || isAnyModalOpen()) return;
+        if (document.pointerLockElement === canvas) {
+          const sens = 0.0022;
+          PLAYER.yaw -= e.movementX * sens;
+          PLAYER.pitch = Math.max(-1.05, Math.min(1.05, PLAYER.pitch - e.movementY * sens));
+        }
+      });
+
+      // Kawalan Sentuh Mobile (Joystick Kiri + Seret Kamera Kanan)
+      const joyState = { active: false, id: null, dx: 0, dy: 0 };
+      const joyZone = document.getElementById('joystick-zone');
+      const joyKnob = document.getElementById('joystick-knob');
+
+      if (joyZone && joyKnob) {
+        joyZone.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+          const t = e.changedTouches[0];
+          joyState.active = true;
+          joyState.id = t.identifier;
+          updateJoystick(t);
+        }, { passive: false });
+
+        joyZone.addEventListener('touchmove', (e) => {
+          e.preventDefault();
+          for (let i = 0; i < e.changedTouches.length; i++) {
+            if (e.changedTouches[i].identifier === joyState.id) {
+              updateJoystick(e.changedTouches[i]);
+            }
+          }
+        }, { passive: false });
+
+        const resetJoy = (e) => {
+          for (let i = 0; i < e.changedTouches.length; i++) {
+            if (e.changedTouches[i].identifier === joyState.id) {
+              joyState.active = false;
+              joyState.id = null;
+              joyState.dx = 0;
+              joyState.dy = 0;
+              joyKnob.style.transform = 'translate(0px, 0px)';
+            }
+          }
+        };
+        joyZone.addEventListener('touchend', resetJoy);
+        joyZone.addEventListener('touchcancel', resetJoy);
+      }
+
+      function updateJoystick(touch) {
+        const rect = joyZone.getBoundingClientRect();
+        const cx = rect.left + rect.width * 0.5;
+        const cy = rect.top + rect.height * 0.5;
+        const maxR = rect.width * 0.38;
+        let vx = touch.clientX - cx;
+        let vy = touch.clientY - cy;
+        const len = Math.hypot(vx, vy);
+        if (len > maxR) {
+          vx = (vx / len) * maxR;
+          vy = (vy / len) * maxR;
+        }
+        joyKnob.style.transform = `translate(${vx}px, ${vy}px)`;
+        joyState.dx = vx / maxR;
+        joyState.dy = vy / maxR;
+      }
+
+      // Touch Look pada sebelah kanan skrin
+      const lookTouch = { active: false, id: null, lastX: 0, lastY: 0 };
+      canvas.addEventListener('touchstart', (e) => {
+        if (STATE.phase !== 'playing' || isAnyModalOpen()) return;
+        for (let i = 0; i < e.changedTouches.length; i++) {
+          const t = e.changedTouches[i];
+          if (t.clientX > window.innerWidth * 0.35 && !lookTouch.active) {
+            lookTouch.active = true;
+            lookTouch.id = t.identifier;
+            lookTouch.lastX = t.clientX;
+            lookTouch.lastY = t.clientY;
+          }
+        }
+      }, { passive: true });
+
+      canvas.addEventListener('touchmove', (e) => {
+        if (!lookTouch.active || STATE.phase !== 'playing') return;
+        for (let i = 0; i < e.changedTouches.length; i++) {
+          const t = e.changedTouches[i];
+          if (t.identifier === lookTouch.id) {
+            const dx = t.clientX - lookTouch.lastX;
+            const dy = t.clientY - lookTouch.lastY;
+            lookTouch.lastX = t.clientX;
+            lookTouch.lastY = t.clientY;
+            PLAYER.yaw -= dx * 0.0052;
+            PLAYER.pitch = Math.max(-1.05, Math.min(1.05, PLAYER.pitch - dy * 0.0042));
+          }
+        }
+      }, { passive: true });
+
+      const endLookTouch = (e) => {
+        for (let i = 0; i < e.changedTouches.length; i++) {
+          if (e.changedTouches[i].identifier === lookTouch.id) {
+            lookTouch.active = false;
+            lookTouch.id = null;
+          }
+        }
+      };
+      canvas.addEventListener('touchend', endLookTouch);
+      canvas.addEventListener('touchcancel', endLookTouch);
+
+      // Butang Aksi Mobile
+      let mobileSprintHeld = false;
+      document.getElementById('mob-btn-interact').addEventListener('click', triggerInteraction);
+      const mobSprintBtn = document.getElementById('mob-btn-sprint');
+      mobSprintBtn.addEventListener('touchstart', (e) => { e.preventDefault(); mobileSprintHeld = true; }, { passive: false });
+      mobSprintBtn.addEventListener('touchend', () => { mobileSprintHeld = false; });
+      document.getElementById('mob-btn-turn').addEventListener('click', () => {
+        PLAYER.yaw += Math.PI;
+        playTone(320, 'triangle', 0.06, 0.09);
+      });
+
+      /* ================= PENGURUSAN SKRIN MULA / JEDA / MAIN SEMULA ================= */
+      function startGame() {
+        ensureAudioCtx();
+        enforceLandscapeAndFullscreen(isTouchDevice());
+
+        STATE.phase = 'playing';
+        STATE.timeLeft = INITIAL_TIME_SEC;
+        STATE.fadhlinaSpawned = false;
+        STATE.isChasing = false;
+        STATE.panicIntensity = 0;
+        STATE.stamina = 100;
+
+        PLAYER.pos.set(0, 1.65, -26.5);
+        PLAYER.yaw = Math.PI;
+        PLAYER.pitch = 0;
+
+        FADHLINA.group.visible = false;
+
+        document.getElementById('start-screen').classList.remove('active');
+        document.getElementById('pause-screen').classList.remove('active');
+        document.getElementById('end-screen').classList.remove('active');
+        document.getElementById('game-hud').classList.add('active');
+        if (isTouchDevice()) {
+          document.getElementById('mobile-controls').classList.add('active');
+        }
+
+        renderInventory();
+        updateObjectivesHud();
+        showToast('🔦 Cari Kunci Biru di kaunter pendaftaran untuk membuka Kelas Melur!', 3800);
+
+        if (!isTouchDevice() && canvas.requestPointerLock) {
+          canvas.requestPointerLock().catch(() => {});
+        }
+      }
+
+      function pauseGame() {
+        if (STATE.phase !== 'playing') return;
+        STATE.phase = 'paused';
+        if (document.pointerLockElement) document.exitPointerLock();
+        if (fadhlinaAudio) fadhlinaAudio.pause();
+        document.getElementById('pause-screen').classList.add('active');
+      }
+
+      function resumeGame() {
+        if (STATE.phase !== 'paused') return;
+        STATE.phase = 'playing';
+        document.getElementById('pause-screen').classList.remove('active');
+        if (!isTouchDevice() && canvas.requestPointerLock) {
+          canvas.requestPointerLock().catch(() => {});
+        }
+      }
+
+      document.getElementById('btn-start-game').addEventListener('click', startGame);
+      document.getElementById('btn-hud-pause').addEventListener('click', pauseGame);
+      document.getElementById('btn-resume-game').addEventListener('click', resumeGame);
+      document.getElementById('btn-retry-game').addEventListener('click', () => {
+        window.location.reload();
+      });
+
+      /* ================= GELUNG UTAMA (GAME LOOP, TIMER 10:00 & PANIC FOV/AURA) ================= */
+      const redAuraEl = document.getElementById('chase-red-aura');
+      const staticLinesEl = document.getElementById('chase-static-lines');
+      const alertBannerEl = document.getElementById('chase-alert-banner');
+      const timerEl = document.getElementById('hud-timer');
+      const staminaFillEl = document.getElementById('stamina-fill');
+
+      function formatTimer(sec) {
+        const s = Math.max(0, Math.ceil(sec));
+        const mins = Math.floor(s / 60);
+        const rem = s % 60;
+        return String(mins).padStart(2, '0') + ':' + String(rem).padStart(2, '0');
+      }
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      const clock = new THREE.Clock();
+
+      function gameLoop() {
+        requestAnimationFrame(gameLoop);
+        const dt = Math.min(clock.getDelta(), 0.05);
+        const elapsed = clock.getElapsedTime();
+
+        // Animasi pintu terbuka & item terapung
+        for (let i = 0; i < WORLD.doors.length; i++) {
+          const d = WORLD.doors[i];
+          if (d.isOpen && Math.abs(d.mesh.rotation.y - d.targetRotY) > 0.01) {
+            d.mesh.rotation.y += (d.targetRotY - d.mesh.rotation.y) * Math.min(1, dt * 7);
+          }
+        }
+        for (let i = 0; i < itemMeshes.length; i++) {
+          if (itemMeshes[i].visible) {
+            itemMeshes[i].rotation.y += dt * 1.9;
+            itemMeshes[i].children[0].position.y = Math.sin(elapsed * 3.2 + i) * 0.06;
+          }
+        }
+
+        if (STATE.phase === 'playing') {
+          // 1. Kemaskini Timer 10:00 -> 09:30 Spawn Fadhlina
+          STATE.timeLeft -= dt;
+          if (timerEl) {
+            timerEl.textContent = formatTimer(STATE.timeLeft);
+            timerEl.classList.toggle('danger', STATE.timeLeft <= 60 || STATE.isChasing);
+          }
+
+          if (!STATE.fadhlinaSpawned && STATE.timeLeft <= SPAWN_TIME_SEC) {
+            spawnFadhlinaNow();
+          }
+
+          if (STATE.timeLeft <= 0) {
+            endGame(
+              false,
+              'MASA TAMAT (00:00)!',
+              'Loceng tengah malam telah berbunyi dan semua pintu Tadika Seri Fadhlina dikunci selama-lamanya.'
+            );
+            renderer.render(scene, camera);
+            return;
+          }
+
+          // 2. Pergerakan Pemain (Slow Walk + Sprint terhad)
+          let moveForward = 0;
+          let moveRight = 0;
+          if (!isAnyModalOpen()) {
+            if (KEYS['KeyW'] || KEYS['ArrowUp']) moveForward += 1;
+            if (KEYS['KeyS'] || KEYS['ArrowDown']) moveForward -= 1;
+            if (KEYS['KeyD'] || KEYS['ArrowRight']) moveRight += 1;
+            if (KEYS['KeyA'] || KEYS['ArrowLeft']) moveRight -= 1;
+
+            if (joyState.active) {
+              moveForward -= joyState.dy;
+              moveRight += joyState.dx;
+            }
+          }
+
+          const inputLen = Math.hypot(moveForward, moveRight);
+          if (inputLen > 1) {
+            moveForward /= inputLen;
+            moveRight /= inputLen;
+          }
+
+          const wantsSprint = (KEYS['ShiftLeft'] || KEYS['ShiftRight'] || mobileSprintHeld) && inputLen > 0.1;
+          if (wantsSprint && STATE.stamina > 4) {
+            STATE.isSprinting = true;
+            STATE.stamina = Math.max(0, STATE.stamina - dt * 26);
+          } else {
+            STATE.isSprinting = false;
+            STATE.stamina = Math.min(100, STATE.stamina + dt * 15);
+          }
+          if (staminaFillEl) {
+            staminaFillEl.style.width = STATE.stamina + '%';
+          }
+
+          const currentSpeed = STATE.isSprinting ? PLAYER.sprintSpeed : PLAYER.walkSpeed;
+          const sinY = Math.sin(PLAYER.yaw);
+          const cosY = Math.cos(PLAYER.yaw);
+
+          const vx = (-sinY * moveForward + cosY * moveRight) * currentSpeed;
+          const vz = (-cosY * moveForward - sinY * moveRight) * currentSpeed;
+
+          PLAYER.pos.x += vx * dt;
+          PLAYER.pos.z += vz * dt;
+          resolveCircleWallCollision(PLAYER.pos, PLAYER.radius);
+
+          if (inputLen > 0.1) {
+            PLAYER.bobPhase += dt * (STATE.isSprinting ? 12.5 : 7.5);
+            STATE.stepTimer -= dt;
+            if (STATE.stepTimer <= 0) {
+              playFootstep(STATE.isSprinting);
+              STATE.stepTimer = STATE.isSprinting ? 0.34 : 0.56;
+            }
+          }
+
+          updateCurrentRoomLabel();
+          updateNearestInteractable();
+
+          // 3. Kemaskini AI Fadhlina & Kesan Panik (FOV + Red Aura + Shake)
+          let distToFadhlina = 999;
+          if (STATE.fadhlinaSpawned) {
+            distToFadhlina = Math.hypot(
+              PLAYER.pos.x - FADHLINA.pos.x,
+              PLAYER.pos.z - FADHLINA.pos.z
+            );
+
+            // Fadhlina mula mengejar jika dalam jarak 17m atau dalam zon bilik yang sama
+            const sameZone = getZoneId(PLAYER.pos.x, PLAYER.pos.z) === getZoneId(FADHLINA.pos.x, FADHLINA.pos.z);
+            STATE.isChasing = distToFadhlina < 16.5 || (sameZone && distToFadhlina < 22.0);
+
+            FADHLINA.repathTimer -= dt;
+            if (FADHLINA.repathTimer <= 0 || FADHLINA.waypointQueue.length === 0) {
+              FADHLINA.waypointQueue = computeFadhlinaRoute(PLAYER.pos);
+              FADHLINA.repathTimer = 0.45;
+            }
+
+            const targetWp = FADHLINA.waypointQueue[0];
+            if (targetWp) {
+              const dx = targetWp.x - FADHLINA.pos.x;
+              const dz = targetWp.z - FADHLINA.pos.z;
+              const wpDist = Math.hypot(dx, dz);
+
+              if (wpDist < 0.65 && FADHLINA.waypointQueue.length > 1) {
+                FADHLINA.waypointQueue.shift();
+              } else if (wpDist > 0.05) {
+                const spd = STATE.isChasing ? FADHLINA.chaseSpeed : FADHLINA.walkSpeed;
+                FADHLINA.pos.x += (dx / wpDist) * spd * dt;
+                FADHLINA.pos.z += (dz / wpDist) * spd * dt;
+                resolveCircleWallCollision(FADHLINA.pos, 0.42);
+              }
+            }
+
+            // Animasi melompat/langkah seram Fadhlina
+            FADHLINA.group.position.set(
+              FADHLINA.pos.x,
+              Math.abs(Math.sin(elapsed * (STATE.isChasing ? 11 : 6))) * 0.14,
+              FADHLINA.pos.z
+            );
+            if (FADHLINA.auraLight) {
+              FADHLINA.auraLight.intensity = STATE.isChasing
+                ? 2.8 + Math.sin(elapsed * 24) * 0.9
+                : 1.8;
+            }
+
+            // Semak jika Fadhlina berjaya menangkap pemain
+            if (distToFadhlina < 1.32) {
+              endGame(
+                false,
+                'FADHLINA MENANGKAP ANDA!',
+                'Anda gagal melarikan diri daripada Guru Besar Fadhlina di dalam Tadika Seri Fadhlina.'
+              );
+              renderer.render(scene, camera);
+              return;
+            }
+          }
+
+          updateFadhlinaAudio(distToFadhlina);
+
+          // 4. Perubahan FOV Kamera, Red Panic Aura & Degupan Jantung bila dikejar
+          const targetPanic = STATE.isChasing
+            ? Math.max(0.45, Math.min(1, 1 - (distToFadhlina - 2) / 16))
+            : 0;
+          STATE.panicIntensity += (targetPanic - STATE.panicIntensity) * Math.min(1, dt * 5.5);
+
+          const fovPulse = STATE.isChasing ? Math.sin(elapsed * 14) * 1.8 * STATE.panicIntensity : 0;
+          const desiredFov = BASE_FOV + (CHASE_FOV - BASE_FOV) * STATE.panicIntensity + fovPulse;
+          if (Math.abs(camera.fov - desiredFov) > 0.05) {
+            camera.fov = desiredFov;
+            camera.updateProjectionMatrix();
+          }
+
+          redAuraEl.classList.toggle('active', STATE.isChasing);
+          staticLinesEl.classList.toggle('active', STATE.isChasing);
+          alertBannerEl.classList.toggle('active', STATE.isChasing);
+
+          if (STATE.isChasing) {
+            STATE.heartbeatTimer -= dt;
+            if (STATE.heartbeatTimer <= 0) {
+              playHeartbeat();
+              STATE.heartbeatTimer = Math.max(0.42, 0.85 - STATE.panicIntensity * 0.38);
+            }
+          }
+
+          // Gegaran kamera panik + ayunan langkah kaki
+          const shakeMag = STATE.panicIntensity * 0.032;
+          const shakeX = STATE.isChasing ? (Math.random() - 0.5) * shakeMag : 0;
+          const shakeY = STATE.isChasing ? (Math.random() - 0.5) * shakeMag : 0;
+          const bobY = inputLen > 0.1 ? Math.sin(PLAYER.bobPhase) * 0.055 : 0;
+
+          camera.position.set(
+            PLAYER.pos.x + shakeX,
+            PLAYER.pos.y + bobY + shakeY,
+            PLAYER.pos.z
+          );
+          camera.rotation.y = PLAYER.yaw;
+          camera.rotation.x = PLAYER.pitch;
+          camera.rotation.z = STATE.isChasing ? Math.sin(elapsed * 18) * 0.018 * STATE.panicIntensity : 0;
+        } else {
+          // Kamera pratonton perlahan semasa di skrin mula
+          camera.position.set(Math.sin(elapsed * 0.3) * 1.2, 1.75, -26.5);
+          camera.lookAt(0, 1.6, -12);
+        }
+
+        renderer.render(scene, camera);
+      }
+
+      /* ================= SKRIN LOADING AWAL ================= */
+      function runInitialLoading() {
+        const screenEl = document.getElementById('loading-screen');
+        const fillEl = document.getElementById('loading-bar-fill');
+        const statusEl = document.getElementById('loading-status-text');
+        const pctEl = document.getElementById('loading-percent');
+
+        const messages = [
+          'Membina 8 bilik & koridor Tadika Seri Fadhlina...',
+          'Menyusun kunci warna, peti besi & panel 3 gear...',
+          'Menetapkan jam malam 10:00 & amaran 09:30...',
+          'Sedia untuk bermula!'
+        ];
+
+        let pct = 0;
+        const iv = setInterval(() => {
+          pct = Math.min(100, pct + Math.floor(Math.random() * 12) + 7);
+          fillEl.style.width = pct + '%';
+          pctEl.textContent = pct + '%';
+
+          if (pct < 35) statusEl.textContent = messages[0];
+          else if (pct < 68) statusEl.textContent = messages[1];
+          else if (pct < 95) statusEl.textContent = messages[2];
+          else statusEl.textContent = messages[3];
+
+          if (pct >= 100) {
+            clearInterval(iv);
+            setTimeout(() => {
+              screenEl.classList.add('fade-out');
+              STATE.phase = 'start';
+            }, 250);
+          }
+        }, 80);
+      }
+
+      enforceLandscapeAndFullscreen(false);
+      runInitialLoading();
+      gameLoop();
+    })();
+  </script>
+</body>
+</html>
