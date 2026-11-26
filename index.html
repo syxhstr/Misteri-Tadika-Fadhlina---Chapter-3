@@ -3330,7 +3330,7 @@
           checkVictoryCondition();
         }
       });
-      /* ================= WATAK FADHLINA (2D SPRITE FADHLINA.PNG) & AI RONDAAN ADIL ================= */
+   /* ================= WATAK FADHLINA (2D SPRITE FADHLINA.PNG) & AI RONDAAN ADIL ================= */
       const FADHLINA = {
         group: new THREE.Group(),
         spriteMat: null,
@@ -3349,20 +3349,20 @@
       };
 
       const FADHLINA_PATROL_POINTS = [
-        new THREE.Vector3(-5.0, 0, -25.0), // Lobi Kiri
-        new THREE.Vector3(5.0, 0, -25.0),  // Lobi Kanan
-        new THREE.Vector3(-5.0, 0, -12.0), // Koridor Barat Utara
-        new THREE.Vector3(5.0, 0, -12.0),  // Koridor Timur Utara
-        new THREE.Vector3(-5.0, 0, 4.5),   // Koridor Barat Tengah
-        new THREE.Vector3(5.0, 0, 4.5),    // Koridor Timur Tengah
-        new THREE.Vector3(-5.0, 0, 21.5),  // Koridor Barat Selatan
-        new THREE.Vector3(5.0, 0, 21.5),   // Koridor Timur Selatan
-        new THREE.Vector3(-18.0, 0, -12.0),// Kelas Melur
-        new THREE.Vector3(18.0, 0, -12.0), // Kantin
-        new THREE.Vector3(-18.0, 0, 4.5),  // Bilik Muzik
-        new THREE.Vector3(18.0, 0, 4.5),   // Taman Permainan
-        new THREE.Vector3(-18.0, 0, 21.5), // Bilik Tidur
-        new THREE.Vector3(18.0, 0, 21.5)   // Pejabat Guru Besar
+        new THREE.Vector3(-5.0, 0, -25.0),
+        new THREE.Vector3(5.0, 0, -25.0),
+        new THREE.Vector3(-5.0, 0, -12.0),
+        new THREE.Vector3(5.0, 0, -12.0),
+        new THREE.Vector3(-5.0, 0, 4.5),
+        new THREE.Vector3(5.0, 0, 4.5),
+        new THREE.Vector3(-5.0, 0, 21.5),
+        new THREE.Vector3(5.0, 0, 21.5),
+        new THREE.Vector3(-18.0, 0, -12.0),
+        new THREE.Vector3(18.0, 0, -12.0),
+        new THREE.Vector3(-18.0, 0, 4.5),
+        new THREE.Vector3(18.0, 0, 4.5),
+        new THREE.Vector3(-18.0, 0, 21.5),
+        new THREE.Vector3(18.0, 0, 21.5)
       ];
 
       function pickNextPatrolPoint() {
@@ -3571,7 +3571,7 @@
         yaw: Math.PI,
         pitch: 0,
         radius: 0.42,
-        walkSpeed: 6.20, // Kelajuan berjalan ditingkatkan supaya lebih laju & responsif!
+        walkSpeed: 6.20,
         bobPhase: 0
       };
 
@@ -3609,6 +3609,7 @@
           }
         }
       }
+
       /* ================= INTERAKSI & SYARAT KEMENANGAN ================= */
       let nearestInteractable = null;
 
@@ -3714,7 +3715,7 @@
         }
       }
 
-      /* ================= KAWALAN INPUT DESKTOP & SENTUHAN MOBILE (TANPA LARI) ================= */
+      /* ================= KAWALAN INPUT DESKTOP & SENTUHAN MOBILE ================= */
       const KEYS = {};
       window.addEventListener('keydown', (e) => {
         KEYS[e.code] = true;
@@ -3773,7 +3774,6 @@
         }
       });
 
-      // Kawalan Sentuh Mobile (Kayu Ria Kiri + Seret Kamera Kanan)
       const joyState = { active: false, id: null, dx: 0, dy: 0 };
       const joyZone = document.getElementById('joystick-zone');
       const joyKnob = document.getElementById('joystick-knob');
@@ -3881,7 +3881,6 @@
         stepSoundAccum: 0
       };
 
-      // Teks sari kata hanya muncul SELEPAS visual berlaku supaya tiada spoiler awal!
       const CUTSCENE_SCRIPT = [
         {
           start: 1.0,
@@ -3932,7 +3931,6 @@
         }
       }
 
-      // Aliran tepat: Tekan PLAY -> Jalankan Intro Cutscene -> Terus Mula Bermain!
       function startIntroCutsceneThenPlay() {
         ensureAudioCtx();
         enforceLandscapeAndFullscreen(isTouchDevice());
@@ -3970,6 +3968,7 @@
         ensureAudioCtx();
         finishCutsceneAndBeginGameplay();
       });
+
       function updateCutscene(dt) {
         CUTSCENE.timer += dt;
         const t = CUTSCENE.timer;
@@ -3999,27 +3998,20 @@
           playFootstep();
         }
 
-        // Babak 1 (0 - 6.5s): Berlari dari hujung jalan sambil menoleh ke belakang
         if (t < 6.5) {
           const p = t / 6.5;
           camera.position.set(Math.sin(t * 9) * 0.08, 1.65 + Math.abs(Math.sin(t * 9)) * 0.07, -70 + p * 12);
           const lookBackYaw = p < 0.72 ? 0.32 * Math.sin(p * Math.PI) : Math.PI;
           camera.rotation.set(0.03, lookBackYaw, 0);
-        }
-        // Babak 2 (6.5 - 12.2s): Mendongak melihat bangunan & papan tanda "TADIKA SERI FADHLINA"
-        else if (t < 12.2) {
+        } else if (t < 12.2) {
           const p = (t - 6.5) / 5.7;
           camera.position.set(0, 1.68 + Math.abs(Math.sin(t * 7)) * 0.04, -58 + p * 10);
           camera.rotation.set(0.24 * Math.sin(p * Math.PI), Math.PI, 0);
-        }
-        // Babak 3 (12.2 - 19.8s): Melangkah masuk melalui pagar ke dalam Lobi Pendaftaran
-        else if (t < 19.8) {
+        } else if (t < 19.8) {
           const p = (t - 12.2) / 7.6;
           camera.position.set(Math.sin(t * 6) * 0.05, 1.65 + Math.abs(Math.sin(t * 6)) * 0.04, -48 + p * 16.5);
           camera.rotation.set(-0.02, Math.PI + Math.sin(p * Math.PI * 2) * 0.16, 0);
-        }
-        // Babak 4 (19.8 - 24.0s): Pintu pagar besi menghempas tertutup dahulu, barulah sari kata amaran muncul
-        else {
+        } else {
           if (!CUTSCENE.gateSlammed) {
             CUTSCENE.gateSlammed = true;
             setExteriorGateOpen(false);
@@ -4039,7 +4031,7 @@
         }
       }
 
-      /* ================= KAWALAN FASA PERMAINAN (SKRIN MULA -> PLAY -> INTRO -> GAME) ================= */
+      /* ================= KAWALAN FASA PERMAINAN ================= */
       function beginActualGameplay() {
         STATE.phase = 'playing';
         PLAYER.pos.set(0, 1.65, -31.5);
@@ -4085,7 +4077,6 @@
         }
       }
 
-      // Tekan PLAY pada skrin dalam game -> jalankan Intro Cutscene -> terus start game!
       document.getElementById('btn-start-game').addEventListener('click', startIntroCutsceneThenPlay);
       document.getElementById('btn-hud-pause').addEventListener('click', pauseGame);
       document.getElementById('btn-resume-game').addEventListener('click', resumeGame);
@@ -4093,7 +4084,7 @@
         window.location.reload();
       });
 
-      /* ================= GELUNG UTAMA (GAME LOOP TANPA SISTEM LARI & AI SEIMBANG) ================= */
+      /* ================= GELUNG UTAMA (GAME LOOP) ================= */
       let lastFrameTime = performance.now();
       const chaseRedAura = document.getElementById('chase-red-aura');
       const chaseStaticLines = document.getElementById('chase-static-lines');
@@ -4111,7 +4102,6 @@
         const dt = Math.min(0.05, (now - lastFrameTime) / 1000);
         lastFrameTime = now;
 
-        // Animasi item terapung
         for (let i = 0; i < WORLD.itemMeshes.length; i++) {
           const it = WORLD.itemMeshes[i];
           if (it.active) {
@@ -4120,7 +4110,6 @@
           }
         }
 
-        // Animasi pintu terbuka lancar
         for (let i = 0; i < WORLD.doors.length; i++) {
           const d = WORLD.doors[i];
           if (d.isOpen && Math.abs(d.mesh.rotation.y - d.targetRotY) > 0.01) {
@@ -4138,18 +4127,14 @@
           return;
         }
 
-       if (STATE.phase === 'playing') {
-          const modalPaused = isAnyModalOpen();
-
-          // Jeda masa, pergerakan Fadhlina & audio kejaran apabila pop-up menu (Gear/Safe/Nota) terbuka
-          if (modalPaused) {
+        if (STATE.phase === 'playing') {
+          if (isAnyModalOpen()) {
             if (fadhlinaAudio && !fadhlinaAudio.paused) fadhlinaAudio.pause();
             chaseAlertBanner.classList.remove('active');
             renderer.render(scene, camera);
             return;
           }
 
-          // 1) Kemaskini Timer & Pencetus "Fadhlina has spawned." pada 09:30
           STATE.timeLeft -= dt;
           const timerEl = document.getElementById('hud-timer');
           if (timerEl) {
@@ -4187,7 +4172,6 @@
             }
           }
 
-          // 2) Pergerakan Pemain (Kelajuan pantas 6.20)
           let moveForward = 0;
           let moveRight = 0;
 
@@ -4230,7 +4214,6 @@
             PLAYER.bobPhase = 0;
           }
 
-          // 3) AI Fadhlina 2D (Meronda secara rawak — hanya mengejar bila nampak pemain!)
           let distToBoss = 999;
           if (STATE.fadhlinaSpawned) {
             distToBoss = Math.hypot(PLAYER.pos.x - FADHLINA.pos.x, PLAYER.pos.z - FADHLINA.pos.z);
@@ -4255,7 +4238,7 @@
               if (canSeePlayerNow) {
                 STATE.isChasing = true;
                 FADHLINA.lastKnownPlayerPos = new THREE.Vector3(PLAYER.pos.x, 0, PLAYER.pos.z);
-                FADHLINA.loseSightTimer = 3.2; // Ingat lokasi terakhir pemain selama 3.2 saat selepas hilang pandangan
+                FADHLINA.loseSightTimer = 3.2;
               } else if (STATE.isChasing) {
                 FADHLINA.loseSightTimer -= dt;
                 if (FADHLINA.loseSightTimer <= 0) {
@@ -4266,7 +4249,6 @@
                 }
               }
 
-              // Tentukan destinasi: Kejar lokasi terakhir pemain dilihat ATAU ronda titik rawak
               const navGoal = (STATE.isChasing && FADHLINA.lastKnownPlayerPos)
                 ? FADHLINA.lastKnownPlayerPos
                 : FADHLINA.patrolTarget;
@@ -4312,7 +4294,9 @@
                   FADHLINA.pos.z += (Math.random() - 0.5) * 1.1;
                   resolveCircleWallCollision(FADHLINA.pos, 0.44);
                   if (!STATE.isChasing) FADHLINA.patrolTarget = pickNextPatrolPoint();
-                  FADHLINA.waypointQueue = computeFadhlinaRoute(STATE.isChasing && FADHLINA.lastKnownPlayerPos ? FADHLINA.lastKnownPlayerPos : FADHLINA.patrolTarget);
+                  FADHLINA.waypointQueue = computeFadhlinaRoute(
+                    STATE.isChasing && FADHLINA.lastKnownPlayerPos ? FADHLINA.lastKnownPlayerPos : FADHLINA.patrolTarget
+                  );
                 }
                 FADHLINA.lastCheckPos.copy(FADHLINA.pos);
                 FADHLINA.stuckTimer = 0;
@@ -4338,7 +4322,6 @@
             }
           }
 
-          // 4) Kesan Visual Panik, Shake & FOV bila Fadhlina Mengejar
           const targetPanic = (STATE.fadhlinaSpawned && STATE.fadhlinaStunTimer <= 0 && (STATE.isChasing || distToBoss < 8.5)) ? 1 : 0;
           STATE.panicIntensity += (targetPanic - STATE.panicIntensity) * Math.min(1, dt * 6);
 
@@ -4386,7 +4369,10 @@
 
           updateNearestInteractable();
         }
-        
+
+        renderer.render(scene, camera);
+      }
+
       /* ================= SKRIN PEMUATAN (LOADING SCREEN) ================= */
       window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -4419,7 +4405,6 @@
             setTimeout(() => {
               loadScreen.classList.add('fade-out');
               STATE.phase = 'start';
-              // Paparkan Skrin Mula dalam game (Tekan PLAY -> Intro Cutscene -> Terus Start)
               camera.position.set(0, 2.2, -46);
               camera.rotation.set(0.14, Math.PI, 0);
               document.getElementById('start-screen').classList.add('active');
