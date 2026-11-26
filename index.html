@@ -3330,20 +3330,48 @@
           checkVictoryCondition();
         }
       });
-      /* ================= WATAK FADHLINA (2D SPRITE FADHLINA.PNG) & AI SEIMBANG ================= */
+      /* ================= WATAK FADHLINA (2D SPRITE FADHLINA.PNG) & AI RONDAAN ADIL ================= */
       const FADHLINA = {
         group: new THREE.Group(),
         spriteMat: null,
         auraLight: null,
         stunRing: null,
-        pos: new THREE.Vector3(0, 0, 22.0), // Muncul di hujung selatan koridor hadapan Pejabat Guru Besar
-        walkSpeed: 2.35,  // Rondaan perlahan & adil
-        chaseSpeed: 3.55, // Lebih perlahan daripada kelajuan jalan pemain (4.65) supaya tak perlu lari!
+        pos: new THREE.Vector3(0, 0, 22.0),
+        walkSpeed: 2.55,
+        chaseSpeed: 3.95,
+        patrolTarget: new THREE.Vector3(-5.0, 0, -12.0),
+        lastKnownPlayerPos: null,
+        loseSightTimer: 0,
         waypointQueue: [],
         repathTimer: 0,
         stuckTimer: 0,
         lastCheckPos: new THREE.Vector3(0, 0, 22.0)
       };
+
+      const FADHLINA_PATROL_POINTS = [
+        new THREE.Vector3(-5.0, 0, -25.0), // Lobi Kiri
+        new THREE.Vector3(5.0, 0, -25.0),  // Lobi Kanan
+        new THREE.Vector3(-5.0, 0, -12.0), // Koridor Barat Utara
+        new THREE.Vector3(5.0, 0, -12.0),  // Koridor Timur Utara
+        new THREE.Vector3(-5.0, 0, 4.5),   // Koridor Barat Tengah
+        new THREE.Vector3(5.0, 0, 4.5),    // Koridor Timur Tengah
+        new THREE.Vector3(-5.0, 0, 21.5),  // Koridor Barat Selatan
+        new THREE.Vector3(5.0, 0, 21.5),   // Koridor Timur Selatan
+        new THREE.Vector3(-18.0, 0, -12.0),// Kelas Melur
+        new THREE.Vector3(18.0, 0, -12.0), // Kantin
+        new THREE.Vector3(-18.0, 0, 4.5),  // Bilik Muzik
+        new THREE.Vector3(18.0, 0, 4.5),   // Taman Permainan
+        new THREE.Vector3(-18.0, 0, 21.5), // Bilik Tidur
+        new THREE.Vector3(18.0, 0, 21.5)   // Pejabat Guru Besar
+      ];
+
+      function pickNextPatrolPoint() {
+        let candidate = FADHLINA_PATROL_POINTS[Math.floor(Math.random() * FADHLINA_PATROL_POINTS.length)];
+        if (candidate.distanceTo(FADHLINA.pos) < 6.0) {
+          candidate = FADHLINA_PATROL_POINTS[(FADHLINA_PATROL_POINTS.indexOf(candidate) + 5) % FADHLINA_PATROL_POINTS.length];
+        }
+        return candidate.clone();
+      }
 
       function createFallbackFadhlina2DTexture() {
         const c = document.createElement('canvas');
@@ -3388,13 +3416,11 @@
           () => {}
         );
 
-        // Paparan imej 2D billboard fadhlina.png
         const sprite2D = new THREE.Sprite(FADHLINA.spriteMat);
         sprite2D.scale.set(1.68, 2.78, 1);
         sprite2D.position.set(0, 1.39, 0);
         FADHLINA.group.add(sprite2D);
 
-        // Gelung elektrik biru bila Fadhlina lumpuh ditembak Pistol Pelali
         const stunRing = new THREE.Mesh(
           new THREE.TorusGeometry(0.75, 0.05, 8, 24),
           new THREE.MeshBasicMaterial({ color: 0x38bdf8 })
@@ -3405,7 +3431,6 @@
         FADHLINA.group.add(stunRing);
         FADHLINA.stunRing = stunRing;
 
-        // Aura cahaya merah menakutkan di sekeliling Fadhlina
         FADHLINA.auraLight = new THREE.PointLight(0xdc2626, 2.2, 12, 1.5);
         FADHLINA.auraLight.position.set(0, 1.85, 0);
         FADHLINA.group.add(FADHLINA.auraLight);
@@ -3431,7 +3456,6 @@
         return 'corridor';
       }
 
-      // Fadhlina membuka pintu bilik atau memecahkan papan jika menghalang laluannya
       function letFadhlinaClearObstacles() {
         for (let i = 0; i < WORLD.doors.length; i++) {
           const d = WORLD.doors[i];
@@ -3460,9 +3484,9 @@
 
       function computeFadhlinaRoute(targetPos) {
         const fZone = getZoneId(FADHLINA.pos.x, FADHLINA.pos.z);
-        const pZone = getZoneId(targetPos.x, targetPos.z);
+        const tZone = getZoneId(targetPos.x, targetPos.z);
 
-        if (fZone === pZone) {
+        if (fZone === tZone) {
           return [new THREE.Vector3(targetPos.x, 0, targetPos.z)];
         }
 
@@ -3478,7 +3502,6 @@
           lobi: -22.0
         };
 
-        // Keluar ke koridor terdekat (Barat X = -5.0 atau Timur X = +5.0)
         if (fZone !== 'corridor' && doorZMap[fZone] !== undefined) {
           if (fZone === 'stor') {
             route.push(new THREE.Vector3(0, 0, 5.5));
@@ -3488,19 +3511,17 @@
           }
         }
 
-        // Bergerak sepanjang koridor ke paras pintu bilik pemain
-        const targetDoorZ = (pZone !== 'corridor' && doorZMap[pZone] !== undefined)
-          ? doorZMap[pZone]
+        const targetDoorZ = (tZone !== 'corridor' && doorZMap[tZone] !== undefined)
+          ? doorZMap[tZone]
           : targetPos.z;
         const laneX = targetPos.x < 0 ? -5.0 : 5.0;
         route.push(new THREE.Vector3(laneX, 0, targetDoorZ));
 
-        // Masuk melalui ambang pintu ke bilik sasaran
-        if (pZone !== 'corridor' && doorZMap[pZone] !== undefined) {
-          if (pZone === 'stor') {
+        if (tZone !== 'corridor' && doorZMap[tZone] !== undefined) {
+          if (tZone === 'stor') {
             route.push(new THREE.Vector3(0, 0, 5.5));
             route.push(new THREE.Vector3(0, 0, 2.2));
-          } else if (pZone === 'lobi') {
+          } else if (tZone === 'lobi') {
             route.push(new THREE.Vector3(laneX, 0, -24.5));
           } else {
             const enterSideX = targetPos.x < 0 ? -8.5 : 8.5;
@@ -3520,11 +3541,12 @@
         if (officeDoor) openDoorProgrammatically(officeDoor, true);
 
         FADHLINA.pos.set(0, 0, 22.0);
+        FADHLINA.patrolTarget = pickNextPatrolPoint();
+        FADHLINA.lastKnownPlayerPos = null;
         FADHLINA.lastCheckPos.copy(FADHLINA.pos);
         FADHLINA.group.position.copy(FADHLINA.pos);
         FADHLINA.group.visible = true;
 
-        // Paparkan teks "Fadhlina has spawned." di bawah timer apabila masa mencecah 09:30
         const spawnStatus = document.getElementById('hud-spawn-status');
         if (spawnStatus) {
           spawnStatus.textContent = 'Fadhlina has spawned.';
@@ -3533,8 +3555,8 @@
 
         playSpawnScreamSfx();
         showToast(
-          '🚨 Fadhlina has spawned! Gunakan dua koridor tadika untuk mengelaknya!',
-          '🚨 Fadhlina has spawned! Use the twin corridors to evade her!',
+          '🚨 Fadhlina has spawned! Sorok di dalam bilik jika terdengar bunyi langkahnya!',
+          '🚨 Fadhlina has spawned! Hide inside rooms if you hear her approaching!',
           3800
         );
         if (fadhlinaAudio && !STATE.muted) {
@@ -3543,13 +3565,13 @@
         }
       }
 
-      /* ================= PERGERAKAN PEMAIN (LAJU & LINCAH TANPA SISTEM LARI) ================= */
+      /* ================= PERGERAKAN PEMAIN (LAJU & LINCAH) ================= */
       const PLAYER = {
-        pos: new THREE.Vector3(0, 1.65, -31.5), // Mula di Lobi Pendaftaran Tadika
-        yaw: Math.PI, // Menghadap ke arah koridor utama (+Z)
+        pos: new THREE.Vector3(0, 1.65, -31.5),
+        yaw: Math.PI,
         pitch: 0,
         radius: 0.42,
-        walkSpeed: 4.65, // Kelajuan berjalan yang pantas & selesa tanpa perlu tekan butang lari!
+        walkSpeed: 6.20, // Kelajuan berjalan ditingkatkan supaya lebih laju & responsif!
         bobPhase: 0
       };
 
@@ -4116,7 +4138,17 @@
           return;
         }
 
-        if (STATE.phase === 'playing') {
+       if (STATE.phase === 'playing') {
+          const modalPaused = isAnyModalOpen();
+
+          // Jeda masa, pergerakan Fadhlina & audio kejaran apabila pop-up menu (Gear/Safe/Nota) terbuka
+          if (modalPaused) {
+            if (fadhlinaAudio && !fadhlinaAudio.paused) fadhlinaAudio.pause();
+            chaseAlertBanner.classList.remove('active');
+            renderer.render(scene, camera);
+            return;
+          }
+
           // 1) Kemaskini Timer & Pencetus "Fadhlina has spawned." pada 09:30
           STATE.timeLeft -= dt;
           const timerEl = document.getElementById('hud-timer');
@@ -4145,7 +4177,6 @@
             STATE.shootCooldown = Math.max(0, STATE.shootCooldown - dt);
           }
 
-          // Kemaskini peluru pelali di udara
           for (let d = activeDarts.length - 1; d >= 0; d--) {
             const dart = activeDarts[d];
             dart.life -= dt;
@@ -4156,20 +4187,18 @@
             }
           }
 
-          // 2) Pergerakan Pemain (Kelajuan tunggal pantas & selesa tanpa sistem lari)
+          // 2) Pergerakan Pemain (Kelajuan pantas 6.20)
           let moveForward = 0;
           let moveRight = 0;
 
-          if (!isAnyModalOpen()) {
-            if (KEYS['KeyW'] || KEYS['ArrowUp']) moveForward += 1;
-            if (KEYS['KeyS'] || KEYS['ArrowDown']) moveForward -= 1;
-            if (KEYS['KeyD'] || KEYS['ArrowRight']) moveRight += 1;
-            if (KEYS['KeyA'] || KEYS['ArrowLeft']) moveRight -= 1;
+          if (KEYS['KeyW'] || KEYS['ArrowUp']) moveForward += 1;
+          if (KEYS['KeyS'] || KEYS['ArrowDown']) moveForward -= 1;
+          if (KEYS['KeyD'] || KEYS['ArrowRight']) moveRight += 1;
+          if (KEYS['KeyA'] || KEYS['ArrowLeft']) moveRight -= 1;
 
-            if (joyState.active) {
-              moveForward -= joyState.dy;
-              moveRight += joyState.dx;
-            }
+          if (joyState.active) {
+            moveForward -= joyState.dy;
+            moveRight += joyState.dx;
           }
 
           const inputLen = Math.hypot(moveForward, moveRight);
@@ -4191,17 +4220,17 @@
           updateCurrentRoomLabel(false);
 
           if (isMoving) {
-            PLAYER.bobPhase += dt * 11.5;
+            PLAYER.bobPhase += dt * 13.0;
             STATE.stepTimer -= dt;
             if (STATE.stepTimer <= 0) {
               playFootstep();
-              STATE.stepTimer = 0.36;
+              STATE.stepTimer = 0.31;
             }
           } else {
             PLAYER.bobPhase = 0;
           }
 
-          // 3) AI Fadhlina 2D (Adil, lebih perlahan daripada pemain & mudah dikelirukan di koridor kembar)
+          // 3) AI Fadhlina 2D (Meronda secara rawak — hanya mengejar bila nampak pemain!)
           let distToBoss = 999;
           if (STATE.fadhlinaSpawned) {
             distToBoss = Math.hypot(PLAYER.pos.x - FADHLINA.pos.x, PLAYER.pos.z - FADHLINA.pos.z);
@@ -4210,6 +4239,7 @@
             if (STATE.fadhlinaStunTimer > 0) {
               STATE.fadhlinaStunTimer = Math.max(0, STATE.fadhlinaStunTimer - dt);
               STATE.isChasing = false;
+              FADHLINA.lastKnownPlayerPos = null;
               FADHLINA.stunRing.visible = true;
               FADHLINA.stunRing.rotation.z += dt * 4.5;
               FADHLINA.auraLight.color.setHex(0x38bdf8);
@@ -4220,17 +4250,42 @@
               letFadhlinaClearObstacles();
 
               const clearSight = hasClearLineOfSight(FADHLINA.pos, PLAYER.pos);
-              // Jarak kesan seimbang supaya pemain boleh menyorok di bilik atau tukar koridor
-              const seesPlayer = (distToBoss < 13.5 && clearSight) || distToBoss < 4.5;
-              STATE.isChasing = seesPlayer;
+              const canSeePlayerNow = (distToBoss < 13.0 && clearSight) || distToBoss < 4.0;
+
+              if (canSeePlayerNow) {
+                STATE.isChasing = true;
+                FADHLINA.lastKnownPlayerPos = new THREE.Vector3(PLAYER.pos.x, 0, PLAYER.pos.z);
+                FADHLINA.loseSightTimer = 3.2; // Ingat lokasi terakhir pemain selama 3.2 saat selepas hilang pandangan
+              } else if (STATE.isChasing) {
+                FADHLINA.loseSightTimer -= dt;
+                if (FADHLINA.loseSightTimer <= 0) {
+                  STATE.isChasing = false;
+                  FADHLINA.lastKnownPlayerPos = null;
+                  FADHLINA.patrolTarget = pickNextPatrolPoint();
+                  FADHLINA.waypointQueue = computeFadhlinaRoute(FADHLINA.patrolTarget);
+                }
+              }
+
+              // Tentukan destinasi: Kejar lokasi terakhir pemain dilihat ATAU ronda titik rawak
+              const navGoal = (STATE.isChasing && FADHLINA.lastKnownPlayerPos)
+                ? FADHLINA.lastKnownPlayerPos
+                : FADHLINA.patrolTarget;
+
+              if (!STATE.isChasing) {
+                const distToPatrol = Math.hypot(FADHLINA.patrolTarget.x - FADHLINA.pos.x, FADHLINA.patrolTarget.z - FADHLINA.pos.z);
+                if (distToPatrol < 1.3) {
+                  FADHLINA.patrolTarget = pickNextPatrolPoint();
+                  FADHLINA.waypointQueue = computeFadhlinaRoute(FADHLINA.patrolTarget);
+                }
+              }
 
               FADHLINA.repathTimer -= dt;
               if (FADHLINA.repathTimer <= 0 || FADHLINA.waypointQueue.length === 0) {
-                FADHLINA.waypointQueue = computeFadhlinaRoute(PLAYER.pos);
-                FADHLINA.repathTimer = 0.65;
+                FADHLINA.waypointQueue = computeFadhlinaRoute(navGoal);
+                FADHLINA.repathTimer = STATE.isChasing ? 0.55 : 1.4;
               }
 
-              let currentTarget = FADHLINA.waypointQueue[0] || PLAYER.pos;
+              let currentTarget = FADHLINA.waypointQueue[0] || navGoal;
               const distToWp = Math.hypot(currentTarget.x - FADHLINA.pos.x, currentTarget.z - FADHLINA.pos.z);
               if (distToWp < 0.85 && FADHLINA.waypointQueue.length > 1) {
                 FADHLINA.waypointQueue.shift();
@@ -4246,7 +4301,6 @@
               FADHLINA.pos.z += (dirZ / dirLen) * bossSpeed * dt;
               resolveCircleWallCollision(FADHLINA.pos, 0.44);
 
-              // Anti-Stuck: Jika tersangkut pada sudut meja, anjak perlahan & kira semula laluan
               FADHLINA.stuckTimer += dt;
               if (FADHLINA.stuckTimer >= 0.85) {
                 const movedDist = Math.hypot(
@@ -4257,7 +4311,8 @@
                   FADHLINA.pos.x += (Math.random() - 0.5) * 1.1;
                   FADHLINA.pos.z += (Math.random() - 0.5) * 1.1;
                   resolveCircleWallCollision(FADHLINA.pos, 0.44);
-                  FADHLINA.waypointQueue = computeFadhlinaRoute(PLAYER.pos);
+                  if (!STATE.isChasing) FADHLINA.patrolTarget = pickNextPatrolPoint();
+                  FADHLINA.waypointQueue = computeFadhlinaRoute(STATE.isChasing && FADHLINA.lastKnownPlayerPos ? FADHLINA.lastKnownPlayerPos : FADHLINA.patrolTarget);
                 }
                 FADHLINA.lastCheckPos.copy(FADHLINA.pos);
                 FADHLINA.stuckTimer = 0;
@@ -4274,8 +4329,8 @@
                   false,
                   CURRENT_LANG === 'en' ? 'FADHLINA CAUGHT YOU!' : 'FADHLINA MENANGKAP ANDA!',
                   CURRENT_LANG === 'en'
-                    ? 'Fadhlina caught up to you inside Tadika Seri Fadhlina. Try using the twin corridors and Stun Pistol!'
-                    : 'Fadhlina berjaya menangkap anda di dalam Tadika Seri Fadhlina. Gunakan laluan dua koridor dan Pistol Pelali!'
+                    ? 'Fadhlina caught up to you inside Tadika Seri Fadhlina. Hide inside rooms when she patrols near!'
+                    : 'Fadhlina berjaya menangkap anda di dalam Tadika Seri Fadhlina. Sorok di dalam bilik apabila dia meronda berhampiran!'
                 );
                 renderer.render(scene, camera);
                 return;
@@ -4284,7 +4339,7 @@
           }
 
           // 4) Kesan Visual Panik, Shake & FOV bila Fadhlina Mengejar
-          const targetPanic = (STATE.fadhlinaSpawned && STATE.fadhlinaStunTimer <= 0 && (STATE.isChasing || distToBoss < 10)) ? 1 : 0;
+          const targetPanic = (STATE.fadhlinaSpawned && STATE.fadhlinaStunTimer <= 0 && (STATE.isChasing || distToBoss < 8.5)) ? 1 : 0;
           STATE.panicIntensity += (targetPanic - STATE.panicIntensity) * Math.min(1, dt * 6);
 
           if (STATE.panicIntensity > 0.15) {
@@ -4321,7 +4376,6 @@
           );
           camera.rotation.set(PLAYER.pitch, PLAYER.yaw, 0);
 
-          // Animasi item di tangan
           if (firstPersonHandGroup.children.length > 0) {
             firstPersonHandGroup.position.set(
               0.34 + Math.cos(PLAYER.bobPhase * 0.5) * 0.012,
@@ -4332,10 +4386,7 @@
 
           updateNearestInteractable();
         }
-
-        renderer.render(scene, camera);
-      }
-
+        
       /* ================= SKRIN PEMUATAN (LOADING SCREEN) ================= */
       window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
