@@ -1918,7 +1918,8 @@
         ];
 
         for (let i = 0; i < candidates.length; i++) {
-          if (!isSpotBlockedByWall(candidates[i].x, candidates[i].z, 0.32)) {
+          if (!isSpotBlockedByWall(candidates[i].x, candidates[i].z, 0.32) &&
+              isSegmentClear(PLAYER.pos.x, PLAYER.pos.z, candidates[i].x, candidates[i].z)) {
             return candidates[i];
           }
         }
@@ -2203,6 +2204,8 @@
 
           if (dist < 28 && dot > 0.85 && hasClearLineOfSight(PLAYER.pos, FADHLINA.pos)) {
             STATE.fadhlinaStunTimer = 22.0;
+            FADHLINA.path = [];
+            FADHLINA.goal = null;
             STATE.isChasing = false;
             playUnlockSfx();
             showToast(
@@ -2224,25 +2227,43 @@
         }
       }
 
-      function hasClearLineOfSight(posA, posB) {
+      /* Ujian garisan tepat lawan kotak (tiada lagi "terlepas" dinding nipis).
+         pad = besarkan kotak, tallOnly = hanya dinding/pintu yang halang pandangan,
+         endMargin = abaikan kotak yang menyentuh sasaran (cth. pintu yang mahu dibuka). */
+      function segmentHitsBox(ax, az, bx, bz, minX, maxX, minZ, maxZ) {
+        let t0 = 0, t1 = 1;
+        const dx = bx - ax, dz = bz - az;
+        const clip = (p, q) => {
+          if (p === 0) return q > 0;
+          const r = q / p;
+          if (p < 0) { if (r > t1) return false; if (r > t0) t0 = r; }
+          else { if (r < t0) return false; if (r < t1) t1 = r; }
+          return true;
+        };
+        return clip(-dx, ax - minX) && clip(dx, maxX - ax) &&
+               clip(-dz, az - minZ) && clip(dz, maxZ - az) && t0 < t1;
+      }
+
+      function isSegmentClear(ax, az, bx, bz, pad = 0, tallOnly = false, endMargin = null) {
         if (typeof WORLD === 'undefined') return true;
-        const steps = 18;
-        for (let s = 1; s < steps; s++) {
-          const t = s / steps;
-          const px = posA.x + (posB.x - posA.x) * t;
-          const pz = posA.z + (posB.z - posA.z) * t;
-          for (let i = 0; i < WORLD.wallBoxes.length; i++) {
-            const b = WORLD.wallBoxes[i];
-            if (b.minX > 900) continue;
-            if (px >= b.minX && px <= b.maxX && pz >= b.minZ && pz <= b.maxZ) {
-              return false;
-            }
-          }
+        for (let i = 0; i < WORLD.wallBoxes.length; i++) {
+          const b = WORLD.wallBoxes[i];
+          if (b.minX > 900 || (tallOnly && b.low)) continue;
+          if (endMargin !== null &&
+              bx > b.minX - endMargin && bx < b.maxX + endMargin &&
+              bz > b.minZ - endMargin && bz < b.maxZ + endMargin) continue;
+          if (segmentHitsBox(ax, az, bx, bz, b.minX - pad, b.maxX + pad, b.minZ - pad, b.maxZ + pad)) return false;
         }
         return true;
       }
 
-      document.getElementById('mob-btn-shoot').addEventListener('click', fireStunPistol);
+      function hasClearLineOfSight(posA, posB) {
+        return isSegmentClear(posA.x, posA.z, posB.x, posB.z, 0, true);
+      }
+
+      function canReachItem(it) {
+        return isSegmentClear(PLAYER.pos.x, PLAYER.pos.z, it.group.position.x, it.group.position.z, 0, true, 0.2);
+      }
 
       /* ================= MODAL LOGIC (AUTO-PAUSE GAME BILA POP-UP DIBUKA) ================= */
       function isAnyModalOpen() {
@@ -2520,7 +2541,9 @@
         interactables: [],
         worldItems: [],
         itemHitMeshes: [],
-        roomLights: []
+        roomLights: [],
+        shortcuts: [],
+        navDirty: true
       };
 
       const WALL_H = 3.8;
@@ -2542,6 +2565,7 @@
           maxX: x + w / 2,
           minZ: z - d / 2,
           maxZ: z + d / 2,
+          low: h < 2,
           mesh
         };
         if (solid) {
@@ -2615,7 +2639,14 @@
       addWallBox(7.5, WALL_H / 2, 13.75, 0.45, WALL_H, 9.7, matWallCream);
 
       addWallBox(-5.65, WALL_H / 2, 9.0, 3.7, WALL_H, 0.45, matWallCream);
-      addWallBox(5.65, WALL_H / 2, 9.0, 3.7, WALL_H, 0.45, matWallCream);
+
+      /* Dinding melintang (paksi X) dari x1 ke x2 */
+      function addWallSpanX(x1, x2, z, mat) {
+        return addWallBox((x1 + x2) / 2, WALL_H / 2, z, x2 - x1, WALL_H, 0.45, mat);
+      }
+      function addLintelX(x1, x2, z, mat) {
+        addWallBox((x1 + x2) / 2, 3.35, z, x2 - x1, 0.9, 0.45, mat, false);
+      }
 
       // Tiang Pusingan (Loop Pillars)
       addWallBox(0, WALL_H / 2, 2.2, 1.35, WALL_H, 1.35, matWallCream, true);
@@ -2625,19 +2656,28 @@
       addWallBox(-16.5, WALL_H / 2, -4.5, 0.45, WALL_H, 27.4, matWallCream);
       addWallBox(16.5, WALL_H / 2, -4.5, 0.45, WALL_H, 27.4, matWallCream);
 
-      // Pemisah Bilik Sayap Barat
+      // Pemisah Bilik Sayap Barat (ada ruang untuk pintu pintasan)
       addWallBox(-10.15, WALL_H / 2, 9.0, 12.7, WALL_H, 0.45, matWallBlue);
-      addWallBox(-10.15, WALL_H / 2, 0.0, 12.7, WALL_H, 0.45, matWallBlue);
-      addWallBox(-10.15, WALL_H / 2, -9.0, 12.7, WALL_H, 0.45, matWallPurp);
+      addWallSpanX(-16.5, -8.6, 0.0, matWallBlue);
+      addWallSpanX(-5.8, -3.8, 0.0, matWallBlue);
+      addLintelX(-8.6, -5.8, 0.0, matWallBlue);
+      addWallSpanX(-16.5, -12.9, -9.0, matWallPurp);
+      addWallSpanX(-10.1, -3.8, -9.0, matWallPurp);
+      addLintelX(-12.9, -10.1, -9.0, matWallPurp);
       addWallBox(-10.15, WALL_H / 2, -18.0, 12.7, WALL_H, 0.45, matWallPurp);
 
       // Pemisah Bilik Sayap Timur
-      addWallBox(10.15, WALL_H / 2, 9.0, 12.7, WALL_H, 0.45, matWallCream);
+      addWallSpanX(3.8, 4.4, 9.0, matWallCream);      // Laluan baharu Lobi <-> Kantin
+      addWallSpanX(7.0, 16.5, 9.0, matWallCream);
+      addLintelX(4.4, 7.0, 9.0, matWallCream);
       addWallBox(6.4, WALL_H / 2, 0.0, 5.2, WALL_H, 0.45, matWallGreen);
       addWallBox(14.15, WALL_H / 2, 0.0, 4.7, WALL_H, 0.45, matWallGreen);
       addWallBox(10.4, 3.35, 0.0, 2.8, 0.9, 0.45, matWallGreen, false);
-      addWallBox(10.15, WALL_H / 2, -9.0, 12.7, WALL_H, 0.45, matWallOrng);
-      addWallBox(10.15, WALL_H / 2, -18.0, 12.7, WALL_H, 0.45, matWallOrng);
+      addWallSpanX(3.8, 6.0, -9.0, matWallOrng);
+      addWallSpanX(8.8, 16.5, -9.0, matWallOrng);
+      addLintelX(6.0, 8.8, -9.0, matWallOrng);
+      addWallSpanX(5.75, 16.5, -18.0, matWallOrng);
+      addLintelX(4.15, 5.75, -18.0, matWallOrng);
 
       // Dinding Koridor Barat
       addWallBox(-3.8, WALL_H / 2, 7.45, 0.4, WALL_H, 3.1, matWallBlue);
@@ -2659,7 +2699,7 @@
 
       // Bilik Stor & Arkib Utara
       addWallBox(-3.7, WALL_H / 2, -18.0, 4.6, WALL_H, 0.45, matWallStor);
-      addWallBox(3.7, WALL_H / 2, -18.0, 4.6, WALL_H, 0.45, matWallStor);
+      addWallSpanX(1.4, 4.15, -18.0, matWallStor);
       addWallBox(0, 3.35, -18.0, 2.8, 0.9, 0.45, matWallStor, false);
       addWallBox(-6.0, WALL_H / 2, -22.25, 0.45, WALL_H, 8.7, matWallStor);
       addWallBox(6.0, WALL_H / 2, -22.25, 0.45, WALL_H, 8.7, matWallStor);
@@ -2738,6 +2778,7 @@
               scene.remove(pivot);
               solidBox.minX = 9999;
               solidBox.maxX = 9999;
+              refreshShortcutDoors();
 
               consumeHeldItem();
               playUnlockSfx();
@@ -2765,6 +2806,64 @@
       createLockedDoor('muzik', -3.8, -4.5, true, 0x16a34a, 'key_green', 'Kunci Hijau', 'Green Key');
       createLockedDoor('tidur', -3.8, -13.5, true, 0x9333ea, 'key_purple', 'Kunci Ungu', 'Purple Key');
       createLockedDoor('pejabat', 3.8, -13.5, true, 0xea580c, 'key_orange', 'Kunci Jingga', 'Orange Key');
+
+      /* ================= PINTU PINTASAN (LALUAN PUSINGAN GAYA PIGGY) =================
+         Terbuka sendiri apabila KEDUA-DUA bilik di sebelahnya sudah dibuka,
+         jadi turutan kunci kekal tetapi tiada lagi bilik buntu. */
+      function createShortcutDoor(x, z, width, isOpenNow) {
+        const mesh = new THREE.Mesh(
+          new THREE.BoxGeometry(width, 2.9, 0.2),
+          new THREE.MeshStandardMaterial({ color: 0x57534e, roughness: 0.8 })
+        );
+        mesh.position.set(x, 1.45, z);
+        scene.add(mesh);
+        const solidBox = { minX: x - width / 2, maxX: x + width / 2, minZ: z - 0.22, maxZ: z + 0.22 };
+        WORLD.wallBoxes.push(solidBox);
+        const sc = { x, z, mesh, solidBox, open: false, isOpenNow };
+        WORLD.shortcuts.push(sc);
+
+        [-0.45, 0.45].forEach((side) => {
+          WORLD.interactables.push({
+            pos: new THREE.Vector3(x, 1.3, z + side),
+            radius: 2.0,
+            get disabled() { return sc.open; },
+            getPrompt: () => CURRENT_LANG === 'en' ? 'Shortcut Door (locked)' : 'Pintu Pintasan (terkunci)',
+            onInteract: () => showToast(
+              '🚧 Pintu pintasan akan terbuka bila kedua-dua bilik di sebelahnya sudah dibuka.',
+              '🚧 This shortcut opens once the rooms on both sides are unlocked.'
+            )
+          });
+        });
+        return sc;
+      }
+
+      function isDoorUnlocked(key) {
+        return WORLD.doors.some((d) => d.key === key && d.unlocked);
+      }
+
+      function refreshShortcutDoors() {
+        let opened = 0;
+        WORLD.shortcuts.forEach((sc) => {
+          if (sc.open || !sc.isOpenNow()) return;
+          sc.open = true;
+          opened++;
+          scene.remove(sc.mesh);
+          sc.solidBox.minX = 9999;
+          sc.solidBox.maxX = 9999;
+        });
+        WORLD.navDirty = true;
+        if (opened) {
+          setTimeout(() => showToast(
+            '🚪 Pintu pintasan terbuka! Laluan pusingan baharu tersedia.',
+            '🚪 Shortcut opened! A new escape loop is available.'
+          ), 1700);
+        }
+      }
+
+      createShortcutDoor(-7.2, 0.0, 2.8, () => isDoorUnlocked('melur') && isDoorUnlocked('muzik'));
+      createShortcutDoor(-11.5, -9.0, 2.8, () => isDoorUnlocked('muzik') && isDoorUnlocked('tidur'));
+      createShortcutDoor(7.4, -9.0, 2.8, () => isDoorUnlocked('pejabat'));
+      createShortcutDoor(4.95, -18.0, 1.6, () => isDoorUnlocked('pejabat') && STATE.planksBroken);
 
       /* Fungsi Spawn Item 3D Di Dunia */
       function spawnWorldItem(id, name, icon, x, y, z, colorHex, modelType = 'key', extraAmount = 0) {
@@ -3049,7 +3148,7 @@
 
       // 3. KANTIN & DAPUR
       addFurnitureBox(14.8, 0.5, 3.8, 1.2, 1.0, 2.8, 0x64748b, true);
-      addFurnitureBox(6.8, 0.38, 6.5, 2.0, 0.76, 0.9, 0xf59e0b, true);
+      addFurnitureBox(9.6, 0.38, 4.4, 2.0, 0.76, 0.9, 0xf59e0b, true);
 
       const boardKantin = new THREE.Mesh(
         new THREE.BoxGeometry(3.2, 1.45, 0.12),
@@ -3066,7 +3165,7 @@
 
       // 5. TAMAN PERMAINAN TERTUTUP
       addFurnitureBox(14.4, 0.65, -6.8, 1.8, 1.3, 1.8, 0xec4899, true);
-      addFurnitureBox(6.5, 0.35, -3.2, 1.8, 0.7, 1.8, 0x06b6d4, true);
+      addFurnitureBox(7.8, 0.35, -2.6, 1.8, 0.7, 1.8, 0x06b6d4, true);
 
       // 6. BILIK TIDUR TENGAH HARI
       addFurnitureBox(-14.9, 0.35, -15.5, 1.2, 0.7, 2.0, 0xa855f7, true);
@@ -3078,7 +3177,7 @@
       );
       valveCageMesh.position.set(-7.6, 0.7, -16.4);
       scene.add(valveCageMesh);
-      const valveCageBox = { minX: -8.3, maxX: -6.9, minZ: -17.1, maxZ: -15.7 };
+      const valveCageBox = { minX: -8.3, maxX: -6.9, minZ: -17.1, maxZ: -15.7, low: true };
       WORLD.wallBoxes.push(valveCageBox);
 
       const valveInteract = {
@@ -3098,6 +3197,7 @@
             scene.remove(valveCageMesh);
             valveCageBox.minX = 9999;
             valveCageBox.maxX = 9999;
+            WORLD.navDirty = true;
             playUnlockSfx();
             spawnWorldItem('keycard', 'Kad Akses', '💳', -7.6, 0.5, -16.4, 0x38bdf8, 'keycard');
             showToast(
@@ -3149,6 +3249,7 @@
             scene.remove(planksGroup);
             storBarricadeBox.minX = 9999;
             storBarricadeBox.maxX = 9999;
+            refreshShortcutDoors();
             playSmashSfx();
             showToast(
               '🔨 Papan kayu Bilik Stor dipecahkan dan terus hilang!',
@@ -3204,9 +3305,9 @@
           { x: 5.4, y: 1.18, z: 14.5, zone: 'open' },
           { x: -5.4, y: 1.02, z: 14.5, zone: 'open' },
           { x: 14.8, y: 1.18, z: 3.8, zone: 'open' },
-          { x: 6.8, y: 0.94, z: 6.5, zone: 'open' },
+          { x: 9.6, y: 0.94, z: 4.4, zone: 'open' },
           { x: 14.4, y: 1.48, z: -6.8, zone: 'open' },
-          { x: 6.5, y: 0.92, z: -3.2, zone: 'open' },
+          { x: 7.8, y: 0.92, z: -2.6, zone: 'open' },
           { x: -14.8, y: 1.14, z: 6.8, zone: 'melur' },
           { x: -10.5, y: 0.92, z: 1.6, zone: 'melur' },
           { x: -14.9, y: 1.18, z: -6.5, zone: 'muzik' },
@@ -3348,20 +3449,197 @@
       const FADHLINA = {
         group: new THREE.Group(),
         pos: new THREE.Vector3(0, 0, -14.0),
-        patrolIndex: 0,
+        radius: 0.36,
         patrolPoints: [
-          new THREE.Vector3(0, 0, -14.0),
-          new THREE.Vector3(-10.2, 0, 4.5),
-          new THREE.Vector3(10.2, 0, 4.5),
-          new THREE.Vector3(10.2, 0, -4.5),
-          new THREE.Vector3(-10.2, 0, -4.5),
-          new THREE.Vector3(0, 0, 12.5),
-          new THREE.Vector3(10.2, 0, -13.5),
-          new THREE.Vector3(-10.2, 0, -13.5)
-        ],
-        walkSpeed: 2.15,
-        chaseSpeed: 3.55
+          [0, -14.0], [0, -3.0], [0, 6.0], [0, 12.0], [0, -22.0],
+          [12.5, 6.0], [12.5, -4.5], [10.2, -12.5],
+          [-8.0, 4.5], [-8.0, -4.5], [-10.2, -13.5]
+        ].map((p) => new THREE.Vector3(p[0], 0, p[1])),
+        walkSpeed: 2.3,
+        chaseSpeed: 4.35,       // Pemain 5.3 — boleh lepas kalau bijak pusing
+        viewDist: 14.0,
+        hearDist: 3.2,
+        loseSightTime: 3.0,     // Saat tanpa nampak pemain sebelum hilang jejak
+        reactTime: 0.8,         // Masa terkejut sebelum mula mengejar
+        catchDist: 0.95,
+        heading: 0,
+        path: [],
+        goal: null,
+        lastSeen: new THREE.Vector3(),
+        unseenTimer: 0,
+        reactTimer: 0,
+        waitTimer: 0,
+        repathTimer: 0,
+        graceTimer: 0
       };
+
+      /* ================= PENCARIAN LALUAN (A* ATAS GRID) ================= */
+      const NAV = { cell: 0.4, minX: -16.6, minZ: -26.6, cols: 84, rows: 114, blocked: null };
+
+      function navBuild() {
+        const pad = FADHLINA.radius + 0.03;
+        NAV.blocked = new Uint8Array(NAV.cols * NAV.rows);
+        for (let r = 0; r < NAV.rows; r++) {
+          for (let c = 0; c < NAV.cols; c++) {
+            const x = NAV.minX + (c + 0.5) * NAV.cell;
+            const z = NAV.minZ + (r + 0.5) * NAV.cell;
+            let bad = !isInsideBuilding(x, z);
+            for (let i = 0; !bad && i < WORLD.wallBoxes.length; i++) {
+              const b = WORLD.wallBoxes[i];
+              if (b.minX > 900) continue;
+              if (x > b.minX - pad && x < b.maxX + pad && z > b.minZ - pad && z < b.maxZ + pad) bad = true;
+            }
+            NAV.blocked[r * NAV.cols + c] = bad ? 1 : 0;
+          }
+        }
+        WORLD.navDirty = false;
+      }
+
+      /* Petak kosong terdekat yang tidak dipisahkan oleh dinding */
+      function navNearestCell(x, z) {
+        const c0 = Math.floor((x - NAV.minX) / NAV.cell);
+        const r0 = Math.floor((z - NAV.minZ) / NAV.cell);
+        let best = -1, bestD = Infinity;
+        for (let r = r0 - 3; r <= r0 + 3; r++) {
+          for (let c = c0 - 3; c <= c0 + 3; c++) {
+            if (r < 0 || c < 0 || r >= NAV.rows || c >= NAV.cols || NAV.blocked[r * NAV.cols + c]) continue;
+            const cx = NAV.minX + (c + 0.5) * NAV.cell;
+            const cz = NAV.minZ + (r + 0.5) * NAV.cell;
+            const d = (cx - x) * (cx - x) + (cz - z) * (cz - z);
+            if (d < bestD && isSegmentClear(x, z, cx, cz)) { bestD = d; best = r * NAV.cols + c; }
+          }
+        }
+        return best;
+      }
+
+      /* Pulangkan senarai titik laluan, atau null jika sasaran tidak boleh dicapai */
+      function findPath(fromX, fromZ, toX, toZ) {
+        if (WORLD.navDirty || !NAV.blocked) navBuild();
+        const start = navNearestCell(fromX, fromZ);
+        const goal = navNearestCell(toX, toZ);
+        if (start < 0 || goal < 0) return null;
+
+        const W = NAV.cols, N = W * NAV.rows;
+        const g = new Float32Array(N).fill(Infinity);
+        const parent = new Int32Array(N).fill(-1);
+        const closed = new Uint8Array(N);
+        const heap = [];
+        const h = (i) => {
+          const dc = Math.abs((i % W) - (goal % W)), dr = Math.abs(((i / W) | 0) - ((goal / W) | 0));
+          return Math.max(dc, dr) + 0.414 * Math.min(dc, dr);
+        };
+        const push = (i, f) => {
+          heap.push([f, i]);
+          let k = heap.length - 1;
+          while (k > 0) {
+            const p = (k - 1) >> 1;
+            if (heap[p][0] <= heap[k][0]) break;
+            [heap[p], heap[k]] = [heap[k], heap[p]];
+            k = p;
+          }
+        };
+        const pop = () => {
+          const top = heap[0], last = heap.pop();
+          if (heap.length) {
+            heap[0] = last;
+            let k = 0;
+            for (;;) {
+              const l = 2 * k + 1, r = l + 1;
+              let m = k;
+              if (l < heap.length && heap[l][0] < heap[m][0]) m = l;
+              if (r < heap.length && heap[r][0] < heap[m][0]) m = r;
+              if (m === k) break;
+              [heap[m], heap[k]] = [heap[k], heap[m]];
+              k = m;
+            }
+          }
+          return top[1];
+        };
+
+        g[start] = 0;
+        push(start, h(start));
+        while (heap.length) {
+          const cur = pop();
+          if (cur === goal) break;
+          if (closed[cur]) continue;
+          closed[cur] = 1;
+          const cc = cur % W, cr = (cur / W) | 0;
+          for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+              if (!dr && !dc) continue;
+              const nc = cc + dc, nr = cr + dr;
+              if (nc < 0 || nr < 0 || nc >= W || nr >= NAV.rows) continue;
+              const n = nr * W + nc;
+              if (NAV.blocked[n] || closed[n]) continue;
+              if (dr && dc && (NAV.blocked[cr * W + nc] || NAV.blocked[nr * W + cc])) continue;
+              const cost = g[cur] + (dr && dc ? 1.414 : 1);
+              if (cost < g[n]) { g[n] = cost; parent[n] = cur; push(n, cost + h(n)); }
+            }
+          }
+        }
+        if (goal !== start && parent[goal] < 0) return null;
+
+        const pts = [];
+        for (let i = goal; i >= 0; i = parent[i]) {
+          pts.push({ x: NAV.minX + ((i % W) + 0.5) * NAV.cell, z: NAV.minZ + (((i / W) | 0) + 0.5) * NAV.cell });
+        }
+        pts.reverse();
+        if (isSegmentClear(pts[pts.length - 1].x, pts[pts.length - 1].z, toX, toZ, FADHLINA.radius - 0.01)) {
+          pts.push({ x: toX, z: toZ });
+        }
+        return pts;
+      }
+
+      function pickPatrolGoal() {
+        const options = FADHLINA.patrolPoints.filter((p) =>
+          Math.hypot(p.x - FADHLINA.pos.x, p.z - FADHLINA.pos.z) > 5);
+        while (options.length) {
+          const p = options.splice(Math.floor(Math.random() * options.length), 1)[0];
+          const path = findPath(FADHLINA.pos.x, FADHLINA.pos.z, p.x, p.z);
+          if (path) { FADHLINA.goal = p; FADHLINA.path = path; return; }
+        }
+        FADHLINA.goal = null;
+        FADHLINA.path = [];
+      }
+
+      /* Gerak ikut laluan; potong selekoh bila garisan terus selamat */
+      function followPath(speed, dt) {
+        const f = FADHLINA;
+        while (f.path.length > 1 &&
+               isSegmentClear(f.pos.x, f.pos.z, f.path[1].x, f.path[1].z, f.radius - 0.01)) {
+          f.path.shift();
+        }
+        let budget = speed * dt;
+        while (budget > 1e-4 && f.path.length) {
+          const t = f.path[0];
+          const dx = t.x - f.pos.x, dz = t.z - f.pos.z;
+          const len = Math.hypot(dx, dz);
+          if (len < 0.08) { f.path.shift(); continue; }
+          const step = Math.min(budget, len);
+          f.heading = Math.atan2(dx, dz);
+          const bx = f.pos.x, bz = f.pos.z;
+          moveEntityWithCollision(f.pos, (dx / len) * step, (dz / len) * step, f.radius);
+          budget -= step;
+          if (Math.hypot(f.pos.x - bx, f.pos.z - bz) < step * 0.2) { f.path.shift(); f.repathTimer = 0; break; }
+        }
+      }
+
+      /* Muncul di titik paling jauh daripada pemain dan di luar pandangan */
+      function placeFadhlinaAtSpawn() {
+        let best = null, bestScore = -Infinity;
+        FADHLINA.patrolPoints.forEach((p) => {
+          if (!findPath(p.x, p.z, PLAYER.pos.x, PLAYER.pos.z)) return;
+          const score = Math.hypot(p.x - PLAYER.pos.x, p.z - PLAYER.pos.z) +
+                        (hasClearLineOfSight(p, PLAYER.pos) ? 0 : 100);
+          if (score > bestScore) { bestScore = score; best = p; }
+        });
+        const sp = best || FADHLINA.patrolPoints[0];
+        FADHLINA.pos.set(sp.x, 0, sp.z);
+        FADHLINA.group.position.copy(FADHLINA.pos);
+        FADHLINA.path = [];
+        FADHLINA.goal = null;
+        FADHLINA.graceTimer = 2.0;
+      }
 
       const fadhlinaTex = makeFadhlinaFallbackTexture();
       const jsImgEl = document.getElementById('jumpscare-img');
@@ -3614,7 +3892,7 @@
             itemRef.group.position.x - PLAYER.pos.x,
             itemRef.group.position.z - PLAYER.pos.z
           );
-          if (distToPlayer <= 3.1 && hasClearLineOfSight(PLAYER.pos, itemRef.group.position)) {
+          if (distToPlayer <= 3.1 && canReachItem(itemRef)) {
             collectWorldItem(itemRef);
             return true;
           }
@@ -3648,6 +3926,12 @@
 
       window.addEventListener('keyup', (e) => {
         KEYS[e.code] = false;
+      });
+
+      window.addEventListener('blur', () => {
+        Object.keys(KEYS).forEach((k) => { KEYS[k] = false; });
+        resetJoystick();
+        pauseGame();
       });
 
       canvas.addEventListener('mousedown', (e) => {
@@ -3791,34 +4075,61 @@
       });
 
       /* ================= PERLANGGARAN DINDING & PENGESANAN BILIK ================= */
-      function moveEntityWithCollision(posVec, dx, dz, radius) {
-        posVec.x += dx;
-        for (let i = 0; i < WORLD.wallBoxes.length; i++) {
-          const b = WORLD.wallBoxes[i];
-          if (b.minX > 900) continue;
-          if (
-            posVec.x + radius > b.minX &&
-            posVec.x - radius < b.maxX &&
-            posVec.z + radius > b.minZ &&
-            posVec.z - radius < b.maxZ
-          ) {
-            if (dx > 0) posVec.x = b.minX - radius;
-            else if (dx < 0) posVec.x = b.maxX + radius;
-          }
-        }
+      /* Kawasan dalam bangunan (jaring keselamatan: tiada sesiapa boleh berada di luar) */
+      const BUILDING_AREAS = [
+        { minX: -7.5, maxX: 7.5, minZ: 9.0, maxZ: 18.5 },
+        { minX: -16.5, maxX: 16.5, minZ: -18.0, maxZ: 9.0 },
+        { minX: -6.0, maxX: 6.0, minZ: -26.5, maxZ: -18.0 }
+      ];
 
-        posVec.z += dz;
-        for (let i = 0; i < WORLD.wallBoxes.length; i++) {
-          const b = WORLD.wallBoxes[i];
-          if (b.minX > 900) continue;
-          if (
-            posVec.x + radius > b.minX &&
-            posVec.x - radius < b.maxX &&
-            posVec.z + radius > b.minZ &&
-            posVec.z - radius < b.maxZ
-          ) {
-            if (dz > 0) posVec.z = b.minZ - radius;
-            else if (dz < 0) posVec.z = b.maxZ + radius;
+      function isInsideBuilding(x, z) {
+        return BUILDING_AREAS.some((a) => x >= a.minX && x <= a.maxX && z >= a.minZ && z <= a.maxZ);
+      }
+
+      /* Tolak bulatan keluar dari kotak melalui arah paling dekat sahaja.
+         Kod lama boleh "melompatkan" watak ke hujung dinding panjang. */
+      function pushOutOfWalls(posVec, radius) {
+        for (let pass = 0; pass < 3; pass++) {
+          let touched = false;
+          for (let i = 0; i < WORLD.wallBoxes.length; i++) {
+            const b = WORLD.wallBoxes[i];
+            if (b.minX > 900) continue;
+            const nx = Math.max(b.minX, Math.min(posVec.x, b.maxX));
+            const nz = Math.max(b.minZ, Math.min(posVec.z, b.maxZ));
+            const dx = posVec.x - nx;
+            const dz = posVec.z - nz;
+            const d2 = dx * dx + dz * dz;
+            if (d2 >= radius * radius - 1e-9) continue;
+            touched = true;
+            if (d2 > 1e-10) {
+              const d = Math.sqrt(d2);
+              posVec.x = nx + (dx / d) * radius;
+              posVec.z = nz + (dz / d) * radius;
+            } else {
+              const left = posVec.x - b.minX, right = b.maxX - posVec.x;
+              const back = posVec.z - b.minZ, front = b.maxZ - posVec.z;
+              const m = Math.min(left, right, back, front);
+              if (m === left) posVec.x = b.minX - radius;
+              else if (m === right) posVec.x = b.maxX + radius;
+              else if (m === back) posVec.z = b.minZ - radius;
+              else posVec.z = b.maxZ + radius;
+            }
+          }
+          if (!touched) break;
+        }
+      }
+
+      function moveEntityWithCollision(posVec, dx, dz, radius) {
+        const steps = Math.max(1, Math.ceil(Math.hypot(dx, dz) / 0.1));
+        for (let s = 0; s < steps; s++) {
+          const oldX = posVec.x, oldZ = posVec.z;
+          posVec.x += dx / steps;
+          posVec.z += dz / steps;
+          pushOutOfWalls(posVec, radius);
+          if (!isInsideBuilding(posVec.x, posVec.z) || !isSegmentClear(oldX, oldZ, posVec.x, posVec.z)) {
+            posVec.x = oldX;
+            posVec.z = oldZ;
+            break;
           }
         }
       }
@@ -3876,7 +4187,7 @@
           if (dist <= 2.55) {
             const dir = new THREE.Vector3(dx, 0, dz).normalize();
             const align = fwd.dot(dir);
-            if (align > 0.35 && dist < bestScore) {
+            if (align > 0.35 && dist < bestScore && canReachItem(it)) {
               bestScore = dist;
               const lbl = getItemLabel(it.id, it.name);
               currentTargetAction = {
@@ -3896,7 +4207,8 @@
           if (dist <= obj.radius) {
             const dir = new THREE.Vector3(dx, 0, dz).normalize();
             const align = fwd.dot(dir);
-            if (align > 0.3 && dist < bestScore) {
+            if (align > 0.3 && dist < bestScore &&
+                isSegmentClear(PLAYER.pos.x, PLAYER.pos.z, obj.pos.x, obj.pos.z, 0, true, 0.35)) {
               const pTxt = obj.getPrompt();
               if (!pTxt) continue;
               bestScore = dist;
@@ -3971,8 +4283,7 @@
         if (!STATE.fadhlinaSpawned && STATE.timeLeft <= SPAWN_TIME_SEC) {
           STATE.fadhlinaSpawned = true;
           FADHLINA.group.visible = true;
-          FADHLINA.pos.set(0, 0, -14.0);
-          FADHLINA.group.position.copy(FADHLINA.pos);
+          placeFadhlinaAtSpawn();
 
           const statusEl = document.getElementById('hud-spawn-status');
           statusEl.textContent = CURRENT_LANG === 'en'
@@ -3982,8 +4293,8 @@
 
           playSpawnScreamSfx();
           showToast(
-            '⚠️ AMARAN: Fadhlina telah muncul di dalam tadika! Pusing di sebalik tiang atau bilik untuk mengelak!',
-            '⚠️ WARNING: Fadhlina has spawned! Loop around pillars or rooms to evade her!',
+            '⚠️ AMARAN: Fadhlina telah muncul di dalam tadika! Sorok di sebalik dinding untuk hilangkan jejaknya!',
+            '⚠️ WARNING: Fadhlina has spawned! Break her line of sight to lose her!',
             4200
           );
         }
@@ -4003,32 +4314,32 @@
         const auraEl = document.getElementById('chase-red-aura');
         const staticEl = document.getElementById('chase-static-lines');
         const bannerEl = document.getElementById('chase-alert-banner');
+        const setChaseFx = (on) => {
+          auraEl.classList.toggle('active', on);
+          staticEl.classList.toggle('active', on);
+          bannerEl.classList.toggle('active', on);
+        };
 
-        if (!STATE.fadhlinaSpawned) {
-          auraEl.classList.remove('active');
-          staticEl.classList.remove('active');
-          bannerEl.classList.remove('active');
-          return;
-        }
+        if (!STATE.fadhlinaSpawned) { setChaseFx(false); return; }
 
-        const lookAngle = Math.atan2(PLAYER.pos.x - FADHLINA.pos.x, PLAYER.pos.z - FADHLINA.pos.z);
-        FADHLINA.group.rotation.y = lookAngle;
-
-        const dist = Math.hypot(PLAYER.pos.x - FADHLINA.pos.x, PLAYER.pos.z - FADHLINA.pos.z);
+        const f = FADHLINA;
+        const toX = PLAYER.pos.x - f.pos.x;
+        const toZ = PLAYER.pos.z - f.pos.z;
+        const dist = Math.hypot(toX, toZ);
+        f.group.rotation.y = Math.atan2(toX, toZ);
 
         if (STATE.fadhlinaStunTimer > 0) {
           STATE.fadhlinaStunTimer = Math.max(0, STATE.fadhlinaStunTimer - dt);
           STATE.isChasing = false;
-          FADHLINA.group.position.y = -0.35;
+          f.group.position.y = -0.35;
           fadhlinaPlane.rotation.z = 0.28;
-          auraEl.classList.remove('active');
-          staticEl.classList.remove('active');
-          bannerEl.classList.remove('active');
+          setChaseFx(false);
           updateFadhlinaAudio(dist);
 
           if (STATE.fadhlinaStunTimer === 0) {
-            FADHLINA.group.position.y = 0;
+            f.group.position.y = 0;
             fadhlinaPlane.rotation.z = 0;
+            f.graceTimer = 2.5;
             showToast(
               '⚠️ Fadhlina telah sedar semula! Berhati-hati!',
               '⚠️ Fadhlina has recovered from the stun! Watch out!'
@@ -4037,40 +4348,71 @@
           return;
         }
 
-        FADHLINA.group.position.y = Math.abs(Math.sin(performance.now() * 0.007)) * 0.08;
+        f.group.position.y = Math.abs(Math.sin(performance.now() * 0.007)) * 0.08;
         fadhlinaPlane.rotation.z = Math.sin(performance.now() * 0.006) * 0.035;
 
-        const canSeePlayer = dist < 15.5 && hasClearLineOfSight(FADHLINA.pos, PLAYER.pos);
-        if (canSeePlayer || dist < 4.2) {
-          STATE.isChasing = true;
-        } else if (dist > 17.0) {
+        /* Tempoh bertenang selepas muncul / sedar: tidak nampak & tidak tangkap */
+        if (f.graceTimer > 0) {
+          f.graceTimer -= dt;
           STATE.isChasing = false;
+          setChaseFx(false);
+          updateFadhlinaAudio(dist);
+          return;
         }
 
-        let targetX = PLAYER.pos.x;
-        let targetZ = PLAYER.pos.z;
-        let speed = FADHLINA.chaseSpeed;
+        const visible = hasClearLineOfSight(f.pos, PLAYER.pos);
+        const facing = dist > 0.001 ? (Math.sin(f.heading) * toX + Math.cos(f.heading) * toZ) / dist : 1;
+        const detected = visible && (
+          dist < f.hearDist ||
+          (dist < f.viewDist && (STATE.isChasing || facing > -0.15))
+        );
 
-        if (!STATE.isChasing) {
-          speed = FADHLINA.walkSpeed;
-          const wp = FADHLINA.patrolPoints[FADHLINA.patrolIndex];
-          targetX = wp.x;
-          targetZ = wp.z;
-          if (Math.hypot(targetX - FADHLINA.pos.x, targetZ - FADHLINA.pos.z) < 1.2) {
-            FADHLINA.patrolIndex = (FADHLINA.patrolIndex + 1) % FADHLINA.patrolPoints.length;
+        if (detected) {
+          if (!STATE.isChasing) {
+            STATE.isChasing = true;
+            f.reactTimer = f.reactTime;
+            f.repathTimer = 0;
+            playTone(300, 'sawtooth', 0.4, 0.2, 90);
+          }
+          f.unseenTimer = 0;
+          f.lastSeen.set(PLAYER.pos.x, 0, PLAYER.pos.z);
+        } else if (STATE.isChasing) {
+          f.unseenTimer += dt;
+          if (f.unseenTimer >= f.loseSightTime) {
+            STATE.isChasing = false;
+            f.goal = f.lastSeen;     // periksa tempat terakhir nampak, kemudian ronda
+            f.path = findPath(f.pos.x, f.pos.z, f.lastSeen.x, f.lastSeen.z) || [];
+            showToast('😮‍💨 Fadhlina hilang jejak anda...', '😮‍💨 Fadhlina lost track of you...', 2000);
           }
         }
 
-        const dirX = targetX - FADHLINA.pos.x;
-        const dirZ = targetZ - FADHLINA.pos.z;
-        const len = Math.hypot(dirX, dirZ) || 1;
-        moveEntityWithCollision(FADHLINA.pos, (dirX / len) * speed * dt, (dirZ / len) * speed * dt, 0.36);
-        FADHLINA.group.position.x = FADHLINA.pos.x;
-        FADHLINA.group.position.z = FADHLINA.pos.z;
+        if (STATE.isChasing) {
+          if (f.reactTimer > 0) {
+            f.reactTimer -= dt;
+            f.heading = Math.atan2(toX, toZ);
+          } else {
+            f.repathTimer -= dt;
+            if (f.repathTimer <= 0 || !f.path.length) {
+              f.repathTimer = 0.3;
+              f.path = findPath(f.pos.x, f.pos.z, f.lastSeen.x, f.lastSeen.z) || [];
+            }
+            followPath(f.chaseSpeed, dt);
+          }
+        } else if (f.waitTimer > 0) {
+          f.waitTimer -= dt;
+          f.heading += dt * 2.4;     // toleh kiri kanan
+        } else {
+          if (!f.goal) pickPatrolGoal();
+          followPath(f.walkSpeed, dt);
+          if (f.goal && !f.path.length) {
+            f.goal = null;
+            f.waitTimer = 1.4;
+          }
+        }
 
-        auraEl.classList.toggle('active', STATE.isChasing);
-        staticEl.classList.toggle('active', STATE.isChasing);
-        bannerEl.classList.toggle('active', STATE.isChasing);
+        f.group.position.x = f.pos.x;
+        f.group.position.z = f.pos.z;
+        setChaseFx(STATE.isChasing);
 
         if (STATE.isChasing) {
           STATE.heartbeatTimer -= dt;
@@ -4082,7 +4424,9 @@
 
         updateFadhlinaAudio(dist);
 
-        if (dist < 1.15) {
+        /* Hanya boleh tangkap jika tiada apa-apa menghalang di antara */
+        const nowDist = Math.hypot(PLAYER.pos.x - f.pos.x, PLAYER.pos.z - f.pos.z);
+        if (nowDist < f.catchDist && isSegmentClear(f.pos.x, f.pos.z, PLAYER.pos.x, PLAYER.pos.z)) {
           triggerJumpscareCatch();
         }
       }
