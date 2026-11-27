@@ -1103,18 +1103,6 @@
       color: #bae6fd;
       background: rgba(12, 74, 110, 0.9);
     }
-
-    .mob-btn.sprint-btn {
-      border-color: #4ade80;
-      color: #bbf7d0;
-      background: rgba(20, 83, 45, 0.9);
-    }
-
-    .mob-btn.sprint-btn.sprinting {
-      background: #16a34a;
-      color: #ffffff;
-      transform: scale(1.06);
-    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 </head>
@@ -1191,9 +1179,9 @@
       </div>
 
       <ul class="mission-checklist">
-        <li id="ui-chk-1">🎒 Hanya 1 item boleh dipegang pada satu masa</li>
-        <li id="ui-chk-2">🔑 Buka bilik berkunci &amp; selesaikan teka-teki</li>
-        <li id="ui-chk-3">🔫 Cari Pistol Pelali &amp; peluru untuk melumpuhkan ancaman</li>
+        <li id="ui-chk-1">🎒 Hanya 1 item boleh dipegang pada satu masa (Klik / E untuk ambil)</li>
+        <li id="ui-chk-2">🎲 Lokasi item &amp; kod peti besi rawak setiap pusingan</li>
+        <li id="ui-chk-3">🔫 Cari Pistol Pelali &amp; peluru untuk melumpuhkan Fadhlina</li>
         <li id="ui-chk-4">🚪 Buka 3 sistem kunci Pintu Utama untuk melarikan diri</li>
       </ul>
 
@@ -1216,8 +1204,8 @@
       </div>
       <h2 class="story-title" id="ui-pause-title">TADIKA SERI FADHLINA</h2>
       <p id="ui-pause-controls" style="color:#cbd5e1;margin-bottom:18px;font-size:0.9rem;line-height:1.5;">
-        <strong>PC:</strong> WASD Gerak • <strong>Shift</strong> Lari • Tetikus Pusing Kamera • <strong>E</strong> Ambil/Buka • <strong>G</strong> Letak Item • <strong>Klik Kiri</strong> Tembak<br/>
-        <strong>Mobile:</strong> Kayu Ria Kiri Gerak • Seret Kanan Pusing • Butang Aksi / Lari / Tembak / Letak
+        <strong>PC:</strong> WASD Gerak • Tetikus Pusing Kamera • <strong>E / Klik</strong> Ambil &amp; Interaksi • <strong>G</strong> Letak Item • <strong>Klik Kiri</strong> Tembak<br/>
+        <strong>Mobile:</strong> Kayu Ria Kiri Gerak • Seret Kanan Pusing • Tap Item / Butang Aksi / Tembak / Letak
       </p>
       <div class="btn-row-actions">
         <button type="button" id="btn-resume-game" class="btn-main-play">SAMBUNG MAIN</button>
@@ -1268,7 +1256,7 @@
 
     <div class="hud-center-reticle">
       <div class="crosshair-dot"></div>
-      <div id="interact-prompt">[E] Interaksi</div>
+      <div id="interact-prompt">[E] / Klik Interaksi</div>
     </div>
 
     <div id="game-toast"></div>
@@ -1298,7 +1286,6 @@
     </div>
     <div class="mobile-action-cluster">
       <button type="button" id="mob-btn-interact" class="mob-btn">AKSI</button>
-      <button type="button" id="mob-btn-sprint" class="mob-btn sprint-btn">LARI</button>
       <button type="button" id="mob-btn-shoot" class="mob-btn shoot-btn" style="display:none;">TEMBAK</button>
       <button type="button" id="mob-btn-drop" class="mob-btn" style="border-color:#94a3b8;color:#e2e8f0;">LETAK</button>
     </div>
@@ -1365,7 +1352,7 @@
           loadTitle: 'MISTERI TADIKA FADHLINA',
           loadMsgs: [
             'Membina bangunan tadika laluan pusingan luas & papan tanda...',
-            'Menyusun perabot kelas, taman permainan & peralatan teka-teki...',
+            'Menyusun kedudukan rawak kunci, gear & peralatan teka-teki...',
             'Memuatkan imej Fadhlina, peti besi & pistol pelali...',
             'Sedia untuk bermula!'
           ],
@@ -1376,15 +1363,15 @@
           startKicker: 'MALAM SAMA MADANI • BAB 3',
           startTitle: 'MISTERI TADIKA FADHLINA',
           startBrief: 'Selepas berjaya meloloskan diri daripada mimpi ngeri bersama Zahid di bab sebelumnya, langkah kaki membawa anda ke sebuah kompleks tadika besar yang sunyi di hujung jalan. Pintu pagarnya terbuka seolah-olah mengundang masuk—namun di sebalik dinding berwarna-warni <strong>Tadika Seri Fadhlina</strong>, ada sesuatu yang sedang memerhati dan bersedia untuk memburu anda.',
-          chk1: '🎒 Hanya 1 item boleh dipegang pada satu masa',
-          chk2: '🔑 Buka bilik berkunci (pintu terus hilang bila dibuka)',
-          chk3: '🔫 Cari Pistol Pelali & peluru untuk melumpuhkan ancaman',
-          chk4: '🏃 Gunakan laluan pusingan & butang Lari untuk mengelak',
+          chk1: '🎒 Hanya 1 item boleh dipegang pada satu masa (Klik / E untuk ambil)',
+          chk2: '🎲 Lokasi item & kod peti besi rawak setiap pusingan',
+          chk3: '🔫 Cari Pistol Pelali & peluru untuk melumpuhkan Fadhlina',
+          chk4: '🚪 Buka 3 sistem kunci Pintu Utama untuk melarikan diri',
           playBtn: '▶ PLAY / MULA MAIN',
           lobbyBtn: '← KEMBALI KE LOBI',
           pauseKicker: 'PERMAINAN DIJEDA',
           pauseTitle: 'TADIKA SERI FADHLINA',
-          pauseControls: '<strong>PC:</strong> WASD Gerak • <strong>Shift</strong> Lari • Tetikus Pusing Kamera • <strong>E</strong> Ambil/Buka • <strong>G</strong> Letak Item • <strong>Klik Kiri</strong> Tembak<br/><strong>Mobile:</strong> Kayu Ria Kiri Gerak • Seret Kanan Pusing • Butang Aksi / Lari / Tembak / Letak',
+          pauseControls: '<strong>PC:</strong> WASD Gerak • Tetikus Pusing Kamera • <strong>E / Klik</strong> Ambil & Interaksi • <strong>G</strong> Letak Item • <strong>Klik Kiri</strong> Tembak<br/><strong>Mobile:</strong> Kayu Ria Kiri Gerak • Seret Kanan Pusing • Tap Item / Butang Aksi / Tembak / Letak',
           resumeBtn: 'SAMBUNG MAIN',
           retryBtn: 'MAIN SEMULA',
           pauseBtn: '⏸ JEDA',
@@ -1394,7 +1381,6 @@
           ammoLabel: '🔸 PELURU:',
           dropBtn: '[G] LETAK',
           mobAct: 'AKSI',
-          mobSprint: 'LARI',
           mobShoot: 'TEMBAK',
           mobDrop: 'LETAK',
           objKeycard: 'Imbas Kad Akses pada Pintu Keluar',
@@ -1448,7 +1434,7 @@
           loadTitle: 'FADHLINA KINDERGARTEN MYSTERY',
           loadMsgs: [
             'Building wide loopable kindergarten layout & signboard...',
-            'Arranging classrooms, indoor playground & puzzle props...',
+            'Randomizing locations for keys, gears & puzzle tools...',
             'Loading Fadhlina sprite, code safe & tranquilizer pistol...',
             'Ready to begin!'
           ],
@@ -1459,15 +1445,15 @@
           startKicker: 'MALAM SAMA MADANI • CHAPTER 3',
           startTitle: 'FADHLINA KINDERGARTEN MYSTERY',
           startBrief: 'After narrowly escaping the nightmare with Zahid in the previous chapter, your footsteps lead you to a massive, silent kindergarten complex at the end of the road. Its front gates stand ajar as if inviting you inside—yet behind the colorful walls of <strong>Tadika Seri Fadhlina</strong>, something is watching and waiting to hunt you down.',
-          chk1: '🎒 Only 1 item can be held at a time',
-          chk2: '🔑 Unlock rooms (unlocked doors vanish immediately)',
-          chk3: '🔫 Find the Stun Pistol & darts to stun the threat',
-          chk4: '🏃 Use loop routes & Sprint button to evade Fadhlina',
+          chk1: '🎒 Only 1 item can be held at a time (Click / E to pick up)',
+          chk2: '🎲 Item spots & safe code are randomized each run',
+          chk3: '🔫 Find the Stun Pistol & darts to stun Fadhlina',
+          chk4: '🚪 Unlock all 3 Main Exit locks to escape',
           playBtn: '▶ PLAY',
           lobbyBtn: '← BACK TO LOBBY',
           pauseKicker: 'GAME PAUSED',
           pauseTitle: 'TADIKA SERI FADHLINA',
-          pauseControls: '<strong>PC:</strong> WASD Move • <strong>Shift</strong> Sprint • Mouse Look • <strong>E</strong> Pick Up/Open • <strong>G</strong> Drop Item • <strong>Left Click</strong> Fire<br/><strong>Mobile:</strong> Left Stick Move • Drag Right Look • Act / Sprint / Fire / Drop Buttons',
+          pauseControls: '<strong>PC:</strong> WASD Move • Mouse Look • <strong>E / Click</strong> Pick Up & Interact • <strong>G</strong> Drop Item • <strong>Left Click</strong> Fire<br/><strong>Mobile:</strong> Left Stick Move • Drag Right Look • Tap Item / Act / Fire / Drop',
           resumeBtn: 'RESUME GAME',
           retryBtn: 'PLAY AGAIN',
           pauseBtn: '⏸ PAUSE',
@@ -1477,7 +1463,6 @@
           ammoLabel: '🔸 DARTS:',
           dropBtn: '[G] DROP',
           mobAct: 'ACT',
-          mobSprint: 'SPRINT',
           mobShoot: 'FIRE',
           mobDrop: 'DROP',
           objKeycard: 'Scan Keycard at the Main Exit',
@@ -1581,7 +1566,6 @@
         setTxt('btn-drop-item', d.dropBtn);
 
         setTxt('mob-btn-interact', d.mobAct);
-        setTxt('mob-btn-sprint', d.mobSprint);
         setTxt('mob-btn-shoot', d.mobShoot);
         setTxt('mob-btn-drop', d.mobDrop);
 
@@ -1624,7 +1608,6 @@
         fadhlinaSpawned: false,
         fadhlinaStunTimer: 0,
         isChasing: false,
-        isSprinting: false,
         muted: false,
         heldItem: null,
         pistolAmmo: 0,
@@ -1763,7 +1746,8 @@
 
       function updateFadhlinaAudio(distToFadhlina) {
         if (!fadhlinaAudio) return;
-        if (STATE.muted || STATE.phase !== 'playing' || !STATE.fadhlinaSpawned || STATE.fadhlinaStunTimer > 0) {
+        const modalPaused = (typeof isAnyModalOpen === 'function') && isAnyModalOpen();
+        if (STATE.muted || STATE.phase !== 'playing' || modalPaused || !STATE.fadhlinaSpawned || STATE.fadhlinaStunTimer > 0) {
           if (!fadhlinaAudio.paused) fadhlinaAudio.pause();
           return;
         }
@@ -1775,7 +1759,7 @@
           ? Math.min(1, 0.52 + proximity * 0.48)
           : Math.max(0.12, proximity * 0.62);
         fadhlinaAudio.volume = targetVol;
-        fadhlinaAudio.playbackRate = STATE.isChasing ? 1.16 : 1.0;
+        fadhlinaAudio.playbackRate = STATE.isChasing ? 1.12 : 1.0;
       }
 
       document.getElementById('btn-hud-mute').addEventListener('click', () => {
@@ -2195,11 +2179,16 @@
 
       document.getElementById('mob-btn-shoot').addEventListener('click', fireStunPistol);
 
-      /* ================= MODAL LOGIC (PETI BESI KUNCI PUTIH, GEAR & NOTA) ================= */
+      /* ================= MODAL LOGIC (AUTO-PAUSE GAME BILA POP-UP DIBUKA) ================= */
       function isAnyModalOpen() {
         return document.getElementById('safe-modal').classList.contains('open') ||
                document.getElementById('gear-modal').classList.contains('open') ||
                document.getElementById('note-modal').classList.contains('open');
+      }
+
+      function pauseForModal() {
+        if (fadhlinaAudio && !fadhlinaAudio.paused) fadhlinaAudio.pause();
+        if (document.pointerLockElement) document.exitPointerLock();
       }
 
       function closeAllModals() {
@@ -2213,7 +2202,7 @@
         document.getElementById('note-title').textContent = useEn ? titleEn : titleMs;
         document.getElementById('note-body').textContent = useEn ? bodyEn : bodyMs;
         document.getElementById('note-modal').classList.add('open');
-        if (document.pointerLockElement) document.exitPointerLock();
+        pauseForModal();
       }
 
       document.getElementById('note-close').addEventListener('click', closeAllModals);
@@ -2222,7 +2211,7 @@
         STATE.safeInput = '';
         document.getElementById('safe-display').textContent = '----';
         document.getElementById('safe-modal').classList.add('open');
-        if (document.pointerLockElement) document.exitPointerLock();
+        pauseForModal();
       }
 
       document.getElementById('safe-close').addEventListener('click', closeAllModals);
@@ -2285,7 +2274,7 @@
       function openGearModal() {
         refreshGearSlotsUi();
         document.getElementById('gear-modal').classList.add('open');
-        if (document.pointerLockElement) document.exitPointerLock();
+        pauseForModal();
       }
 
       document.getElementById('gear-close').addEventListener('click', closeAllModals);
@@ -2349,8 +2338,7 @@
         yaw: 0,
         pitch: 0,
         radius: 0.38,
-        walkSpeed: 5.2,
-        sprintSpeed: 7.4,
+        walkSpeed: 5.3,
         bobTime: 0
       };
 
@@ -2466,6 +2454,7 @@
         doors: [],
         interactables: [],
         worldItems: [],
+        itemHitMeshes: [],
         roomLights: []
       };
 
@@ -2553,7 +2542,6 @@
       scene.add(exteriorLamp);
 
       /* Dinding Luar & 9 Bilik (Semua Laluan Pintu 2.8m Lebar Supaya Mudah Masuk!) */
-      // 1. Dinding Depan Lobi (z = 18.5, lubang Pintu Utama di tengah x: [-1.5, 1.5])
       addWallBox(-4.5, WALL_H / 2, 18.5, 6.0, WALL_H, 0.45, matWallCream);
       addWallBox(4.5, WALL_H / 2, 18.5, 6.0, WALL_H, 0.45, matWallCream);
       addWallBox(0, 3.35, 18.5, 3.0, 0.9, 0.45, matWallCream, false);
@@ -2580,7 +2568,7 @@
       addWallBox(-10.15, WALL_H / 2, -9.0, 12.7, WALL_H, 0.45, matWallPurp);
       addWallBox(-10.15, WALL_H / 2, -18.0, 12.7, WALL_H, 0.45, matWallPurp);
 
-      // Pemisah Bilik Sayap Timur (z = 9, z = -9, z = -18) + Laluan Pusingan Terbuka antara Kantin & Taman (z = 0, bukaan x: [9.0, 11.8])
+      // Pemisah Bilik Sayap Timur + Laluan Pusingan Terbuka antara Kantin & Taman (z = 0, bukaan x: [9.0, 11.8])
       addWallBox(10.15, WALL_H / 2, 9.0, 12.7, WALL_H, 0.45, matWallCream);
       addWallBox(6.4, WALL_H / 2, 0.0, 5.2, WALL_H, 0.45, matWallGreen);
       addWallBox(14.15, WALL_H / 2, 0.0, 4.7, WALL_H, 0.45, matWallGreen);
@@ -2638,7 +2626,6 @@
         doorMesh.position.set(0, 1.44, 0);
         pivot.add(doorMesh);
 
-        // Bingkai & Tombol Kunci Emas
         const knob = new THREE.Mesh(
           new THREE.SphereGeometry(0.13, 12, 12),
           new THREE.MeshStandardMaterial({ color: 0xfacc15, metalness: 0.85, roughness: 0.2 })
@@ -2676,8 +2663,8 @@
             const roomTitle = L().doors[doorKey] || doorKey;
             const reqLbl = CURRENT_LANG === 'en' ? reqKeyNameEn : reqKeyNameMs;
             return CURRENT_LANG === 'en'
-              ? `[E] Unlock ${roomTitle} (${reqLbl})`
-              : `[E] Buka ${roomTitle} (${reqLbl})`;
+              ? `[E] / Click Unlock ${roomTitle} (${reqLbl})`
+              : `[E] / Klik Buka ${roomTitle} (${reqLbl})`;
           },
           onInteract: () => {
             if (doorObj.unlocked) return;
@@ -2685,7 +2672,6 @@
               doorObj.unlocked = true;
               interactEntry.disabled = true;
 
-              // Pintu terus hilang serta-merta dari dunia 3D & tiada lagi perlanggaran!
               scene.remove(pivot);
               solidBox.minX = 9999;
               solidBox.maxX = 9999;
@@ -2717,7 +2703,7 @@
       createLockedDoor('tidur', -3.8, -13.5, true, 0x9333ea, 'key_purple', 'Kunci Ungu', 'Purple Key');
       createLockedDoor('pejabat', 3.8, -13.5, true, 0xea580c, 'key_orange', 'Kunci Jingga', 'Orange Key');
 
-      /* Fungsi Spawn Item 3D Di Dunia */
+      /* Fungsi Spawn Item 3D Di Dunia (Termasuk Sfera Klik/Sentuh Luas untuk Raycaster) */
       function spawnWorldItem(id, name, icon, x, y, z, colorHex, modelType = 'key', extraAmount = 0) {
         const group = new THREE.Group();
         group.position.set(x, y, z);
@@ -2733,6 +2719,13 @@
         glowRing.position.y = -y + 0.03;
         group.add(glowRing);
 
+        // Zon sentuhan/klik halimunan luas supaya pemain mudah klik pada item
+        const hitCollider = new THREE.Mesh(
+          new THREE.SphereGeometry(0.62, 8, 8),
+          new THREE.MeshBasicMaterial({ visible: false })
+        );
+        group.add(hitCollider);
+
         scene.add(group);
 
         const itemEntry = {
@@ -2744,9 +2737,12 @@
           extraAmount,
           baseY: y,
           group,
+          hitCollider,
           collected: false
         };
+        hitCollider.userData.itemRef = itemEntry;
         WORLD.worldItems.push(itemEntry);
+        WORLD.itemHitMeshes.push(hitCollider);
         return itemEntry;
       }
       /* ================= SISTEM JUMPSCARE, TAMAT PERMAINAN & KEMENANGAN ================= */
@@ -2858,12 +2854,12 @@
 
       WORLD.interactables.push({
         pos: new THREE.Vector3(-1.95, 1.35, 18.1),
-        radius: 2.2,
+        radius: 2.3,
         getPrompt: () => {
           if (STATE.exitKeycardDone) {
             return CURRENT_LANG === 'en' ? '✅ Keycard Verified' : '✅ Kad Akses Disahkan';
           }
-          return CURRENT_LANG === 'en' ? '[E] Scan Access Keycard' : '[E] Imbas Kad Akses';
+          return CURRENT_LANG === 'en' ? '[E] / Click Scan Access Keycard' : '[E] / Klik Imbas Kad Akses';
         },
         onInteract: () => {
           if (STATE.exitKeycardDone) {
@@ -2896,10 +2892,10 @@
 
       WORLD.interactables.push({
         pos: new THREE.Vector3(1.95, 1.35, 18.1),
-        radius: 2.2,
+        radius: 2.3,
         getPrompt: () => CURRENT_LANG === 'en'
-          ? `[E] Inspect Mechanical Gear Box (${STATE.gearsInstalled}/3)`
-          : `[E] Periksa Kotak Gear Mekanikal (${STATE.gearsInstalled}/3)`,
+          ? `[E] / Click Mechanical Gear Box (${STATE.gearsInstalled}/3)`
+          : `[E] / Klik Kotak Gear Mekanikal (${STATE.gearsInstalled}/3)`,
         onInteract: () => {
           openGearModal();
         }
@@ -2920,7 +2916,7 @@
           if (STATE.exitWhiteKeyDone) {
             return CURRENT_LANG === 'en' ? '✅ White Padlock Unlocked' : '✅ Mangga Putih Terbuka';
           }
-          return CURRENT_LANG === 'en' ? '[E] Unlock Main White Padlock' : '[E] Buka Mangga Kunci Putih Utama';
+          return CURRENT_LANG === 'en' ? '[E] / Click Unlock Main White Padlock' : '[E] / Klik Buka Mangga Putih Utama';
         },
         onInteract: () => {
           if (STATE.exitWhiteKeyDone) {
@@ -2964,14 +2960,14 @@
 
       WORLD.interactables.push({
         pos: new THREE.Vector3(4.8, 1.05, 14.5),
-        radius: 2.1,
-        getPrompt: () => CURRENT_LANG === 'en' ? '[E] Read Reception Logbook' : '[E] Baca Buku Log Kaunter',
+        radius: 2.2,
+        getPrompt: () => CURRENT_LANG === 'en' ? '[E] / Click Read Reception Logbook' : '[E] / Klik Baca Buku Log Kaunter',
         onInteract: () => {
           openNoteModal(
             '📋 BUKU LOG TADIKA SERI FADHLINA',
-            'Amaran Keselamatan:\n1. Hanya SATU item boleh dibawa di tangan pada satu masa. Tekan [G] untuk meletakkan item.\n2. Pintu Utama dikunci oleh 3 mekanisme: Kad Akses, 3 Gear Tembaga, dan Kunci Putih Utama di dalam Peti Besi Pejabat Guru Besar.\n3. Kod 4-digit Peti Besi terbahagi dua: 2 digit awal di Kelas Melur, 2 digit akhir di Kantin.\n4. Gunakan butang LARI (Shift) dan laluan pusingan untuk mengelak Fadhlina!',
+            'Amaran Keselamatan:\n1. Hanya SATU item boleh dibawa di tangan pada satu masa. Klik/Tap item atau tekan [E] untuk ambil, dan [G] untuk letak.\n2. Semua lokasi kunci & peralatan diacak secara rawak setiap kali permainan dimulakan.\n3. Pintu Utama dikunci oleh 3 mekanisme: Kad Akses, 3 Gear Tembaga, dan Kunci Putih Utama di dalam Peti Besi Pejabat Guru Besar.\n4. Kod 4-digit Peti Besi terbahagi dua: 2 digit awal di Kelas Melur, 2 digit akhir di Kantin.',
             '📋 TADIKA SERI FADHLINA LOGBOOK',
-            'Security Notice:\n1. Only ONE item can be carried in hand at a time. Press [G] to drop an item.\n2. The Main Exit requires 3 locks: Access Keycard, 3 Brass Gears, and the Main White Key inside the Principal Office Vault.\n3. The 4-digit Vault code is split: first 2 digits in Melur Classroom, last 2 digits in the Canteen.\n4. Use SPRINT (Shift) and loop corridors to evade Fadhlina!'
+            'Security Notice:\n1. Only ONE item can be carried in hand at a time. Click/Tap an item or press [E] to pick up, and [G] to drop.\n2. All key & tool locations are randomized every time a new run starts.\n3. The Main Exit requires 3 locks: Access Keycard, 3 Brass Gears, and the Main White Key inside the Principal Office Vault.\n4. The 4-digit Vault code is split: first 2 digits in Melur Classroom, last 2 digits in the Canteen.'
           );
         }
       });
@@ -3029,7 +3025,7 @@
         disabled: false,
         getPrompt: () => {
           if (STATE.valveTurned) return '';
-          return CURRENT_LANG === 'en' ? '[E] Unbolt Pipe Cage (Needs Pipe Wrench)' : '[E] Buka Nat Sangkar Paip (Perlu Sepana Paip)';
+          return CURRENT_LANG === 'en' ? '[E] / Click Unbolt Pipe Cage (Needs Pipe Wrench)' : '[E] / Klik Buka Nat Sangkar Paip (Perlu Sepana Paip)';
         },
         onInteract: () => {
           if (STATE.valveTurned) return;
@@ -3049,8 +3045,8 @@
           } else {
             playTone(170, 'square', 0.14, 0.12);
             showToast(
-              '🔒 Nat paip terlalu ketat! Cari Sepana Paip di Kantin.',
-              '🔒 Pipe bolts are jammed! Find the Pipe Wrench in the Canteen.'
+              '🔒 Nat paip terlalu ketat! Cari Sepana Paip dahulu.',
+              '🔒 Pipe bolts are jammed! Find the Pipe Wrench first.'
             );
           }
         }
@@ -3080,7 +3076,7 @@
         disabled: false,
         getPrompt: () => {
           if (STATE.planksBroken) return '';
-          return CURRENT_LANG === 'en' ? '[E] Smash Wooden Planks (Needs Iron Hammer)' : '[E] Pecahkan Papan Kayu (Perlu Tukul Besi)';
+          return CURRENT_LANG === 'en' ? '[E] / Click Smash Wooden Planks (Needs Iron Hammer)' : '[E] / Klik Pecahkan Papan Kayu (Perlu Tukul Besi)';
         },
         onInteract: () => {
           if (STATE.planksBroken) return;
@@ -3129,7 +3125,7 @@
           if (STATE.safeUnlocked) {
             return CURRENT_LANG === 'en' ? '🔐 Vault Already Unlocked' : '🔐 Peti Besi Sudah Dibuka';
           }
-          return CURRENT_LANG === 'en' ? '[E] Open Principal Code Vault' : '[E] Buka Peti Besi Kod Guru Besar';
+          return CURRENT_LANG === 'en' ? '[E] / Click Open Principal Code Vault' : '[E] / Klik Buka Peti Besi Kod Guru Besar';
         },
         onInteract: () => {
           if (STATE.safeUnlocked) {
@@ -3140,35 +3136,75 @@
         }
       });
 
-      /* ================= PENEMPATAN SEMUA KUNCI, ALATAN, GEAR & PISTOL PELALI ================= */
-      // Kunci Biru (Kaunter Lobi)
-      spawnWorldItem('key_blue', 'Kunci Biru', '🔑', 5.4, 1.18, 14.5, 0x3b82f6, 'key');
-      // Sepana Paip (Kaunter Dapur Kantin)
-      spawnWorldItem('wrench', 'Sepana Paip', '🔧', 14.8, 1.18, 3.8, 0x94a3b8, 'wrench');
-      // Gear Tembaga #1 (Taman Permainan)
-      spawnWorldItem('gear', 'Gear Tembaga', '⚙️', 14.4, 1.48, -6.8, 0xfacc15, 'gear');
-      // Peluru Pelali +3 (Kolam Bola Taman Permainan)
-      spawnWorldItem('ammo', 'Peluru Pelali', '🔸', 6.5, 0.92, -3.2, 0x38bdf8, 'ammo', 3);
+      /* ================= PENEMPATAN ITEM SECARA RAWAK (ANTI-SOFTLOCK) ================= */
+      function spawnAllRandomizedItems() {
+        // Zon: 'open' (Lobi/Kantin/Taman), 'melur' (Kunci Biru), 'muzik' (Kunci Hijau), 'stor' (Tukul), 'tidur' (Kunci Ungu), 'pejabat' (Kunci Jingga)
+        const spots = [
+          { x: 5.4, y: 1.18, z: 14.5, zone: 'open' },     // Kaunter Lobi
+          { x: -5.4, y: 1.02, z: 14.5, zone: 'open' },    // Meja Lobi Kiri
+          { x: 14.8, y: 1.18, z: 3.8, zone: 'open' },     // Kaunter Dapur Kantin
+          { x: 6.8, y: 0.94, z: 6.5, zone: 'open' },      // Meja Kantin
+          { x: 14.4, y: 1.48, z: -6.8, zone: 'open' },    // Gelongsor Taman Permainan
+          { x: 6.5, y: 0.92, z: -3.2, zone: 'open' },     // Kolam Bola Taman Permainan
+          { x: -14.8, y: 1.14, z: 6.8, zone: 'melur' },   // Meja Guru Kelas Melur
+          { x: -10.5, y: 0.92, z: 1.6, zone: 'melur' },   // Meja Murid Kelas Melur
+          { x: -14.9, y: 1.18, z: -6.5, zone: 'muzik' },  // Rak Bilik Muzik
+          { x: -10.2, y: 1.28, z: -1.6, zone: 'muzik' },  // Piano Bilik Muzik
+          { x: -4.2, y: 1.18, z: -23.5, zone: 'stor' },   // Rak Kiri Bilik Stor
+          { x: 4.2, y: 1.18, z: -23.5, zone: 'stor' },    // Rak Kanan Bilik Stor
+          { x: -14.9, y: 0.9, z: -15.5, zone: 'tidur' },  // Meja Katil Bilik Tidur
+          { x: 12.6, y: 1.18, z: -15.4, zone: 'pejabat' } // Meja Eksekutif Pejabat
+        ];
 
-      // Kunci Hijau (Meja Guru Kelas Melur)
-      spawnWorldItem('key_green', 'Kunci Hijau', '🔑', -14.8, 1.14, 6.8, 0x22c55e, 'key');
-      // Peluru Pelali +2 (Meja Murid Kelas Melur)
-      spawnWorldItem('ammo', 'Peluru Pelali', '🔸', -10.5, 0.92, 1.6, 0x38bdf8, 'ammo', 2);
+        const pickSpotFromZones = (allowedZones) => {
+          const validIndices = [];
+          for (let i = 0; i < spots.length; i++) {
+            if (allowedZones.includes(spots[i].zone)) validIndices.push(i);
+          }
+          const chosenIdx = validIndices[Math.floor(Math.random() * validIndices.length)];
+          return spots.splice(chosenIdx, 1)[0];
+        };
 
-      // Tukul Besi (Rak Bilik Muzik)
-      spawnWorldItem('hammer', 'Tukul Besi', '🔨', -14.9, 1.18, -6.5, 0xd97706, 'hammer');
-      // Kunci Ungu (Piano Bilik Muzik)
-      spawnWorldItem('key_purple', 'Kunci Ungu', '🔑', -10.2, 1.28, -1.6, 0xa855f7, 'key');
+        // 1. Kunci Biru mesti di kawasan terbuka ('open')
+        const sBlue = pickSpotFromZones(['open']);
+        spawnWorldItem('key_blue', 'Kunci Biru', '🔑', sBlue.x, sBlue.y, sBlue.z, 0x3b82f6, 'key');
 
-      // Pistol Pelali & Gear Tembaga #2 (Dalam Bilik Stor)
-      spawnWorldItem('pistol', 'Pistol Pelali', '🔫', -4.2, 1.18, -23.5, 0x38bdf8, 'pistol');
-      spawnWorldItem('gear', 'Gear Tembaga', '⚙️', 4.2, 1.18, -23.5, 0xfacc15, 'gear');
+        // 2. Kunci Hijau di kawasan terbuka atau Kelas Melur
+        const sGreen = pickSpotFromZones(['open', 'melur']);
+        spawnWorldItem('key_green', 'Kunci Hijau', '🔑', sGreen.x, sGreen.y, sGreen.z, 0x22c55e, 'key');
 
-      // Kunci Jingga (Meja Tepi Katil Bilik Tidur)
-      spawnWorldItem('key_orange', 'Kunci Jingga', '🔑', -14.9, 0.9, -15.5, 0xf97316, 'key');
+        // 3. Tukul Besi di kawasan terbuka, Kelas Melur, atau Bilik Muzik
+        const sHammer = pickSpotFromZones(['open', 'melur', 'muzik']);
+        spawnWorldItem('hammer', 'Tukul Besi', '🔨', sHammer.x, sHammer.y, sHammer.z, 0xd97706, 'hammer');
 
-      // Gear Tembaga #3 (Meja Guru Besar Fadhlina)
-      spawnWorldItem('gear', 'Gear Tembaga', '⚙️', 12.6, 1.18, -15.4, 0xfacc15, 'gear');
+        // 4. Kunci Ungu di kawasan terbuka, Kelas Melur, Bilik Muzik, atau Bilik Stor (tidak terkunci dalam Bilik Tidur)
+        const sPurple = pickSpotFromZones(['open', 'melur', 'muzik', 'stor']);
+        spawnWorldItem('key_purple', 'Kunci Ungu', '🔑', sPurple.x, sPurple.y, sPurple.z, 0xa855f7, 'key');
+
+        // 5. Kunci Jingga di mana-mana kecuali Pejabat Guru Besar
+        const sOrange = pickSpotFromZones(['open', 'melur', 'muzik', 'stor', 'tidur']);
+        spawnWorldItem('key_orange', 'Kunci Jingga', '🔑', sOrange.x, sOrange.y, sOrange.z, 0xf97316, 'key');
+
+        // 6. Baki peralatan, 3 Gear Tembaga, Pistol Pelali & Peluru diacak di semua baki tempat
+        const remainingItems = [
+          { id: 'wrench', name: 'Sepana Paip', icon: '🔧', color: 0x94a3b8, type: 'wrench', extra: 0 },
+          { id: 'gear', name: 'Gear Tembaga', icon: '⚙️', color: 0xfacc15, type: 'gear', extra: 0 },
+          { id: 'gear', name: 'Gear Tembaga', icon: '⚙️', color: 0xfacc15, type: 'gear', extra: 0 },
+          { id: 'gear', name: 'Gear Tembaga', icon: '⚙️', color: 0xfacc15, type: 'gear', extra: 0 },
+          { id: 'pistol', name: 'Pistol Pelali', icon: '🔫', color: 0x38bdf8, type: 'pistol', extra: 0 },
+          { id: 'ammo', name: 'Peluru Pelali', icon: '🔸', color: 0x38bdf8, type: 'ammo', extra: 3 },
+          { id: 'ammo', name: 'Peluru Pelali', icon: '🔸', color: 0x38bdf8, type: 'ammo', extra: 2 }
+        ];
+
+        for (let i = 0; i < remainingItems.length && spots.length > 0; i++) {
+          const itemDef = remainingItems[i];
+          const randIdx = Math.floor(Math.random() * spots.length);
+          const sp = spots.splice(randIdx, 1)[0];
+          spawnWorldItem(itemDef.id, itemDef.name, itemDef.icon, sp.x, sp.y, sp.z, itemDef.color, itemDef.type, itemDef.extra);
+        }
+      }
+
+      spawnAllRandomizedItems();
 
       /* ================= MODEL ITEM DI TANGAN ORANG PERTAMA (FIRST-PERSON) ================= */
       const firstPersonHandGroup = new THREE.Group();
@@ -3193,7 +3229,7 @@
         firstPersonHandGroup.add(itemMesh);
       }
 
-      /* ================= WATAK ANTAGONIS 3D: FADHLINA ================= */
+      /* ================= WATAK ANTAGONIS 3D: FADHLINA (KELAJUAN DIPERLAHANKAN) ================= */
       function makeFadhlinaFallbackTexture() {
         const c = document.createElement('canvas');
         c.width = 512;
@@ -3268,8 +3304,8 @@
           new THREE.Vector3(10.2, 0, -13.5),
           new THREE.Vector3(-10.2, 0, -13.5)
         ],
-        walkSpeed: 2.55,
-        chaseSpeed: 4.35
+        walkSpeed: 2.15,
+        chaseSpeed: 3.55
       };
 
       const fadhlinaTex = makeFadhlinaFallbackTexture();
@@ -3357,8 +3393,8 @@
           lookAt: [0, 1.65, 18.2],
           speakerMs: 'PEMAIN',
           speakerEn: 'PLAYER',
-          textMs: 'Aku mesti buka ketiga-tiga kunci Pintu Utama dan guna laluan pusingan untuk mengelak daripada dia!',
-          textEn: 'I must unlock all three Main Exit locks and use the loop hallways to evade her!',
+          textMs: 'Aku mesti buka ketiga-tiga kunci Pintu Utama dan cari semua item yang tersembunyi di sekitar tadika ini!',
+          textEn: 'I must unlock all three Main Exit locks and find all the items scattered around this kindergarten!',
           horror: false,
           showBossGhost: false
         }
@@ -3411,9 +3447,9 @@
           flash.style.opacity = '0';
 
           showToast(
-            '⏳ Anda ada 30 saat sebelum Fadhlina muncul! Ambil Kunci Biru di kaunter lobi.',
-            '⏳ You have 30 seconds before Fadhlina spawns! Grab the Blue Key on the lobby counter.',
-            3600
+            '⏳ Anda ada 30 saat sebelum Fadhlina muncul! Klik item atau tekan [E] untuk mengambilnya.',
+            '⏳ You have 30 seconds before Fadhlina spawns! Click items or press [E] to pick them up.',
+            3800
           );
         }, 180);
       }
@@ -3496,7 +3532,41 @@
         window.location.reload();
       });
 
-      /* ================= KAWALAN PERGERAKAN & LARI (PC & MOBILE) ================= */
+      /* ================= SISTEM KLIK / SENTUH ITEM SECARA TERUS (RAYCASTER) ================= */
+      const itemRaycaster = new THREE.Raycaster();
+      const pointerNdc = new THREE.Vector2(0, 0);
+
+      function tryRayPickItem(clientX = null, clientY = null) {
+        if (STATE.phase !== 'playing' || isAnyModalOpen()) return false;
+
+        if (clientX === null || clientY === null || document.pointerLockElement === canvas) {
+          pointerNdc.set(0, 0);
+        } else {
+          const rect = canvas.getBoundingClientRect();
+          pointerNdc.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+          pointerNdc.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+        }
+
+        itemRaycaster.setFromCamera(pointerNdc, camera);
+        const hits = itemRaycaster.intersectObjects(WORLD.itemHitMeshes, false);
+
+        for (let i = 0; i < hits.length; i++) {
+          const itemRef = hits[i].object.userData.itemRef;
+          if (!itemRef || itemRef.collected) continue;
+
+          const distToPlayer = Math.hypot(
+            itemRef.group.position.x - PLAYER.pos.x,
+            itemRef.group.position.z - PLAYER.pos.z
+          );
+          if (distToPlayer <= 3.1 && hasClearLineOfSight(PLAYER.pos, itemRef.group.position)) {
+            collectWorldItem(itemRef);
+            return true;
+          }
+        }
+        return false;
+      }
+
+      /* ================= KAWALAN PERGERAKAN & KLIK (PC & MOBILE) ================= */
       const KEYS = {};
       window.addEventListener('keydown', (e) => {
         KEYS[e.code] = true;
@@ -3526,12 +3596,26 @@
 
       canvas.addEventListener('mousedown', (e) => {
         if (STATE.phase !== 'playing' || isAnyModalOpen() || isTouchDevice()) return;
+
+        // Jika klik terus pada item berdekatan (walaupun sebelum pointer lock), terus ambil item!
+        if (e.button === 0 && tryRayPickItem(e.clientX, e.clientY)) {
+          if (document.pointerLockElement !== canvas) {
+            canvas.requestPointerLock?.();
+          }
+          return;
+        }
+
         if (document.pointerLockElement !== canvas) {
           canvas.requestPointerLock?.();
           return;
         }
+
         if (e.button === 0) {
-          fireStunPistol();
+          if (currentTargetAction) {
+            triggerPlayerInteraction();
+          } else {
+            fireStunPistol();
+          }
         }
       });
 
@@ -3544,32 +3628,17 @@
         }
       });
 
-      /* Kawalan Sentuh Mobile (Joystick Kiri + Seret Kamera Kanan + Butang Lari) */
+      /* Kawalan Sentuh Mobile (Joystick Kiri + Seret Kamera Kanan + Tap Item Terus) */
       const joyZone = document.getElementById('joystick-zone');
       const joyKnob = document.getElementById('joystick-knob');
       const joyVec = { x: 0, y: 0 };
       let joyTouchId = null;
       let lookTouchId = null;
+      let lookStartX = 0;
+      let lookStartY = 0;
       let lastLookX = 0;
       let lastLookY = 0;
-      let mobileSprintActive = false;
-
-      const mobSprintBtn = document.getElementById('mob-btn-sprint');
-      if (mobSprintBtn) {
-        mobSprintBtn.addEventListener('touchstart', (e) => {
-          e.preventDefault();
-          mobileSprintActive = true;
-          mobSprintBtn.classList.add('sprinting');
-        }, { passive: false });
-        mobSprintBtn.addEventListener('touchend', () => {
-          mobileSprintActive = false;
-          mobSprintBtn.classList.remove('sprinting');
-        });
-        mobSprintBtn.addEventListener('touchcancel', () => {
-          mobileSprintActive = false;
-          mobSprintBtn.classList.remove('sprinting');
-        });
-      }
+      let lookMoved = false;
 
       joyZone.addEventListener('touchstart', (e) => {
         e.preventDefault();
@@ -3620,8 +3689,11 @@
           const t = e.changedTouches[i];
           if (lookTouchId === null && t.identifier !== joyTouchId) {
             lookTouchId = t.identifier;
+            lookStartX = t.clientX;
+            lookStartY = t.clientY;
             lastLookX = t.clientX;
             lastLookY = t.clientY;
+            lookMoved = false;
           }
         }
       }, { passive: true });
@@ -3633,6 +3705,9 @@
           if (t.identifier === lookTouchId) {
             const dx = t.clientX - lastLookX;
             const dy = t.clientY - lastLookY;
+            if (Math.hypot(t.clientX - lookStartX, t.clientY - lookStartY) > 10) {
+              lookMoved = true;
+            }
             lastLookX = t.clientX;
             lastLookY = t.clientY;
             PLAYER.yaw -= dx * 0.0052;
@@ -3644,7 +3719,12 @@
 
       canvas.addEventListener('touchend', (e) => {
         for (let i = 0; i < e.changedTouches.length; i++) {
-          if (e.changedTouches[i].identifier === lookTouchId) {
+          const t = e.changedTouches[i];
+          if (t.identifier === lookTouchId) {
+            // Jika sentuhan pantas (tap tanpa seret), cuba ambil item yang disentuh!
+            if (!lookMoved && STATE.phase === 'playing' && !isAnyModalOpen()) {
+              tryRayPickItem(t.clientX, t.clientY);
+            }
             lookTouchId = null;
           }
         }
@@ -3740,14 +3820,14 @@
           const dx = it.group.position.x - PLAYER.pos.x;
           const dz = it.group.position.z - PLAYER.pos.z;
           const dist = Math.hypot(dx, dz);
-          if (dist <= 2.35) {
+          if (dist <= 2.55) {
             const dir = new THREE.Vector3(dx, 0, dz).normalize();
             const align = fwd.dot(dir);
-            if (align > 0.4 && dist < bestScore) {
+            if (align > 0.35 && dist < bestScore) {
               bestScore = dist;
               const lbl = getItemLabel(it.id, it.name);
               currentTargetAction = {
-                prompt: CURRENT_LANG === 'en' ? `[E] Pick Up ${lbl}` : `[E] Ambil ${lbl}`,
+                prompt: CURRENT_LANG === 'en' ? `[E] / Click Pick Up ${lbl}` : `[E] / Klik Ambil ${lbl}`,
                 execute: () => collectWorldItem(it)
               };
             }
@@ -3789,6 +3869,9 @@
         it.collected = true;
         scene.remove(it.group);
 
+        const hitIdx = WORLD.itemHitMeshes.indexOf(it.hitCollider);
+        if (hitIdx !== -1) WORLD.itemHitMeshes.splice(hitIdx, 1);
+
         if (it.id === 'ammo') {
           const addAmt = it.extraAmount || 2;
           STATE.pistolAmmo += addAmt;
@@ -3827,7 +3910,7 @@
         STATE.timeLeft = Math.max(0, STATE.timeLeft - dt);
         const totalSec = Math.ceil(STATE.timeLeft);
         const mins = String(Math.floor(totalSec / 60)).padStart(2, '0');
-        const secs = String(totalSec % 60).padStart(2, '0');
+        const secs = String(totalSec % 60)).padStart(2, '0');
 
         const timerEl = document.getElementById('hud-timer');
         timerEl.textContent = `${mins}:${secs}`;
@@ -3847,8 +3930,8 @@
 
           playSpawnScreamSfx();
           showToast(
-            '⚠️ AMARAN: Fadhlina telah muncul di dalam tadika! Lari & pusing di sebalik tiang atau bilik!',
-            '⚠️ WARNING: Fadhlina has spawned! Sprint & loop around pillars or rooms to evade her!',
+            '⚠️ AMARAN: Fadhlina telah muncul di dalam tadika! Pusing di sebalik tiang atau bilik untuk mengelak!',
+            '⚠️ WARNING: Fadhlina has spawned! Loop around pillars or rooms to evade her!',
             4200
           );
         }
@@ -3903,14 +3986,13 @@
           return;
         }
 
-        FADHLINA.group.position.y = Math.abs(Math.sin(performance.now() * 0.008)) * 0.09;
-        fadhlinaPlane.rotation.z = Math.sin(performance.now() * 0.007) * 0.04;
+        FADHLINA.group.position.y = Math.abs(Math.sin(performance.now() * 0.007)) * 0.08;
+        fadhlinaPlane.rotation.z = Math.sin(performance.now() * 0.006) * 0.035;
 
-        // Pengesanan garis penglihatan atau jarak dekat (mudah putus garis penglihatan di sebalik dinding/tiang)
-        const canSeePlayer = dist < 16.5 && hasClearLineOfSight(FADHLINA.pos, PLAYER.pos);
-        if (canSeePlayer || dist < 4.5) {
+        const canSeePlayer = dist < 15.5 && hasClearLineOfSight(FADHLINA.pos, PLAYER.pos);
+        if (canSeePlayer || dist < 4.2) {
           STATE.isChasing = true;
-        } else if (dist > 18.0) {
+        } else if (dist > 17.0) {
           STATE.isChasing = false;
         }
 
@@ -3943,7 +4025,7 @@
           STATE.heartbeatTimer -= dt;
           if (STATE.heartbeatTimer <= 0) {
             playHeartbeat();
-            STATE.heartbeatTimer = Math.max(0.32, Math.min(0.85, dist / 16));
+            STATE.heartbeatTimer = Math.max(0.36, Math.min(0.88, dist / 16));
           }
         }
 
@@ -3955,7 +4037,7 @@
         }
       }
 
-      /* ================= GELUNG UTAMA ANIMASI 3D (ANIMATE LOOP) ================= */
+      /* ================= GELUNG UTAMA ANIMASI 3D (AUTO-PAUSE BILA MODAL TERBUKA) ================= */
       let lastFrameTime = performance.now();
 
       function animate(now) {
@@ -3963,68 +4045,67 @@
         const dt = Math.min(0.05, (now - lastFrameTime) / 1000);
         lastFrameTime = now;
 
-        // Animasi item berputar & terapung
-        for (let i = 0; i < WORLD.worldItems.length; i++) {
-          const it = WORLD.worldItems[i];
-          if (!it.collected) {
-            it.group.rotation.y += dt * 1.9;
-            it.group.position.y = it.baseY + Math.sin(now * 0.0035 + i) * 0.06;
-          }
-        }
+        const modalOpen = isAnyModalOpen();
 
-        // Animasi peluru pelali yang ditembak
-        for (let i = activeDarts.length - 1; i >= 0; i--) {
-          const dart = activeDarts[i];
-          dart.life -= dt;
-          dart.mesh.position.addScaledVector(dart.vel, dt);
-          if (dart.life <= 0) {
-            scene.remove(dart.mesh);
-            activeDarts.splice(i, 1);
+        if (!modalOpen) {
+          // Animasi item berputar & terapung
+          for (let i = 0; i < WORLD.worldItems.length; i++) {
+            const it = WORLD.worldItems[i];
+            if (!it.collected) {
+              it.group.rotation.y += dt * 1.9;
+              it.group.position.y = it.baseY + Math.sin(now * 0.0035 + i) * 0.06;
+            }
+          }
+
+          // Animasi peluru pelali yang ditembak
+          for (let i = activeDarts.length - 1; i >= 0; i--) {
+            const dart = activeDarts[i];
+            dart.life -= dt;
+            dart.mesh.position.addScaledVector(dart.vel, dt);
+            if (dart.life <= 0) {
+              scene.remove(dart.mesh);
+              activeDarts.splice(i, 1);
+            }
           }
         }
 
         if (STATE.phase === 'cutscene') {
           updateCutsceneFrame(dt);
-        } else if (STATE.phase === 'playing') {
+        } else if (STATE.phase === 'playing' && !modalOpen) {
           if (STATE.shootCooldown > 0) {
             STATE.shootCooldown = Math.max(0, STATE.shootCooldown - dt);
           }
 
-          STATE.isSprinting = !!(KEYS['ShiftLeft'] || KEYS['ShiftRight'] || mobileSprintActive);
+          let moveForward = 0;
+          let moveRight = 0;
+          if (KEYS['KeyW'] || KEYS['ArrowUp']) moveForward += 1;
+          if (KEYS['KeyS'] || KEYS['ArrowDown']) moveForward -= 1;
+          if (KEYS['KeyD'] || KEYS['ArrowRight']) moveRight += 1;
+          if (KEYS['KeyA'] || KEYS['ArrowLeft']) moveRight -= 1;
 
-          if (!isAnyModalOpen()) {
-            let moveForward = 0;
-            let moveRight = 0;
-            if (KEYS['KeyW'] || KEYS['ArrowUp']) moveForward += 1;
-            if (KEYS['KeyS'] || KEYS['ArrowDown']) moveForward -= 1;
-            if (KEYS['KeyD'] || KEYS['ArrowRight']) moveRight += 1;
-            if (KEYS['KeyA'] || KEYS['ArrowLeft']) moveRight -= 1;
+          moveForward -= joyVec.y;
+          moveRight += joyVec.x;
 
-            moveForward -= joyVec.y;
-            moveRight += joyVec.x;
+          const mag = Math.hypot(moveForward, moveRight);
+          if (mag > 0.05) {
+            const normF = moveForward / Math.max(1, mag);
+            const normR = moveRight / Math.max(1, mag);
+            const sinY = Math.sin(PLAYER.yaw);
+            const cosY = Math.cos(PLAYER.yaw);
 
-            const mag = Math.hypot(moveForward, moveRight);
-            if (mag > 0.05) {
-              const normF = moveForward / Math.max(1, mag);
-              const normR = moveRight / Math.max(1, mag);
-              const sinY = Math.sin(PLAYER.yaw);
-              const cosY = Math.cos(PLAYER.yaw);
-              const activeSpeed = STATE.isSprinting ? PLAYER.sprintSpeed : PLAYER.walkSpeed;
+            const vx = (-sinY * normF + cosY * normR) * PLAYER.walkSpeed * dt;
+            const vz = (-cosY * normF - sinY * normR) * PLAYER.walkSpeed * dt;
 
-              const vx = (-sinY * normF + cosY * normR) * activeSpeed * dt;
-              const vz = (-cosY * normF - sinY * normR) * activeSpeed * dt;
+            moveEntityWithCollision(PLAYER.pos, vx, vz, PLAYER.radius);
 
-              moveEntityWithCollision(PLAYER.pos, vx, vz, PLAYER.radius);
-
-              PLAYER.bobTime += dt * (STATE.isSprinting ? 14.5 : 10.5);
-              STATE.stepTimer -= dt;
-              if (STATE.stepTimer <= 0) {
-                playFootstep();
-                STATE.stepTimer = STATE.isSprinting ? 0.28 : 0.42;
-              }
-            } else {
-              PLAYER.bobTime = 0;
+            PLAYER.bobTime += dt * 10.5;
+            STATE.stepTimer -= dt;
+            if (STATE.stepTimer <= 0) {
+              playFootstep();
+              STATE.stepTimer = 0.42;
             }
+          } else {
+            PLAYER.bobTime = 0;
           }
 
           const bobOffset = Math.sin(PLAYER.bobTime) * 0.045;
