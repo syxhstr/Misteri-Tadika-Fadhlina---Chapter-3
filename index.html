@@ -163,7 +163,7 @@
       height: 100%;
       border-radius: 999px;
       background: linear-gradient(90deg, #eab308, #f97316, #ef4444);
-      transition: width 0.14s ease-out;
+      transition: width 0.16s ease-out;
     }
 
     .loading-meta {
@@ -1104,21 +1104,6 @@
       background: rgba(12, 74, 110, 0.9);
     }
   </style>
-  <<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-  <script>
-    // Sandaran automatik jika jsdelivr gagal dimuatkan
-    if (typeof THREE === 'undefined') {
-      document.write('<script src="https://unpkg.com/three@0.160.0/build/three.min.js"><\/script>');
-    }
-    // Paparkan punca sebenar pada skrin loading jika ada ralat kod
-    window.addEventListener('error', function (e) {
-      var st = document.getElementById('loading-status-text');
-      if (st) {
-        st.style.color = '#f87171';
-        st.textContent = 'Ralat Kod (Baris ' + e.lineno + '): ' + e.message;
-      }
-    });
-  </script>
 </head>
 <body>
   <!-- FORCED HORIZONTAL GUARD -->
@@ -1138,8 +1123,8 @@
         <div class="loading-bar-fill" id="loading-bar-fill"></div>
       </div>
       <div class="loading-meta">
-        <span id="loading-status-text">Membina bangunan tadika...</span>
-        <span id="loading-percent">0%</span>
+        <span id="loading-status-text">Memuatkan enjin 3D...</span>
+        <span id="loading-percent">5%</span>
       </div>
     </div>
   </div>
@@ -1242,6 +1227,7 @@
       </div>
     </div>
   </div>
+
   <!-- ================= IN-GAME HUD ================= -->
   <div id="game-hud">
     <div class="hud-top-bar">
@@ -1354,9 +1340,73 @@
       <button type="button" class="btn-main-play" id="note-close" style="width:100%;padding:10px;">FAHAM</button>
     </div>
   </div>
-
   <script>
-    (function () {
+    /* ================= PENGESAN RALAT & PEMUAT THREE.JS BERANTAI ================= */
+    window.addEventListener('error', function (e) {
+      var st = document.getElementById('loading-status-text');
+      if (st) {
+        st.style.color = '#f87171';
+        st.textContent = 'Ralat Kod (Baris ' + e.lineno + '): ' + e.message;
+      }
+    });
+
+    function setLoadProgress(pct, msg) {
+      var bar = document.getElementById('loading-bar-fill');
+      var pctEl = document.getElementById('loading-percent');
+      var stEl = document.getElementById('loading-status-text');
+      if (bar) bar.style.width = pct + '%';
+      if (pctEl) pctEl.textContent = pct + '%';
+      if (stEl && msg) stEl.textContent = msg;
+    }
+
+    function loadThreeJsWithFallback(onReady) {
+      if (typeof window.THREE !== 'undefined') {
+        setLoadProgress(25, 'Enjin 3D sedia...');
+        onReady();
+        return;
+      }
+
+      var cdnUrls = [
+        'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js',
+        'https://unpkg.com/three@0.160.0/build/three.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js'
+      ];
+      var idx = 0;
+
+      function tryNextCdn() {
+        if (idx >= cdnUrls.length) {
+          var st = document.getElementById('loading-status-text');
+          if (st) {
+            st.style.color = '#f87171';
+            st.textContent = 'Gagal memuatkan enjin 3D. Sila semak sambungan internet & muat semula.';
+          }
+          return;
+        }
+
+        var url = cdnUrls[idx++];
+        setLoadProgress(8 + idx * 5, 'Memuatkan enjin 3D (' + idx + '/' + cdnUrls.length + ')...');
+
+        var script = document.createElement('script');
+        script.src = url;
+        script.async = true;
+        script.onload = function () {
+          if (typeof window.THREE !== 'undefined') {
+            setLoadProgress(28, 'Membina bangunan tadika...');
+            setTimeout(onReady, 60);
+          } else {
+            tryNextCdn();
+          }
+        };
+        script.onerror = function () {
+          tryNextCdn();
+        };
+        document.head.appendChild(script);
+      }
+
+      tryNextCdn();
+    }
+
+    loadThreeJsWithFallback(function () {
       /* ================= SISTEM DWIBAHASA LENGKAP (BM & BI) ================= */
       const LANG_DICT = {
         ms: {
@@ -1617,7 +1667,7 @@
       const SECRET_SAFE_CODE = codePartA + codePartB;
 
       const STATE = {
-        phase: 'loading', // 'loading' | 'start' | 'cutscene' | 'playing' | 'paused' | 'jumpscare' | 'ended'
+        phase: 'loading',
         timeLeft: INITIAL_TIME_SEC,
         fadhlinaSpawned: false,
         fadhlinaStunTimer: 0,
@@ -1781,6 +1831,7 @@
         document.getElementById('btn-hud-mute').textContent = STATE.muted ? '🔇' : '🔊';
         if (STATE.muted && fadhlinaAudio) fadhlinaAudio.pause();
       });
+
       /* ================= TOAST, OBJEKTIF & SISTEM PEGANG / DROP 1 ITEM ANTI-TEMBUS ================= */
       let toastTimeout = null;
       function showToast(msgMs, msgEn = null, duration = 2600) {
@@ -2555,34 +2606,32 @@
       exteriorLamp.position.set(0, WALL_H + 1.5, 22.0);
       scene.add(exteriorLamp);
 
-      /* Dinding Luar & 9 Bilik (Semua Laluan Pintu 2.8m Lebar Supaya Mudah Masuk!) */
+      /* Dinding Luar & 9 Bilik */
       addWallBox(-4.5, WALL_H / 2, 18.5, 6.0, WALL_H, 0.45, matWallCream);
       addWallBox(4.5, WALL_H / 2, 18.5, 6.0, WALL_H, 0.45, matWallCream);
       addWallBox(0, 3.35, 18.5, 3.0, 0.9, 0.45, matWallCream, false);
 
-      // Dinding Sisi Lobi (x = -7.5 & x = 7.5, z: [9, 18.5])
       addWallBox(-7.5, WALL_H / 2, 13.75, 0.45, WALL_H, 9.7, matWallCream);
       addWallBox(7.5, WALL_H / 2, 13.75, 0.45, WALL_H, 9.7, matWallCream);
 
-      // Pemisah Lobi & Koridor (z = 9.0, bukaan luas tengah x: [-3.8, 3.8] = 7.6m!)
       addWallBox(-5.65, WALL_H / 2, 9.0, 3.7, WALL_H, 0.45, matWallCream);
       addWallBox(5.65, WALL_H / 2, 9.0, 3.7, WALL_H, 0.45, matWallCream);
 
-      // Tiang Pusingan (Loop Pillars) di tengah koridor luas untuk mudah mengelak Fadhlina
+      // Tiang Pusingan (Loop Pillars)
       addWallBox(0, WALL_H / 2, 2.2, 1.35, WALL_H, 1.35, matWallCream, true);
       addWallBox(0, WALL_H / 2, -10.5, 1.35, WALL_H, 1.35, matWallCream, true);
 
-      // Dinding Luar Sayap Barat (x = -16.5) & Sayap Timur (x = 16.5)
+      // Dinding Luar Sayap Barat & Timur
       addWallBox(-16.5, WALL_H / 2, -4.5, 0.45, WALL_H, 27.4, matWallCream);
       addWallBox(16.5, WALL_H / 2, -4.5, 0.45, WALL_H, 27.4, matWallCream);
 
-      // Pemisah Bilik Sayap Barat (z = 9, z = 0, z = -9, z = -18)
+      // Pemisah Bilik Sayap Barat
       addWallBox(-10.15, WALL_H / 2, 9.0, 12.7, WALL_H, 0.45, matWallBlue);
       addWallBox(-10.15, WALL_H / 2, 0.0, 12.7, WALL_H, 0.45, matWallBlue);
       addWallBox(-10.15, WALL_H / 2, -9.0, 12.7, WALL_H, 0.45, matWallPurp);
       addWallBox(-10.15, WALL_H / 2, -18.0, 12.7, WALL_H, 0.45, matWallPurp);
 
-      // Pemisah Bilik Sayap Timur + Laluan Pusingan Terbuka antara Kantin & Taman (z = 0, bukaan x: [9.0, 11.8])
+      // Pemisah Bilik Sayap Timur
       addWallBox(10.15, WALL_H / 2, 9.0, 12.7, WALL_H, 0.45, matWallCream);
       addWallBox(6.4, WALL_H / 2, 0.0, 5.2, WALL_H, 0.45, matWallGreen);
       addWallBox(14.15, WALL_H / 2, 0.0, 4.7, WALL_H, 0.45, matWallGreen);
@@ -2590,7 +2639,7 @@
       addWallBox(10.15, WALL_H / 2, -9.0, 12.7, WALL_H, 0.45, matWallOrng);
       addWallBox(10.15, WALL_H / 2, -18.0, 12.7, WALL_H, 0.45, matWallOrng);
 
-      // Dinding Koridor Barat (x = -3.8) dengan 3 bukaan pintu 2.8m lebar di z = 4.5, z = -4.5, z = -13.5
+      // Dinding Koridor Barat
       addWallBox(-3.8, WALL_H / 2, 7.45, 0.4, WALL_H, 3.1, matWallBlue);
       addWallBox(-3.8, WALL_H / 2, 0.0, 0.4, WALL_H, 6.2, matWallGreen);
       addWallBox(-3.8, WALL_H / 2, -9.0, 0.4, WALL_H, 6.2, matWallPurp);
@@ -2599,7 +2648,7 @@
       addWallBox(-3.8, 3.35, -4.5, 0.4, 0.9, 2.8, matWallGreen, false);
       addWallBox(-3.8, 3.35, -13.5, 0.4, 0.9, 2.8, matWallPurp, false);
 
-      // Dinding Koridor Timur (x = 3.8) dengan 3 bukaan pintu 2.8m lebar di z = 4.5, z = -4.5, z = -13.5
+      // Dinding Koridor Timur
       addWallBox(3.8, WALL_H / 2, 7.45, 0.4, WALL_H, 3.1, matWallCream);
       addWallBox(3.8, WALL_H / 2, 0.0, 0.4, WALL_H, 6.2, matWallGreen);
       addWallBox(3.8, WALL_H / 2, -9.0, 0.4, WALL_H, 6.2, matWallOrng);
@@ -2608,7 +2657,7 @@
       addWallBox(3.8, 3.35, -4.5, 0.4, 0.9, 2.8, matWallGreen, false);
       addWallBox(3.8, 3.35, -13.5, 0.4, 0.9, 2.8, matWallOrng, false);
 
-      // Bilik Stor & Arkib Utara (x: [-6.0, 6.0], z: [-26.5, -18.0], pintu tengah 2.8m x: [-1.4, 1.4])
+      // Bilik Stor & Arkib Utara
       addWallBox(-3.7, WALL_H / 2, -18.0, 4.6, WALL_H, 0.45, matWallStor);
       addWallBox(3.7, WALL_H / 2, -18.0, 4.6, WALL_H, 0.45, matWallStor);
       addWallBox(0, 3.35, -18.0, 2.8, 0.9, 0.45, matWallStor, false);
@@ -2617,18 +2666,18 @@
       addWallBox(0, WALL_H / 2, -26.5, 12.4, WALL_H, 0.45, matWallStor);
 
       /* Lampu Setiap Bilik */
-      addRoomLight(0, 13.8, 0xfef3c7, 1.3, 18);      // Lobi
-      addRoomLight(0, 4.5, 0xe0f2fe, 1.05, 16);      // Koridor Selatan
-      addRoomLight(0, -13.5, 0xe0f2fe, 1.05, 16);    // Koridor Utara
-      addRoomLight(-10.2, 4.5, 0xdbeafe, 1.2, 18);   // Kelas Melur
-      addRoomLight(10.2, 4.5, 0xfef9c3, 1.2, 18);    // Kantin
-      addRoomLight(-10.2, -4.5, 0xdcfce7, 1.2, 18);  // Bilik Muzik
-      addRoomLight(10.2, -4.5, 0xfce7f3, 1.25, 18);  // Taman Permainan
-      addRoomLight(-10.2, -13.5, 0xf3e8ff, 1.0, 18); // Bilik Tidur
-      addRoomLight(10.2, -13.5, 0xffedd5, 1.15, 18); // Pejabat Guru Besar
-      addRoomLight(0, -22.2, 0xf1f5f9, 1.05, 16);    // Bilik Stor
+      addRoomLight(0, 13.8, 0xfef3c7, 1.3, 18);
+      addRoomLight(0, 4.5, 0xe0f2fe, 1.05, 16);
+      addRoomLight(0, -13.5, 0xe0f2fe, 1.05, 16);
+      addRoomLight(-10.2, 4.5, 0xdbeafe, 1.2, 18);
+      addRoomLight(10.2, 4.5, 0xfef9c3, 1.2, 18);
+      addRoomLight(-10.2, -4.5, 0xdcfce7, 1.2, 18);
+      addRoomLight(10.2, -4.5, 0xfce7f3, 1.25, 18);
+      addRoomLight(-10.2, -13.5, 0xf3e8ff, 1.0, 18);
+      addRoomLight(10.2, -13.5, 0xffedd5, 1.15, 18);
+      addRoomLight(0, -22.2, 0xf1f5f9, 1.05, 16);
 
-      /* Pembina Pintu Berkunci Berwarna (TERUS HILANG BILA DIBUKA) */
+      /* Pembina Pintu Berkunci Berwarna */
       function createLockedDoor(doorKey, x, z, isZAxis, colorHex, reqKeyId, reqKeyNameMs, reqKeyNameEn) {
         const pivot = new THREE.Group();
         pivot.position.set(x, 0, z);
@@ -2717,7 +2766,7 @@
       createLockedDoor('tidur', -3.8, -13.5, true, 0x9333ea, 'key_purple', 'Kunci Ungu', 'Purple Key');
       createLockedDoor('pejabat', 3.8, -13.5, true, 0xea580c, 'key_orange', 'Kunci Jingga', 'Orange Key');
 
-      /* Fungsi Spawn Item 3D Di Dunia (Termasuk Sfera Klik/Sentuh Luas untuk Raycaster) */
+      /* Fungsi Spawn Item 3D Di Dunia */
       function spawnWorldItem(id, name, icon, x, y, z, colorHex, modelType = 'key', extraAmount = 0) {
         const group = new THREE.Group();
         group.position.set(x, y, z);
@@ -2733,7 +2782,6 @@
         glowRing.position.y = -y + 0.03;
         group.add(glowRing);
 
-        // Zon sentuhan/klik halimunan luas supaya pemain mudah klik pada item
         const hitCollider = new THREE.Mesh(
           new THREE.SphereGeometry(0.62, 8, 8),
           new THREE.MeshBasicMaterial({ visible: false })
@@ -2759,6 +2807,7 @@
         WORLD.itemHitMeshes.push(hitCollider);
         return itemEntry;
       }
+
       /* ================= SISTEM JUMPSCARE, TAMAT PERMAINAN & KEMENANGAN ================= */
       function triggerGameEnd(isVictory, titleMs, titleEn, descMs, descEn) {
         if (STATE.phase === 'ended') return;
@@ -2816,7 +2865,6 @@
         if (STATE.exitKeycardDone && STATE.gearsInstalled >= 3 && STATE.exitWhiteKeyDone) {
           playUnlockSfx();
 
-          // Pintu Utama terus hilang serta-merta!
           scene.remove(mainExitDoorMesh);
           scene.remove(cardReaderMesh);
           scene.remove(gearPanelMesh);
@@ -2858,7 +2906,7 @@
       exitSignMesh.position.set(0, 3.05, 18.22);
       scene.add(exitSignMesh);
 
-      // 1. Pengimbas Kad Akses (Kiri Pintu Utama)
+      // 1. Pengimbas Kad Akses
       const cardReaderMesh = new THREE.Mesh(
         new THREE.BoxGeometry(0.32, 0.48, 0.18),
         new THREE.MeshStandardMaterial({ color: 0x0284c7, emissive: 0x0369a1, emissiveIntensity: 0.4 })
@@ -2896,7 +2944,7 @@
         }
       });
 
-      // 2. Kotak Gear Mekanikal (Kanan Pintu Utama)
+      // 2. Kotak Gear Mekanikal
       const gearPanelMesh = new THREE.Mesh(
         new THREE.BoxGeometry(0.68, 0.68, 0.22),
         new THREE.MeshStandardMaterial({ color: 0xb45309, metalness: 0.6, roughness: 0.35 })
@@ -2915,7 +2963,7 @@
         }
       });
 
-      // 3. Mangga Kunci Putih Utama (Tengah Pintu Utama)
+      // 3. Mangga Kunci Putih Utama
       const whitePadlockMesh = new THREE.Mesh(
         new THREE.BoxGeometry(0.36, 0.44, 0.24),
         new THREE.MeshStandardMaterial({ color: 0xf8fafc, emissive: 0x94a3b8, emissiveIntensity: 0.3 })
@@ -2955,13 +3003,13 @@
         }
       });
 
-      /* ================= PERABOT BILIK (RUANG LUAS UNTUK MUDAH MENGELAK) ================= */
+      /* ================= PERABOT BILIK ================= */
       function addFurnitureBox(x, y, z, w, h, d, colorHex, solid = true) {
         const mat = new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.72 });
         return addWallBox(x, y, z, w, h, d, mat, solid);
       }
 
-      // 1. LOBI PENDAFTARAN: Meja Kaunter Tepi & Nota Panduan
+      // 1. LOBI PENDAFTARAN
       addFurnitureBox(5.2, 0.5, 14.5, 2.0, 1.0, 1.0, 0x92400e, true);
       addFurnitureBox(-5.4, 0.42, 14.5, 1.8, 0.84, 0.9, 0x1d4ed8, true);
 
@@ -2986,7 +3034,7 @@
         }
       });
 
-      // 2. KELAS MELUR (Bilik Biru): Papan Putih Kod Bahagian A & Meja Rapat Tepi
+      // 2. KELAS MELUR
       addFurnitureBox(-14.8, 0.48, 6.8, 1.5, 0.96, 1.0, 0x78350f, true);
       addFurnitureBox(-10.5, 0.36, 1.6, 1.8, 0.72, 1.0, 0x3b82f6, true);
 
@@ -2999,7 +3047,7 @@
       boardMelur.position.set(-10.2, 2.0, 8.72);
       scene.add(boardMelur);
 
-      // 3. KANTIN & DAPUR: Kaunter Dapur Rapat Dinding & Papan Menu Kod Bahagian B
+      // 3. KANTIN & DAPUR
       addFurnitureBox(14.8, 0.5, 3.8, 1.2, 1.0, 2.8, 0x64748b, true);
       addFurnitureBox(6.8, 0.38, 6.5, 2.0, 0.76, 0.9, 0xf59e0b, true);
 
@@ -3012,15 +3060,15 @@
       boardKantin.position.set(10.2, 2.0, 8.72);
       scene.add(boardKantin);
 
-      // 4. BILIK MUZIK & MAINAN: Piano & Rak Rapat Dinding
+      // 4. BILIK MUZIK & MAINAN
       addFurnitureBox(-10.2, 0.55, -1.6, 2.0, 1.1, 0.95, 0x1e293b, true);
       addFurnitureBox(-14.9, 0.5, -6.5, 1.2, 1.0, 2.2, 0x92400e, true);
 
-      // 5. TAMAN PERMAINAN TERTUTUP: Gelongsor & Kolam Bola Rapat Tepi
+      // 5. TAMAN PERMAINAN TERTUTUP
       addFurnitureBox(14.4, 0.65, -6.8, 1.8, 1.3, 1.8, 0xec4899, true);
       addFurnitureBox(6.5, 0.35, -3.2, 1.8, 0.7, 1.8, 0x06b6d4, true);
 
-      // 6. BILIK TIDUR TENGAH HARI: Katil Rapat Dinding & Sangkar Injap Stim (Sepana Paip -> Kad Akses)
+      // 6. BILIK TIDUR TENGAH HARI
       addFurnitureBox(-14.9, 0.35, -15.5, 1.2, 0.7, 2.0, 0xa855f7, true);
       addFurnitureBox(-14.9, 0.35, -11.2, 1.2, 0.7, 2.0, 0xa855f7, true);
 
@@ -3067,7 +3115,7 @@
       };
       WORLD.interactables.push(valveInteract);
 
-      // 7. HALANGAN PAPAN KAYU PINTU BILIK STOR (Tukul Besi -> Terus Hilang)
+      // 7. HALANGAN PAPAN KAYU PINTU BILIK STOR
       const planksGroup = new THREE.Group();
       planksGroup.position.set(0, 1.35, -18.0);
       for (let p = 0; p < 3; p++) {
@@ -3121,7 +3169,7 @@
       addFurnitureBox(-4.2, 0.5, -23.5, 1.3, 1.0, 2.0, 0x475569, true);
       addFurnitureBox(4.2, 0.5, -23.5, 1.3, 1.0, 2.0, 0x475569, true);
 
-      // 8. PEJABAT GURU BESAR FADHLINA: Meja Eksekutif & Peti Besi Kod
+      // 8. PEJABAT GURU BESAR FADHLINA
       addFurnitureBox(12.6, 0.5, -15.4, 2.4, 1.0, 1.1, 0x451a03, true);
 
       const safeVaultMesh = new THREE.Mesh(
@@ -3152,22 +3200,21 @@
 
       /* ================= PENEMPATAN ITEM SECARA RAWAK (ANTI-SOFTLOCK) ================= */
       function spawnAllRandomizedItems() {
-        // Zon: 'open' (Lobi/Kantin/Taman), 'melur' (Kunci Biru), 'muzik' (Kunci Hijau), 'stor' (Tukul), 'tidur' (Kunci Ungu), 'pejabat' (Kunci Jingga)
         const spots = [
-          { x: 5.4, y: 1.18, z: 14.5, zone: 'open' },     // Kaunter Lobi
-          { x: -5.4, y: 1.02, z: 14.5, zone: 'open' },    // Meja Lobi Kiri
-          { x: 14.8, y: 1.18, z: 3.8, zone: 'open' },     // Kaunter Dapur Kantin
-          { x: 6.8, y: 0.94, z: 6.5, zone: 'open' },      // Meja Kantin
-          { x: 14.4, y: 1.48, z: -6.8, zone: 'open' },    // Gelongsor Taman Permainan
-          { x: 6.5, y: 0.92, z: -3.2, zone: 'open' },     // Kolam Bola Taman Permainan
-          { x: -14.8, y: 1.14, z: 6.8, zone: 'melur' },   // Meja Guru Kelas Melur
-          { x: -10.5, y: 0.92, z: 1.6, zone: 'melur' },   // Meja Murid Kelas Melur
-          { x: -14.9, y: 1.18, z: -6.5, zone: 'muzik' },  // Rak Bilik Muzik
-          { x: -10.2, y: 1.28, z: -1.6, zone: 'muzik' },  // Piano Bilik Muzik
-          { x: -4.2, y: 1.18, z: -23.5, zone: 'stor' },   // Rak Kiri Bilik Stor
-          { x: 4.2, y: 1.18, z: -23.5, zone: 'stor' },    // Rak Kanan Bilik Stor
-          { x: -14.9, y: 0.9, z: -15.5, zone: 'tidur' },  // Meja Katil Bilik Tidur
-          { x: 12.6, y: 1.18, z: -15.4, zone: 'pejabat' } // Meja Eksekutif Pejabat
+          { x: 5.4, y: 1.18, z: 14.5, zone: 'open' },
+          { x: -5.4, y: 1.02, z: 14.5, zone: 'open' },
+          { x: 14.8, y: 1.18, z: 3.8, zone: 'open' },
+          { x: 6.8, y: 0.94, z: 6.5, zone: 'open' },
+          { x: 14.4, y: 1.48, z: -6.8, zone: 'open' },
+          { x: 6.5, y: 0.92, z: -3.2, zone: 'open' },
+          { x: -14.8, y: 1.14, z: 6.8, zone: 'melur' },
+          { x: -10.5, y: 0.92, z: 1.6, zone: 'melur' },
+          { x: -14.9, y: 1.18, z: -6.5, zone: 'muzik' },
+          { x: -10.2, y: 1.28, z: -1.6, zone: 'muzik' },
+          { x: -4.2, y: 1.18, z: -23.5, zone: 'stor' },
+          { x: 4.2, y: 1.18, z: -23.5, zone: 'stor' },
+          { x: -14.9, y: 0.9, z: -15.5, zone: 'tidur' },
+          { x: 12.6, y: 1.18, z: -15.4, zone: 'pejabat' }
         ];
 
         const pickSpotFromZones = (allowedZones) => {
@@ -3179,27 +3226,21 @@
           return spots.splice(chosenIdx, 1)[0];
         };
 
-        // 1. Kunci Biru mesti di kawasan terbuka ('open')
         const sBlue = pickSpotFromZones(['open']);
         spawnWorldItem('key_blue', 'Kunci Biru', '🔑', sBlue.x, sBlue.y, sBlue.z, 0x3b82f6, 'key');
 
-        // 2. Kunci Hijau di kawasan terbuka atau Kelas Melur
         const sGreen = pickSpotFromZones(['open', 'melur']);
         spawnWorldItem('key_green', 'Kunci Hijau', '🔑', sGreen.x, sGreen.y, sGreen.z, 0x22c55e, 'key');
 
-        // 3. Tukul Besi di kawasan terbuka, Kelas Melur, atau Bilik Muzik
         const sHammer = pickSpotFromZones(['open', 'melur', 'muzik']);
         spawnWorldItem('hammer', 'Tukul Besi', '🔨', sHammer.x, sHammer.y, sHammer.z, 0xd97706, 'hammer');
 
-        // 4. Kunci Ungu di kawasan terbuka, Kelas Melur, Bilik Muzik, atau Bilik Stor (tidak terkunci dalam Bilik Tidur)
         const sPurple = pickSpotFromZones(['open', 'melur', 'muzik', 'stor']);
         spawnWorldItem('key_purple', 'Kunci Ungu', '🔑', sPurple.x, sPurple.y, sPurple.z, 0xa855f7, 'key');
 
-        // 5. Kunci Jingga di mana-mana kecuali Pejabat Guru Besar
         const sOrange = pickSpotFromZones(['open', 'melur', 'muzik', 'stor', 'tidur']);
         spawnWorldItem('key_orange', 'Kunci Jingga', '🔑', sOrange.x, sOrange.y, sOrange.z, 0xf97316, 'key');
 
-        // 6. Baki peralatan, 3 Gear Tembaga, Pistol Pelali & Peluru diacak di semua baki tempat
         const remainingItems = [
           { id: 'wrench', name: 'Sepana Paip', icon: '🔧', color: 0x94a3b8, type: 'wrench', extra: 0 },
           { id: 'gear', name: 'Gear Tembaga', icon: '⚙️', color: 0xfacc15, type: 'gear', extra: 0 },
@@ -3220,7 +3261,7 @@
 
       spawnAllRandomizedItems();
 
-      /* ================= MODEL ITEM DI TANGAN ORANG PERTAMA (FIRST-PERSON) ================= */
+      /* ================= MODEL ITEM DI TANGAN ORANG PERTAMA ================= */
       const firstPersonHandGroup = new THREE.Group();
       firstPersonHandGroup.position.set(0.32, -0.28, -0.48);
       camera.add(firstPersonHandGroup);
@@ -3243,7 +3284,7 @@
         firstPersonHandGroup.add(itemMesh);
       }
 
-      /* ================= WATAK ANTAGONIS 3D: FADHLINA (KELAJUAN DIPERLAHANKAN) ================= */
+      /* ================= WATAK ANTAGONIS 3D: FADHLINA ================= */
       function makeFadhlinaFallbackTexture() {
         const c = document.createElement('canvas');
         c.width = 512;
@@ -3355,6 +3396,7 @@
       FADHLINA.group.position.copy(FADHLINA.pos);
       FADHLINA.group.visible = false;
       scene.add(FADHLINA.group);
+
       /* ================= BABAK PENGENALAN SINEMATIK (INTRO CUTSCENE) ================= */
       const CUTSCENE = {
         active: false,
@@ -3611,7 +3653,6 @@
       canvas.addEventListener('mousedown', (e) => {
         if (STATE.phase !== 'playing' || isAnyModalOpen() || isTouchDevice()) return;
 
-        // Jika klik terus pada item berdekatan (walaupun sebelum pointer lock), terus ambil item!
         if (e.button === 0 && tryRayPickItem(e.clientX, e.clientY)) {
           if (document.pointerLockElement !== canvas) {
             canvas.requestPointerLock?.();
@@ -3642,7 +3683,7 @@
         }
       });
 
-      /* Kawalan Sentuh Mobile (Joystick Kiri + Seret Kamera Kanan + Tap Item Terus) */
+      /* Kawalan Sentuh Mobile */
       const joyZone = document.getElementById('joystick-zone');
       const joyKnob = document.getElementById('joystick-knob');
       const joyVec = { x: 0, y: 0 };
@@ -3735,7 +3776,6 @@
         for (let i = 0; i < e.changedTouches.length; i++) {
           const t = e.changedTouches[i];
           if (t.identifier === lookTouchId) {
-            // Jika sentuhan pantas (tap tanpa seret), cuba ambil item yang disentuh!
             if (!lookMoved && STATE.phase === 'playing' && !isAnyModalOpen()) {
               tryRayPickItem(t.clientX, t.clientY);
             }
@@ -3827,7 +3867,6 @@
         const fwd = new THREE.Vector3(-Math.sin(PLAYER.yaw), 0, -Math.cos(PLAYER.yaw)).normalize();
         let bestScore = Infinity;
 
-        // 1. Semak item atas lantai/meja
         for (let i = 0; i < WORLD.worldItems.length; i++) {
           const it = WORLD.worldItems[i];
           if (it.collected) continue;
@@ -3848,7 +3887,6 @@
           }
         }
 
-        // 2. Semak pintu berkunci, peti besi, papan tanda, panel gear & halangan
         for (let i = 0; i < WORLD.interactables.length; i++) {
           const obj = WORLD.interactables[i];
           if (obj.disabled) continue;
@@ -3924,7 +3962,7 @@
         STATE.timeLeft = Math.max(0, STATE.timeLeft - dt);
         const totalSec = Math.ceil(STATE.timeLeft);
         const mins = String(Math.floor(totalSec / 60)).padStart(2, '0');
-        const secs = String(totalSec % 60)).padStart(2, '0');
+        const secs = String(totalSec % 60).padStart(2, '0');
 
         const timerEl = document.getElementById('hud-timer');
         timerEl.textContent = `${mins}:${secs}`;
@@ -3978,7 +4016,6 @@
 
         const dist = Math.hypot(PLAYER.pos.x - FADHLINA.pos.x, PLAYER.pos.z - FADHLINA.pos.z);
 
-        // Jika dilumpuhkan oleh Pistol Pelali
         if (STATE.fadhlinaStunTimer > 0) {
           STATE.fadhlinaStunTimer = Math.max(0, STATE.fadhlinaStunTimer - dt);
           STATE.isChasing = false;
@@ -4045,13 +4082,12 @@
 
         updateFadhlinaAudio(dist);
 
-        // Tangkap pemain & cetus JUMPSCARE penuh!
         if (dist < 1.15) {
           triggerJumpscareCatch();
         }
       }
 
-      /* ================= GELUNG UTAMA ANIMASI 3D (AUTO-PAUSE BILA MODAL TERBUKA) ================= */
+      /* ================= GELUNG UTAMA ANIMASI 3D ================= */
       let lastFrameTime = performance.now();
 
       function animate(now) {
@@ -4062,7 +4098,6 @@
         const modalOpen = isAnyModalOpen();
 
         if (!modalOpen) {
-          // Animasi item berputar & terapung
           for (let i = 0; i < WORLD.worldItems.length; i++) {
             const it = WORLD.worldItems[i];
             if (!it.collected) {
@@ -4071,7 +4106,6 @@
             }
           }
 
-          // Animasi peluru pelali yang ditembak
           for (let i = activeDarts.length - 1; i >= 0; i--) {
             const dart = activeDarts[i];
             dart.life -= dt;
@@ -4140,23 +4174,18 @@
 
       /* ================= SKRIN PEMUATAN (LOADING PROGRESS) ================= */
       function runLoadingSequence() {
-        const barFill = document.getElementById('loading-bar-fill');
-        const statusTxt = document.getElementById('loading-status-text');
-        const pctTxt = document.getElementById('loading-percent');
-        let progress = 0;
-
+        let progress = 30;
         const timer = setInterval(() => {
-          progress += Math.floor(14 + Math.random() * 18);
+          progress += Math.floor(18 + Math.random() * 20);
           if (progress > 100) progress = 100;
 
-          barFill.style.width = progress + '%';
-          pctTxt.textContent = progress + '%';
-
           const msgs = L().loadMsgs;
-          if (progress < 35) statusTxt.textContent = msgs[0];
-          else if (progress < 70) statusTxt.textContent = msgs[1];
-          else if (progress < 98) statusTxt.textContent = msgs[2];
-          else statusTxt.textContent = msgs[3];
+          let msg = msgs[3];
+          if (progress < 50) msg = msgs[0];
+          else if (progress < 78) msg = msgs[1];
+          else if (progress < 98) msg = msgs[2];
+
+          setLoadProgress(progress, msg);
 
           if (progress >= 100) {
             clearInterval(timer);
@@ -4168,14 +4197,14 @@
               document.getElementById('loading-screen').classList.add('fade-out');
               STATE.phase = 'start';
               document.getElementById('start-screen').classList.add('active');
-            }, 350);
+            }, 300);
           }
-        }, 140);
+        }, 120);
       }
 
       requestAnimationFrame(animate);
       runLoadingSequence();
-    })();
+    });
   </script>
 </body>
 </html>
