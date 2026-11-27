@@ -1660,7 +1660,7 @@
 
       /* ================= KONFIGURASI UTAMA & KEADAAN PERMAINAN ================= */
       const INITIAL_TIME_SEC = 600; // 10:00
-      const SPAWN_TIME_SEC = 570;   // 09:30 -> "Fadhlina has spawned."
+      const SPAWN_TIME_SEC = 540;   // 09:00 -> "Fadhlina has spawned."
 
       const codePartA = String(Math.floor(10 + Math.random() * 89));
       const codePartB = String(Math.floor(10 + Math.random() * 89));
@@ -2203,14 +2203,14 @@
           const dot = flatForward.dot(toBoss.clone().normalize());
 
           if (dist < 28 && dot > 0.85 && hasClearLineOfSight(PLAYER.pos, FADHLINA.pos)) {
-            STATE.fadhlinaStunTimer = 22.0;
+            STATE.fadhlinaStunTimer = 35.0;
             FADHLINA.path = [];
             FADHLINA.goal = null;
             STATE.isChasing = false;
             playUnlockSfx();
             showToast(
-              '⚡ TEMBAKAN TEPAT! Fadhlina lumpuh selama 22 saat!',
-              '⚡ DIRECT HIT! Fadhlina is stunned for 22 seconds!',
+              '⚡ TEMBAKAN TEPAT! Fadhlina lumpuh selama 35 saat!',
+              '⚡ DIRECT HIT! Fadhlina is stunned for 35 seconds!',
               3600
             );
           } else {
@@ -3270,6 +3270,17 @@
       addFurnitureBox(-4.2, 0.5, -23.5, 1.3, 1.0, 2.0, 0x475569, true);
       addFurnitureBox(4.2, 0.5, -23.5, 1.3, 1.0, 2.0, 0x475569, true);
 
+      // Almari tinggi: tempat berlindung untuk putuskan pandangan Fadhlina
+      [
+        [-3.2, 12.0, 1.8, 0.6], [3.2, 12.0, 1.8, 0.6],       // Lobi
+        [11.4, 2.4, 1.8, 0.6], [7.2, 6.6, 1.8, 0.6],         // Kantin
+        [11.4, -5.2, 1.8, 0.6],                              // Taman
+        [-11.0, 5.2, 0.6, 1.8],                              // Melur
+        [-11.0, -4.8, 0.6, 1.8],                             // Muzik
+        [-11.6, -13.0, 0.6, 1.8],                            // Tidur
+        [9.0, -13.5, 0.6, 1.8]                               // Pejabat
+      ].forEach(([x, z, w, d]) => addFurnitureBox(x, 1.2, z, w, 2.4, d, 0x8b5a2b, true));
+
       // 8. PEJABAT GURU BESAR FADHLINA
       addFurnitureBox(12.6, 0.5, -15.4, 2.4, 1.0, 1.1, 0x451a03, true);
 
@@ -3455,13 +3466,13 @@
           [12.5, 6.0], [12.5, -4.5], [10.2, -12.5],
           [-8.0, 4.5], [-8.0, -4.5], [-10.2, -13.5]
         ].map((p) => new THREE.Vector3(p[0], 0, p[1])),
-        walkSpeed: 2.3,
-        chaseSpeed: 4.35,       // Pemain 5.3 — boleh lepas kalau bijak pusing
-        viewDist: 14.0,
-        hearDist: 3.2,
-        loseSightTime: 3.0,     // Saat tanpa nampak pemain sebelum hilang jejak
-        reactTime: 0.8,         // Masa terkejut sebelum mula mengejar
-        catchDist: 0.95,
+        walkSpeed: 1.7,
+        chaseSpeed: 3.2,
+        viewDist: 10.0,
+        hearDist: 2.0,
+        loseSightTime: 1.6,
+        reactTime: 1.5,
+        catchDist: 0.85,
         heading: 0,
         path: [],
         goal: null,
@@ -3638,7 +3649,7 @@
         FADHLINA.group.position.copy(FADHLINA.pos);
         FADHLINA.path = [];
         FADHLINA.goal = null;
-        FADHLINA.graceTimer = 2.0;
+        FADHLINA.graceTimer = 4.0;
       }
 
       const fadhlinaTex = makeFadhlinaFallbackTexture();
@@ -3781,8 +3792,8 @@
           flash.style.opacity = '0';
 
           showToast(
-            '⏳ Anda ada 30 saat sebelum Fadhlina muncul! Klik item atau tekan [E] untuk mengambilnya.',
-            '⏳ You have 30 seconds before Fadhlina spawns! Click items or press [E] to pick them up.',
+            '⏳ Anda ada 60 saat sebelum Fadhlina muncul! Klik item atau tekan [E] untuk mengambilnya.',
+            '⏳ You have 60 seconds before Fadhlina spawns! Click items or press [E] to pick them up.',
             3800
           );
         }, 180);
@@ -4339,7 +4350,7 @@
           if (STATE.fadhlinaStunTimer === 0) {
             f.group.position.y = 0;
             fadhlinaPlane.rotation.z = 0;
-            f.graceTimer = 2.5;
+            f.graceTimer = 4.0;
             showToast(
               '⚠️ Fadhlina telah sedar semula! Berhati-hati!',
               '⚠️ Fadhlina has recovered from the stun! Watch out!'
@@ -4364,7 +4375,7 @@
         const facing = dist > 0.001 ? (Math.sin(f.heading) * toX + Math.cos(f.heading) * toZ) / dist : 1;
         const detected = visible && (
           dist < f.hearDist ||
-          (dist < f.viewDist && (STATE.isChasing || facing > -0.15))
+          (dist < f.viewDist && (STATE.isChasing || facing > 0.25))
         );
 
         if (detected) {
@@ -4406,7 +4417,7 @@
           followPath(f.walkSpeed, dt);
           if (f.goal && !f.path.length) {
             f.goal = null;
-            f.waitTimer = 1.4;
+            f.waitTimer = 2.5;
           }
         }
 
