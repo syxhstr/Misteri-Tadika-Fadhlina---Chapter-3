@@ -1104,7 +1104,21 @@
       background: rgba(12, 74, 110, 0.9);
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script>
+    // Sandaran automatik jika jsdelivr gagal dimuatkan
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://unpkg.com/three@0.160.0/build/three.min.js"><\/script>');
+    }
+    // Paparkan punca sebenar pada skrin loading jika ada ralat kod
+    window.addEventListener('error', function (e) {
+      var st = document.getElementById('loading-status-text');
+      if (st) {
+        st.style.color = '#f87171';
+        st.textContent = 'Ralat Kod (Baris ' + e.lineno + '): ' + e.message;
+      }
+    });
+  </script>
 </head>
 <body>
   <!-- FORCED HORIZONTAL GUARD -->
